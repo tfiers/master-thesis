@@ -1,0 +1,185 @@
+
+\section{Projecting onto more than one vector}
+
+
+In \cref{sec:GEVD_overview,sec:GEVD_SNR}, we projected the multi-channel
+input signal $\z_t$ onto one optimal weight vector $\what$, to yield a
+one-dimensional output signal $y_t$ (see e.g. \cref{eq:linear} or
+\cref{fig:GEVD_principle}).
+
+We may also project $\z_t$ onto multiple weight vectors $\w_i$ to obtain
+multiple output channels, $y_{t,i}$. When the $k$ weight vectors are gathered
+as columns of a matrix $\What \in \reals^{C \cross k}$, and the different
+outputs are combined into one multichannel output signal $\y_t \in \reals^k$,
+\cref{eq:linear} becomes:
+\[
+\y_t = \What \z_t
+\]
+These multiple output signals can then be used as input to a further signal
+processing step. Alternatively, sharp wave-ripple events may be detected in
+each output signal separately, as described in \cref{sec:GEVD_overview}.
+These detections can then be combined using a voting scheme, to yield a final
+detection only when enough output channels yield a detection within close
+temporal proximity of each other.
+
+The question is then how to find these different weight vectors $\What$. As
+in \cref{sec:GEVD_SNR}, we divide our input data into two data matrices $\Sm
+\in \reals^{C \cross N_s}$ and $\Nm \in \reals^{C \cross N_n}$, with $C$ the
+number of channels, and $N_s$ and $N_n$ the number of signal and noise
+training samples, respectively. The output data matrices are then:
+\begin{align*}
+\Y_s &= \What^T \Sm \\
+\Y_n &= \What^T \Nm.
+\end{align*}
+
+As before, for each pair of output data vectors $\y_{s,i}$ and $\y_{n,i}$
+(i.e. rows $i$ of $\Y_s$ and $\Y_n$) we want to maximise the ratio of the
+variance of the signal $\y_{s,i}$ versus the variance of the noise
+$\y_{n,i}$, i.e. we want to find (see \cref{sec:GEVD_SNR}):
+%
+\begin{equation}
+\label{eq:maxwi}
+\what_i = \argmax_{\w_i} \frac{\w_i^T \Rss \w_i}
+                              {\w_i^T \Rnn \w_i},
+\end{equation}
+% 
+with $\Rss = \frac{1}{N_s} \Sm \Sm^T$ and $\Rnn = \frac{1}{N_s} \Nm \Nm^T$
+the signal and noise covariance matrices, as before.
+
+The scale of $\w_i$ does not matter; only the variance ratio in
+\cref{eq:maxwi} does. \Cref{eq:maxwi} is therefore equivalent to
+%
+\begin{gather*}
+\what_i = \argmax_{\w_i} \w_i^T \Rss \w_i \\
+\st \w_i^T \Rnn \w_i = 1
+\end{gather*}
+
+To combine the different $\w_i$ into one optimisation problem, we will ask to
+optimise the sum of the signal-to-noise variance ratios. In matrix form, this
+is written as:
+\begin{gather*}
+\What = \argmax_{\W} \Tr(\W^T \Rss \W) \\
+\st \diag{\W^T \Rnn \W} = \diag{\I_k},
+\end{gather*}
+%
+where $\Tr(\cdot)$ (for trace) denotes the sum of diagonal elements,
+$\diag{\cdot}$ denotes the vector of diagonal elements, and $\I_k$ is the $k
+\cross k$ identity matrix.
+
+This maximisation problem yields identical $\w_1 = \w_2 = \tdots = \w_k$. If
+we want different output channels, we need to introduce an additional
+constraint. When we require the noise output channels to be uncorrelated
+(i.e. $\Cov(\y_{n,i}, \y_{n,j}) = \y_{n,i}^T \y_{n,j} = 0$ for $i \neq j$),
+our final optimisation problem becomes:
+%
+\begin{gather}
+\What = \argmax_{\W} \Tr(\W^T \Rss \W)  \label{eq:opti_What} \\
+\st \W^T \Rnn \W = \I_k.  \nonumber
+\end{gather}
+%
+It can be shown that the solution $\What$ to this problem can be found as the
+first $k$ generalised eigenvectors of $(\Rnn,\Rss)$, corresponding to the $k$
+largest eigenvalues \cite{Kokiopoulou2011}.
+
+
+
+
+
+\section{Context}
+
+The method described in this chapter finds linear combinations of input
+channels that maximise the signal-to-noise ratios in the output channels. For
+brevity, we will call this method \textbf{LSM}, for Linear Signal-to-noise
+Maximisation.\footnotemark{} This section shortly explores the wider context
+of this alogrithm.
+
+\footnotetext{Algorithmically, there is nothing more to LSM than calculating
+a generalised eigenvalue decomposition, just as algorithmically, there is
+nothing more to principal component analysis (PCA) than calculating an
+ordinary eigenvalue decomposition. Why invent new names then? LSM and PCA are
+little `wrapper' frameworks around the eigenvalue decompositions to usefully
+interprete and reason about these operations when applied to actual data
+problems (see the exposition in \cref{sec:GEVD_overview,sec:GEVD_SNR}).}
+
+
+
+\subsection{Similarity to PCA}
+
+Throughout this chapter, you may have noticed the strong similarities between
+LSM and principal component analysis (PCA). Both are linear dimensionality
+reduction methods (number of output channels $k$ < number of input channels
+$C$). PCA is based on the ordinary eigenvalue decomposition (EVD) of the data
+covariance matrix; LSM is based on the generalised eigenvalue decomposition
+(GEVD) of the signal and noise data covariance matrices. Both methods
+maximise a sum of output variances under an orthogonality constraint. And
+just as PCA can also be computed using a singular value decomposition (SVD)
+of the data matrix (without making a detour via the data covariance matrix),
+LSM can also be calculated using a generalised singular value decomposition
+(GSVD) of the signal and noise data matrices \cite{Howland2004}.
+
+The difference between LSM (GEVD) and PCA (EVD), is that the latter is an
+unsupervised algorithm, while the former is a supervised algorithm (i.e. you
+need to divide your training data into `signal' and `noise' samples). For a
+useful overview of different supervised, unsupervised and semi-supervised
+dimensionality reduction methods, see \cite{Kokiopoulou2011}.\footnotemark{}
+Of particular relevance to this chapter is their section on linear
+discriminant analysis (LDA), which leads to the exact same optimisation
+problem as \cref{eq:argmax_R} and \cref{eq:opti_What} (but for matrices
+$\Rnn$ and $\Rss$ that have a slightly different interpretation).
+
+\footnotetext{This paper ties together many linear and quasi-linear
+dimensionality reduction methods. It shows how these methods relate to each
+other in a unifying framework, that is based around trace optimisation
+problems and (generalised) eigenvalue decompositions. Some of the methods
+discussed are PCA, linear discriminant analysis (LDA), locally linear
+embedding (LLE), Laplacean eigenmaps, multidimensional scaling (MDS),
+spectral clustering, and kernel methods.}
+
+
+
+\subsection{Other applications}
+
+The generalised eigenvalue decomposition (GEVD) has found many applications.
+Examples include blind source separation and beamforming
+\cite{Tome2006,Warsitz2007}, speech enhancement \cite{Doclo2002}, linear
+classification (via LDA, as described above), vibration analysis
+\cite{Zhou2007} and analysis of magneto-encephalography (MEG)
+\cite{Sekihara1999}, electro-encephalography (EEG) \cite{Blankertz2008} and
+magnetic resonance imaging (MRI) \cite{Zhang2015} data.
+
+
+
+\subsection{Distributed computation}
+
+Modern neural probes support both large electrode counts and high sampling
+frequencies \cite{Jun2017}, and may be used in real-time applications. The
+signal processing algorithm used needs to process this large data stream fast
+enough to meet the real-time requirements.
+
+An advantage of using a signal processing algorithm based on an (adaptive)
+ordinary or generalised eigenvalue decomposition, is that these
+decompositions can be estimated in a distributed way
+(\cite{Bertrand2014,Bertrand2015}). This allows a network of distributed,
+embedded electronic circuits to process the neural probe data chunk-wise,
+which may enable faster total processing, and thus larger electrode counts
+and sampling frequencies, than possible with an algorithm that only works on
+centralized data from all channels.
+
+
+
+
+\section{Summary}
+
+We have establised that we can find the weight vector (the linear combination
+of input channels) that yields an output signal with a maximal
+signal-to-noise variance ratio as the first generalised eigenvector $\w_1$
+of the ordered covariance matrix pair $(\Rss,\Rnn)$, with $\Rss$ and $\Rnn$
+the covariance matrices of signal and noise training data.
+
+As a generalisation, we can also calculate a set of $k$ weight vectors that
+maximise the sum of their respective output channel signal-to-noise variance
+ratios (where the noise segments of each output channel are uncorrelated).
+Analogously to the one output channel case, these weight vectors are found as
+the first $k$ generalised eigenvectors $(\Rss, \Rnn)$. We have given some
+insight in how these generalised eigenvectors are calculated, and into how
+this signal-to-noise maximisation method fits into the literature.

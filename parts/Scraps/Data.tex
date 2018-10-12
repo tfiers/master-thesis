@@ -1,0 +1,27 @@
+
+\section{Data characterisation}
+
+
+All experiments in this chapter were carried out on a dataset previously obtained by \emph{Michon et al.} \cite{Michon2016}. It consists of a 34-minutes long recording of the extracellular electric potential in the hippocampus of a rat, made with a silicon-based multi-electrode probe.
+
+Specifically, we used data from the probe labelled ``L2'' in \cite{Michon2016}. \Cref{fig:brainzoom} shows the layout of the electrodes on this probe, and the approximate location of the probe with respect to the different structures in the hippocampus. The probe has 16 electrodes, 8 of which are placed in a linear array (spaced \SI{50}{\micro\meter} apart), and 8 placed in a cluster (of $\SI{100}{\micro\metre} \cross \SI{40}{\micro\metre}$, with an inter-electrode distance of $\approx \SI{25}{\micro\metre}$). The electrodes cover a total depth of \SI{500}{\micro\meter}. Note that the 
+% Reference electrode where?
+
+The recording was made while the rat was at rest. This makes it likely that  sharp wave-ripples are observed in area CA1 \cite{Buzsaki2015}. 
+
+
+
+
+
+\begin{figure}
+\img[1.3]{exp/brainzoom}
+\captionn{Composite diagram of recording location}{Cartoon in the top left corner shows the location of the hippocampus (magenta) in the rat brain. Green line indicates approximately where the bendable silicon probe from \cite{Michon2016} was inserted. Composite image (center) shows the relative location of the probe tip with respect to the different structures in the hippocampus. The background photograph is a histological slice of rat hippocampus from \cite{Kjonigsen2011}. Hippocampal regions (black text) and layers of region CA1 (grey text) are indicated to the left. Overlaid on the photograph are a possible CA1 pyramidal neuron (purple), and an axon (orange) leaving a neuron in CA3 to synapse onto the apical dendrites of the CA1 neuron. Also overlaid is a photograph of the ``L-style'' probe from \cite{Michon2016}. Gold squares are its 16 electrodes. Time series (right) show example voltage recordings from five of these electrodes (which are marked with a white dot). Arrows indicate three sharp wave-ripple events. Note the ripples in and around the pyramidal cell layer (``stratum pyramidale''). Note also the phase reversal of the sharp wave: from strongly negative in the stratum radiatum, to near zero power in the middle of the pyramidal cell layer, to positive in the stratum oriens. (Location of coronal slice: \SI{2.98}{\milli\metre} posterior to bregma. Slice stained for parvalbumin, which highlights interneuron somata and neurites. Anterior-posterior and medial-lateral location of the probe were estimated based on the location of probe ``L2'' given in \cite{Michon2016}. Depth of probe estimated from the characteristics of the time-series recorded from each electrode. CA1 pyramidal cell morphology from \cite{Amaral2007}).}
+\label{fig:brainzoom}
+\end{figure}
+
+
+\begin{figure}
+\img{exp/michon_photos}
+\captionn{Probe shank \& micro-drive array}{Reproduced from \cite{Michon2016}. Left: flexible, \SI{40}{\mm} long probe shank. Right: test subject implanted with so called `micro-drive array'. This is an electrode positioning device surgically attached to the rat's skull. The rat is anesthesised during surgery and is administered pain-killing drugs during the recovery period. The micro-drive array guides multiple electrodes into the brain (such as tetrodes, bendable probes, and reference or stimulation electrodes), and connects them to the recording and stimulation hardware. The depth of the inserted electrodes can be precisely adjusted. This device allows to make voltage recordings while the animal can move around (the so called ``freely behaving'' setup, which allows for more natural behaviour than immobilised recording setups).}
+\label{fig:michon_photos}
+\end{figure}

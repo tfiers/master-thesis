@@ -1,0 +1,59 @@
+
+\chapter{Experiments}
+
+
+\input{Data}
+
+\input{Manual}
+% Manual labelling of SWR's
+% - Comparison with SOTA (bandpass)
+% - inter-rater measure (kappa)
+%
+% - automatisch hogere score voor classifier als veel disagreement
+% - kappa is voor binary classification only though
+%   - maybe feed all candidate events to both algo's and humans.
+%   - somehow extract hard yes/no from algo's
+% - antwoord op Fabian's vraag: classifier lijkt op een van researchers, of
+%   lijkt op geen enkele
+
+\input{GEVD_practice}
+% Fixing GEVD
+% - sanity checks:
+%   - orhtogonaliteit (onder Rnn) van GEVecs ?
+%   - idem als matlab?
+%   - test-signaal
+% - hybrid
+%   - --"spectrale filter" als preprocessing. "puur spectraal" i.e.
+%     temporeel, bandpass filter. Met kleinere delay dan SOTA; maar wel
+%     achtegrondruis weghalen. Elk kanaal apart door deze temporele filter,
+%     die ripple én sharp-wave eruithaalt. I.e.: bandpass 3 - 200 Hz. Of
+%     apart voor SW en ripple--
+%   - ^Alex: om dominante achtergrondruis te verwijderen. Fabian: maar
+%     misschien is de sharp-wave juist het dominante
+%   - Alex: twee bronnen detecteren <=> minstens TWEE eigenvectoren. Deze dan
+%     combineren in een aparte classifier. Detectie SPW en R gebeurt nog
+%     steeds wel door GEVD!
+%   - (Ik: detecteer sharp waves met wavelets)
+%   - Ah, OK. Twee datasets (een R bandpass, andere SW bandpass). Dan twee
+%     GEVDs berekenen: een op 16-kanaal-R-bandpass-met-labels en een op
+%     16-kanaal-SW-bandpass-met-labels
+%   - Betere filters: low en high pass (50 Hz e.g.). Niet selectief, wel
+%     scheiden.
+%   - Er is wel 1/f. Dus misschien is die 1/f vóór de ripple te sterk? Nah,
+%     it's weaker as I've shown
+%   - (jaja, er is grote kans dat gamma - SPW, physiologisch een verschil is.
+%     Bonus als je dat data-driven kan vinden)
+
+% Compare classifiers
+% - focus on latency
+
+% sharp-wave AND ripple used?
+% - insert 150Hz oscillation in non-sharp wave data > check if correctly not
+%   detected
+% - (maybe also use that high-gamma lab-meeting prez)
+% - event 42 (61s) is clear SWR w/o ripple!
+
+% Execution time RNN
+% - numba
+
+% Grootte van het netwerk

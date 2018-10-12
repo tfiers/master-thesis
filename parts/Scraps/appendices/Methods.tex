@@ -1,0 +1,37 @@
+
+\chapter{Supplemental methods}
+
+
+The experiments, analyses, and visualisations in this thesis were produced using the Python programming language. A set of Jupyter Notebooks \cite{Kluyver2016} were used to organise experiments and to create figures interactively. Signal processing, detector evaluation, and visualisation code that was used in more than one experiment was consolidated into a custom Python package.
+
+Additionally, the following software packages were used:
+\begin{enumerate}
+\item fklab, or the Kloosterman Lab Data Analysis Tools, for importing electrophysiological Neuralynx data, for some basic plotting and signal processing components, and for inspiration on how to create a good custom Python package.
+\item NumPy \cite{Oliphant2006} for most numeric computations and array manipulations. NumPy used the Intel MKL library \cite{intel-alt} for optimised implementations of the \texttt{BLAS} and \texttt{LAPACK} linear algebra specifications, and of the fast Fourier transform.
+% todo: explain 'Neuralynx'
+\item Numba \cite{Lam2015} to compile some of my custom Python functions in their entirety to optimised machine code, via the LLVM compiler infrastructure.\cite{Lattner2004}
+\item PyTorch \cite{Paszke2017} for automatic differentiation, artificial neural network components, and tensor computations with GPU acceleration (via CUDA \cite{Nickolls2008}, Nvidia's parallel computing software interface).
+\item PyWavelets \cite{Lee2006} for discrete and continuous wavelet transforms.
+\item Scikit-learn \cite{scikit-learn} for various machine learning related tasks, including kernel density estimation, dimensionality reduction, and data preprocessing (shifting and scaling).
+\item SciPy \cite{Jones2001} for implementations of various signal processing algorithms, such as the GEVD, the analytical signal for envelope calculation (via the Hilbert transform), and a host of linear filter design and analysis methods.
+\item Matplotlib \cite{Hunter2007} for visualising data.
+\end{enumerate}
+
+% todo: open-source code
+
+\section{Kernel density estimation}
+\label{sec:kde-kernels}
+
+Distribution plots in this thesis (e.g \cref{fig:grpdelay-dist}) use an exponential kernel for their density estimates. Its shape $K(x,h)$ for a given bandwidth $h$ is defined as:
+\[
+K(x,h) \propto \exp(-\frac{\abs{x}}{h}),
+\]
+where $x$ is the one-dimensional position relative to the data point around which the kernel is calculated. See also \cref{fig:kde-kernels}.
+
+\begin{figure}
+\includegraphics[width=0.7\textwidth]{kde_kernels}
+\caption
+{ \emph{Reproduced from the Scikit-learn documentation.\protect\footnotemark} Different smoothing kernels used in density estimation. We found the exponential kernel to perform best at representing data distributions truthfully while introducing minimal artifacts. }
+\label{fig:kde-kernels}
+\end{figure}
+\footnotetext{http://scikit-learn.org/stable/modules/density.html\#kernel-density-estimation}

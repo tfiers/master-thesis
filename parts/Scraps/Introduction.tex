@@ -1,0 +1,173 @@
+
+\chapter{Introduction}
+
+
+This thesis discusses the problem of real-time sharp wave-ripple (SWR)
+detection.
+
+The first three chapters unpack this sentence. What are sharp wave-ripples?
+Why do we care about them, and why would we want to detect them in real-time?
+And finally, what are the solved and outstanding engineering problems of
+real-time SWR detection?
+
+
+
+% We first give an overview of why we did the work described in this thesis. The subsequent paragraphs explain this in a bit more detail; including one paragraph on possible applications. Next, we describe prior work done on this topic. Finally, we lay out how this thesis is structured.
+
+
+% \section{Why this work}
+
+% \subsection{Overview}
+
+% % Actually also focus on general BCI applicability (at least in abstract)
+
+% The brain is a vast, uncharted territory when it comes to mechanistic understanding. % Neuroscience ventured unusually deep when it discovered 
+% The discovery of \emph{place cells} (see below) has been unusually
+% satisfactory in this regard. We now know how mammalian brains represent thir
+% location in space, where the neurons that do this are located exactly, and
+% how the firing rates of these neurons should be interpreted to calculate
+% where the animal is in the environment.
+
+% % Cool 'uncharted territory' picture:
+% % http://static1.uk.businessinsider.com/image/5979f5039d09184e5a538b4d/legendary-investor-byron-wien-says-the-stock-market-is-entering-uncharted-territory.jpg
+
+
+% These are neurons whose firing rate encodes the position of  of the anima
+
+% % which neurons
+
+% (see further, \cref{sec:place-cells})
+
+
+% \subsection{Probing the brain}
+
+% There is a glaring gap in our understanding of the nervous system. We have a
+% passable understanding at the circuit level of the first few stages of
+% sensory processing, and analogously of the last few stages before muscle and
+% gland control. Our understanding of what happens in between those extremes however, is very unsatisfactory.
+
+% The working model of the brain 
+% - A few, non connected pathways from the senses. Few recurrence.
+% - Higher order processing, joint, recurrence
+% - [Output]
+
+% \includegraphics[width=\textwidth]{intro/nervous-system-sketch}
+
+% \begin{figure}
+% % \includegraphics[width=\textwidth]{example-image-A}
+% \includegraphics[width=\textwidth]{intro/nervous-system-sketch}
+% \caption{A naive high level view of the nervous system.
+% Some notable features: 1) Although there is a high level of recurrence, not every neuron is connected to every other neuron. 2) The different coloured neurons indicate that not all neurons have the same transfer function and dynamics.}
+% \end{figure}
+
+% This, at least, is my understanding of the state of neuroscience after my brief
+
+% Why do I say this? 
+% - Purves \& Kandel chapters
+%     Organise them according to content (count synapses!! Shortest path!!):
+%     - Input \& Output
+%     - Higher level (psychiatry, MRI)
+%     - Non-specific (synapses, cells, genes)
+% - Course 'neural computation' and 'neural systems \& circuits
+% - Free reading, and seminars at NERF.
+
+% % Replay is one of the few 
+
+% \acrfull{swr}
+
+% \begin{figure}
+%     \begin{subfigure}{0.6\textwidth}
+%         \caption{Information flow through a closed-loop neurostimulation system}
+%         \label{fig:Closed_loop_system}
+%         % \includegraphics[width=\textwidth]{Closed_loop_system}
+%         \includegraphics[width=\textwidth]{example-image-A}
+%     \end{subfigure}
+%     \begin{subfigure}{0.6\textwidth}
+%     	\caption{Signals at different stages of the closed loop, and the latencies between them.}
+%         \includegraphics[width=\textwidth]{example-image-B}
+%     \end{subfigure}
+%     \caption
+%     { \subref{fig:Closed_loop_system} Simplified data path through a general closed-loop neurostimulation system. The ``stimulating electrode'' may also be an optical fiber, when optogenetic rather than electrical disruption of neural activity is performed. ALU: Arithmetic Logic Unit.}
+%     \label{fig:latency}
+% \end{figure}
+
+% % ALU: A combinatorial digital electronic circuit that performs operations like addition and comparison on its inputs. Strictly speaking only for integer inputs, but here taken to also operate on floating point numbers.
+
+
+% \subsection{Hippocampal systems neuroscience}
+
+% \emph{Systems neuroscience} is the study of biological brains at the level of circuits formed by multiple neurons. This is a coarser level than the individual proteins and neurotransmitters studied by molecular biologists, and a more detailed level than fMRI\footnotemark[1] or EEG\footnotemark[2] studies, where each voxel or each electrode represents the entangled activity of many thousands of neurons \cite{Frahm1993,Kreczmanski2007,Collins2016}. Due do its systems approach, it is arguably the most `engineering-like' of all neuroscience-related disciplines. (Though see the papers ``Could a neuroscientist understand a microprocessor?''\cite{Jonas2017} and ``Can a biologist fix a radio?''\cite{Lazebnik2002} for a detailed reflection on the differences in approach between `classical' engineering disciplines, and systems neuroscience or systems biology).
+
+% \footnotetext[1]{Functional magnetic resonance imaging.} %todo
+% \footnotetext[2]{Electroencephalography. What is left of the vector sum of many thousands of neurons' electric field potentials, after they have been attenuated by the skull and scalp.}
+
+% Within systems neuroscience (but also in other disciplines of neuroscience), the \emph{hippocampus} is perhaps the most intensively studied brain region. The reasons for this are historically
+
+% its role in learning and memory \cite{HCB_function}, and its critical
+% involvement in common diseases such as Alzheimer's and epilepsy \cite{HCB_disease}.
+
+% Most 
+
+% Picture a rodent in a lab environment, placed in an open `arena' or in a simple "maze" (like in \cref{fig:lab-env}). This is most often the (sometimes implicitly) assumed setting in the field of systems-neuroscience hippocampus research. In the following sections, we will assume this setting.
+
+% % Also: Kandel (Nobel and _the_ book) mainly worked on memory
+
+
+% \subsection{Place cells}
+% \label{sec:place-cells}
+
+% \emph{Place cells} are neurons that fire at an increased rate when the ani a particular location in the environment.
+
+% \begin{figure}
+%     \begin{subfigure}{0.5\textwidth}
+%         \includegraphics[width=\textwidth]{example-image-A}
+%     \end{subfigure}
+%     \begin{subfigure}{0.5\textwidth}
+%         \includegraphics[width=\textwidth]{example-image-B}
+%     \end{subfigure}
+%     \caption
+%     { Rodents in experimental environments [photographs] }
+%     \label{fig:lab-env}
+% \end{figure}
+
+% \subsection{Replay}
+
+% \subsection{Sharp-wave ripples}
+
+% \subsection{Closed-loop SWR disruption}
+
+% \subsection{Relevance of the experimental setup}
+% % Generalisability
+
+% % Replay of other encoded data -- we just haven't decoded anything else besides place.
+
+% \subsection{Other applications}
+
+% \section{Prior work}
+
+% \section{Structure of this thesis}
+
+% A feedforward artificial neural network is a useful first order approximation for the sensory processing pipeline in biological brains. Each sensory experience corresponds to a distinct activation pattern of the network. A life episode of say a few seconds long is a concatenation of experiences, and corresponds to a sequence of such neural activation patterns (which we will call a sequence of `states'). Furthermore, as the raw sensory information advances further through the network, its representation becomes more compressed and abstract.
+
+% One of the areas at the end of this abstraction pipeline in human and other mammalian brains is the hippocampus. In-vivo multi-electrode recordings inside the brain allow us to determine the activation time series for sets of individual neurons. This type of neuroscientific research, mostly in freely behaving mice and rats, 
+
+% % Neuroscience labs around the world study the brain in health and in disease.
+% % An anatomical region of particular interest is the \emph{hippocampus}, for
+% % its role in learning and memory \cite{HCB_function}, and its critical
+% % involvement in common diseases such as Alzheimer's and epilepsy
+% % \cite{HCB_disease}.
+
+% \Cref{fig:experiment} outlines one type of experiment used to study the
+% hippocampus \cite{ego2010disruption,jadhav2012awake}.
+
+% \begin{figure}
+% \centering
+% \includegraphics[width=\textwidth]{example-image-a}
+% \caption
+% { The type of neuroscientific experiment that is made more rigorous by the
+%   work described in this paper.
+%   % Learning is disrupted in a model animal by injecting a
+%   % current pulse in the hippocampus on detection of a sharp-wave ripple event.
+% }
+% \label{fig:experiment}
+% \end{figure}

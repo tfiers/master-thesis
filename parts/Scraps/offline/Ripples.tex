@@ -1,0 +1,69 @@
+
+\section{Ripples}
+
+
+When SWR's are quantified for offline analysis in the literature, this is
+invariably done by detecting ripples. This section describes how this is done.
+
+
+
+\subsection{Band-pass filtering}
+
+The wide-band voltage signal is band-pass filtered through a linear time-invariant filter. The passband is taken to be a presumed `ripple band'. Some choices made in the literature for this band are listed in \cref{tab:bands}. The type and order of the filter are rarely mentioned in methods sections. For example, when \citefull{Dutta2018} mentions ``a 25 tap finite impulse response (FIR) filter'', this is already more information than other methods sections, which mostly mention nothing more than ``the signal was band-pass filtered between xx and yy \si{\hertz}''. (But note that even in \citefull{Dutta2018} the filter design method nor filter parameters such as stopband suppression or transition width are mentioned).
+
+\begin{table}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Source                     & Theta (Hz) & High gamma (Hz) & Ripple (Hz)  \\
+\midrule
+\citefull{Csicsvari2000}   &            &                 & 80 -- 250   \\
+\citefull{Behrens2005}     &            &                 & 40 -- 400   \\
+\citefull{OKeefe2007}      & 6 -- 12    & 30 -- 100       & 100 -- 200  \\
+\citefull{Ego-Stengel2009} &            &                 & 100 -- 400  \\
+\citefull{Buzsaki2015}     & 6 -- 10    & 100+            & 110 -- 200  \\
+\citefull{Colgin2016}      & 6 -- 12    & 60 -- 100       & 150 -- 200  \\
+\citefull{Sadowski2016}    &            &                 & 120 -- 250  \\
+\citefull{Eichenbaum2017}  & 4 -- 12    & 80 -- 140       & \\
+\citefull{Olafsdottir2018} & 6 -- 12    &                 & 140 -- 250  \\
+\midrule
+filter.py                  & 6 -- 12    & 60 -- 140       & 140 -- 225  \\
+L2 recording               & 5 -- 10    &                 & 100 -- 200  \\
+\bottomrule
+\end{tabular}
+\captionn{Frequency bands of hippocampal LFP events}{According to different sources. When the source does not make a distinction between high and low gamma, the full gamma range is given. Note that \citefull{Behrens2005} considered artificially induced SWR's in ex-vivo hippocampus slices. `filter.py' refers to the frequency bands used in the `fklab' data-analysis software used in the Kloosterman lab.}
+\label{tab:bands}
+\end{table}
+
+
+
+\subsection{Envelope estimation}
+
+Next, the envelope $y_{e,t}$ of the band-pass filtered signal $y_t$ is estimated. This is often done simply by rectification (i.e. $y_{e,t} = \abs{y_t}$). A disadvantage of this method is that every zero-crossing in $y_t$ becomes a `dip' to zero in $\abs{y_t}$, resulting in a very jagged envelope. This is often fixed heuristically by applying a smoothing filter to $\abs{y_t}$, such as an FIR filter with a Gaussian kernel.
+
+An alternative method, that yields naturally smooth envelopes for band-pass filtered signals, makes use of the `Hilbert transform' of $y_t$. This works as follows. The envelope $y_{e,t}$ (which is in this context often called the \emph{instantaneous amplitude}) is calculated as:
+%
+\begin{equation}
+\label{eq:Hilbert_envelope}
+y_{e,t} = \sqrt{y_t^2 + H(y_t)^2},
+\end{equation}
+%
+where $H(y_t)$ is the discrete Hilbert transform of $y_t$.\footnote{To be precise, $H$ is a discrete approximation to the continuous Hilbert transform $\mathcal{H}$. There are multiple ways to make a discrete approximation to $\mathcal{H}$ \cite{Oppenheim2009}. Most of them make use of the discrete Fourier transform, which makes computing $H$ an efficient operation.} This transform phase shifts the signal locally by \SI{90}{\deg} (see \cref{fig:Hilbert}).\footnotemark{} From \cref{eq:Hilbert_envelope}, it can be seen that if $y_t$ is locally approximated by a sinusoid $a \cos{\omega t}$, its envelope $y_{e,t}$ will be locally approximated by a constant function, which does not dip to zero: $\sqrt{(a \cos{\omega t})^2 + (a \sin{\omega t})^2} = \abs{a}$. It should be noted that the envelopes produced in this way are only really satisfactory for narrowband signals (which is the case for $y_t$), as can be seen for example in \cref{fig:Hilbert}.
+
+\footnotetext{To see why the Hilbert transform behaves like this, consider its definition and the shape of its impulse response. The Hilbert transform $\mathcal{H}$ of a continuous signal $x(t)$ convolves $x(t)$ with $h(t) = \frac{1}{t}$ (and scales the result by $1/\pi$). $h(t)$ has two lobes antisymmetric around the origin. They decay to zero towards $t = -\infty$ and $t = +\infty$, so the convolution takes in mostly local information from $x(t)$. The two lobes also have opposite sign: one going to $h = -\infty$ for zero lag, and the other going to $h = +\infty$. Therefore, when $x(t)$ is locally constant (as in the through or on the crest of a sinusoid), the two lobes of the convolution integrand will tend to cancel out, and the Hilbert transform will approach zero. Conversely, when a zero crossing occurs in $x(t)$, the two lobes will be of the same sign, resulting in a non-zero result.}
+
+\begin{figure}
+\img[0.6]{Hilbert_narrow.png}
+\img[0.6]{Hilbert_wide.png}
+\captionn{Envelope estimation using the Hilbert transform}{Blue traces: a \SI{190}{\milli\second}-long LFP segment containing two ripples. Band-pass filtered (left), and original wide-band signal (right). Orange traces: Hilbert transforms of corresponding blue traces. Note the \SI{90}{\deg} phase shift of the Hilbert-transformed signals. Green traces: envelope estimates of blue traces according to \cref{eq:Hilbert_envelope}.  Note that the envelope is only really satisfactory for the narrowband signal (left).}
+\label{fig:Hilbert}
+\end{figure}
+
+
+
+\subsection{Threshold crossing}
+
+Next, potential SWR events are inferred from this band-pass-envelope signal $y_{e,t}$. This is done by detecting threshold crossings in $y_{e,t}$, where the threshold height depends on basic statistics of the envelope. The most common threshold is $\mu + \alpha \sigma$, with $\mu$ and $\sigma$ the mean and standard deviation of $y_{e,t}$, respectively; and $\alpha$ a multiplier chosen by the experimenter.
+
+This multiplier varies wildly: from 1 \cite{Csicsvari2000}, over 3 \cite{Dutta2018}, 4 \cite{Behrens2005}, and 5 \cite{Sadowski2016}, up until 7 \cite{Nadasdy1999}. It is clear that such different thresholds will give very different sensitivity-precision trade-offs for SWR detection (the lower thresholds yielding more false positive detections, and the higher thresholds yielding more missed true SWR events). These $\alpha$ values are not straightforward to compare however. Suppose that the filtered signal $y_t$ consists of background `noise' in the passband, and superimposed ripples. There are many factors (such as recording equipment used, electrode location, and physiological activity) that will influence the mean and variance of the envelope of the passband noise itself, and with it the mean and variance of the combined signal envelope $y_{e,t}$. Additionally, the occurence rate of ripples and their relative strength will also influence both the mean and variance of $y_{e,t}$. It is thus clear that only reporting the $\alpha$ multiplier (as is done now) is not very meaningful, without also reporting the actual $\mu$ and $\sigma$ values (or better yet, making the raw signal data available in an online repository).
+
+

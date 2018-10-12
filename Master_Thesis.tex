@@ -1,0 +1,48 @@
+\documentclass[a4paper,oneside,11pt]{memoir}
+
+\input{totex/Settings}
+\input{totex/Commands}
+\input{Commands}
+
+\begin{document}
+
+\includepart{Frontmatter}
+
+\chapterp{9p}{Introduction -- 9 Nov}
+    \sectionp{1p}{Closed-loop brain-computer interfaces}
+    \sectionp{6p}{Sharp wave-ripples}
+        \subsectionp{2p}{Description}
+        \subsectionp{2p}{Scientific importance}
+        \subsectionp{1p}{Biophysics}
+        \subsectionp{1p}{Closed-loop technology}
+    \sectionp{1p}{Problem statement}
+    \sectionp{1p}{Thesis overview}
+
+\chapterp{10p}{Single-channel linear filtering -- 19 Oct}
+    \sectionp{3p}{Offline labelling of SWR segments}\label{sec:offline}
+    \sectionp{3p}{State of the art online SWR detectors}\label{sec:SOTA}
+    \sectionp{4p}{Quantifying \& comparing detectors}
+
+\includepart{Multichannel-Linear-Filtering}
+
+\chapterp{9p}{Nonlinear signal detection -- 2 Nov}\label{ch:RNN}
+    \sectionp{2p}{Recurrent neural networks}
+    \sectionp{3p}{Optimization}\label{sec:RNN-optim}
+    \sectionp{2p}{Regularization}\label{sec:RNN-regularization}
+    \sectionp{1p}{Channels}
+    \sectionp{1p}{Network size}
+
+\chapterp{4p}{Discussion -- 16 Nov}
+    \sectionp{2p}{Comparing detectors}
+    \sectionp{2p}{Further work}
+
+\chapterp{1p}{Conclusions -- 30 Nov}
+
+% \includepart{Scraps}
+
+\References
+
+\includepart{Appendices}
+
+\end{document}
+% [44p] Total

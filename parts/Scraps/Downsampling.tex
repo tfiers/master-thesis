@@ -1,0 +1,16 @@
+
+\section{Downsampling}
+
+The analysed data was recorded at 32 kHz. For faster processing, the data was downsampled. The Nyquist frequency after downsampling needs to be sufficiently high for sharp-wave ripple detection.\footnotemark{} As ripples have a frequency of up to 250 Hz (\cref{tab:bands}), the new sampling frequency needs to be larger than 500 Hz. I chose a new sampling frequency of 1000 Hz. This allows integer subsampling of the original data, by a factor 32.
+
+\footnotetext{The Nyquist frequency is the maximum discernible frequency in a digital signal, equal to half the sampling frequency.}
+
+To counter aliasing, the 32 kHz data was low-pass filtered before subsampling.\footnotemark{} The cutoff frequency was chosen to be 80\% of the new Nyquist frequency (i.e. at 400 Hz for a new sampling frequency of 1000 Hz). The digital filter was applied both in forwards and backwards directions over the signal, to cancel out distortions due to filter delays that vary per frequency component. The filter type and parameters were chosen to yield both low processing time and low-distortion, high quality filtering, as was verified visually (see for example \cref{fig:downsample}).
+
+\footnotetext{A type I Chebyshev filter was used, which is an infinite impulse response filter, with relatively steep roll-off. The filter was of order 8 and had a passband ripple of 0.05 dB. For this filter, the cutoff frequency is defined to be where the gain starts dropping below the passband ripple.}
+
+\begin{figure}
+\img[1]{downsample}
+\captionn{Downsampling the data}{Blue: the recorded data at 32 kHz. Orange: the same data, after downsampling to 1000 Hz. The arrow indicates a possible neural spike, removed by the anti-aliasing filter.}
+\label{fig:downsample}
+\end{figure}

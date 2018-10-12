@@ -1,0 +1,33 @@
+
+\chapter{Clustering}
+
+
+\citefull{Nguyen2009} analyse how the frequency characteristics of hippocampal ripple events change over the duration of the ripple. They derive the following signals from the electric potential recording (\cref{fig:Nguyen_traces,fig:Nguyen_avg}): the ripple band instantaneous amplitude (`AMP'), the multi-unit activity (`MUA'), the instantaneous frequency (`iFreq'), and the time derivative of this instantaneous frequency (the ``Frequency Modulation'' signal, `FM'). Per detected ripple event, they calculate two main features: ripple frequency and ripple FM. These are computed as the mean of the iFreq and the FM signals respectively, over a $\pm 10$ ms window around the ripple center, which they define as the largest positive peak of the ripple oscillation.
+
+In the resulting ripple FM -- Freq scatter plot (\cref{fig:Nguyen_scatter}), the ripples are spread out in a continuum; no clusters are apparent. They go on to partition the ripples according to four quadrants in this scatter plot: negative FM vs positive FM (decreasing vs increasing frequency) and frequency below vs above 150 Hz. One thing of note is that higher frequency ripples correlate with larger multi-unit activity.
+
+\begin{figure}
+    \begin{subfigure}{0.6\textwidth}
+        \caption{}
+        \label{fig:Nguyen_scatter}
+        \includegraphics[width=\textwidth]{Nguyen_scatter}
+    \end{subfigure}
+    \begin{subfigure}{0.65\textwidth}
+        \caption{}
+        \label{fig:Nguyen_avg}
+        \includegraphics[width=\textwidth]{Nguyen_avg}
+    \end{subfigure}
+    \begin{subfigure}{0.8\textwidth}
+        \caption{}
+        \label{fig:Nguyen_traces}
+        \includegraphics[width=\textwidth]{Nguyen_traces}
+    \end{subfigure}
+    \caption
+    { Reproduced from \citefull{Nguyen2009}\protect\footnotemark.
+    \subref{fig:Nguyen_scatter} Ripple frequency vs `ripple FM' (change in frequency) for all detected ripples, partitioned in four quadrants.
+    \subref{fig:Nguyen_avg} Feature waveforms, averaged over all ripples of a quadrant. Ripples were centered around their largest positive ripple peak.
+    \subref{fig:Nguyen_traces} Ripple examples for each quadrant. Traces from top to bottom: LFP, ripple band, multi-unit activity, instantaneous frequency, and `FM' (time derivative of instantaneous frequency) with a horizontal zero line.
+    }
+    \label{fig:Nguyen}
+\end{figure}
+\footnotetext{Article subject to a license agreement permitting unrestricted reproduction.}

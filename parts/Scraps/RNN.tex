@@ -1,0 +1,177 @@
+\documentclass[Master_Thesis.tex]{subfiles}
+
+\begin{document}
+
+% See new 'standalone' RNNs chapter below
+
+%____________________________________________________________________________
+
+% \chapter{RNN-based detectors}
+% \label{sec:RNN}
+
+% \acrfull{rnn}
+
+% \section{Model choice}
+
+% When you implement an RNN-based sharp-wave ripple detector, you have to make a great many choices. This section systematically discusses these choices. Specifically, we define all choices and explain which options are available for them; we investigate their influence on detection latency and accuracy; and finally, we report which settings yielded the best performance in our experiments.
+
+% \subsection{Base model}
+% \subsection{Model types}
+% Recurrent neural networks are related to both other artificial neural network types, and other dynamic systems
+
+
+% such as the standard feedforward neural network (FFNN, or just NN or ANN. Also known as a multilayer perceptron or an MLP\footnotemark) or the convolutional neural network.
+
+% \subsection{Model size}
+% \subsection{Electrodes}
+% \subsection{Training data}
+% \subsection{Objective function}
+% \subsection{Optimisation algorithm}
+% % Dynamical backpropagation AKA sensitivity model (Suykens) ?
+% \subsection{Regularisation}
+
+
+% \section{Model interpretation}
+
+
+% \section{Practical use}
+% \subsection{Data labelling}
+% \subsection{Model fitting}
+% \subsection{Stability over time}
+% \subsection{Transfering models between animals}
+
+
+% \section{Conclusions}
+
+%____________________________________________________________________________
+
+
+
+
+\section{Summary}
+\label{sec:summary}
+
+A recurrent neural network (RNN) is a nonlinear dynamical system. It maintains an internal state vector, $\h$, which is updated at each discrete time step $t$ as:
+\footnote{We consider only discrete-time systems, as \swr{} detection is mostly performed in the digital domain. (Though see \cite{Ego-Stengel2009} for an all-analog closed-loop \swr{} detection system).}
+\[
+\h_t = f(\h\prev, \x_t).
+\]
+$\x_t$ is the current input sample. In the case of hippocampal \swr{} detection, $\x$ is the sequence of local electric field potential measurements. $f$ is a nonlinear function, parametrised by the coefficients of several affine transformations (see \cref{sec:GRU_eqs} for the complete update equations). The state vector $\h$ allows the RNN to maintain an efficient and task-relevant memory of past input samples \cite{LeCun2015}.\footnotemark{} An RNN can optionally emit an output time series $\yhat$, with $\yhat_t = g(\h_t)$, where $g$ is again a parametrised nonlinear function.
+% todo: define affine
+
+\footnotetext{The vector $\h$ is also called the `hidden state', and its entries are sometimes called `hidden units', `neurons', or `memory cells'.}
+
+By tuning the coefficients of the affine transformations in $f$ and $g$ in an offline training phase, we can change the behaviour of the RNN so that its output $\hat{y}$ for a given input signal $\x$ approaches a desired output $y$. (See \cref{sec:optimisation} for a description of this training phase, which involves the so called 'backpropagation through time' method). In the case of \swr{} detection, we can design a training signal $y$ that is $1$ during (and slightly before) \swr{} events in $\x$, and $0$ otherwise. If we avoid overfitting to the training data, we can use the trained RNN to detect \swrs{} in unseen signals $\x$. This is, in short, the proposed new method of \swr{} detection.
+
+% [map subsections] ?
+\clearpage
+
+
+\section{Recent applications}
+\label{sec:recent}
+
+Recurrent neural networks have advanced the state-of-the-art in many sequence and time-series processing tasks \cite{Greff2017}. Examples include speech and language modelling \cite{LeCun2015,Goodfellow2016}; protein structure prediction \cite{Sonderby2014}; and diagnosis prediction from intensive care unit time series \cite{Lipton2015}.
+
+For the reader with an interest in neuroscience, it might be of note that RNNs have recently been used in computational studies in various neuroscience subfields. Examples include \cite{Cueva2018} and \cite{Banino2018}, where an RNN was trained on a navigational task, after which the entries of $\h$ exhibited grid-cell-like\footnotemark{} activation patterns; \cite{Song2017}, who combined reinforcement learning theory with RNNs to model reward seeking and value-based computations; \cite{Li2017}, where RNNs were used to quantify and classify behaviour of the \emph{C. Elegans} model organism; and \cite{Guclu2017}, who modelled the fMRI hemodynamic response using an RNN. For an overview of artifical neural networks in general as models in neuroscience, see \cite{Kriegeskorte2015}.
+
+\footnotetext{A grid cell is a neuron whose firing pattern tesselates 2D space in a hexagonal grid. That is, when a lab animal is allowed to explore a given space while the locations where such a cell activates are recorded, the resulting firing map will form a hexagonal pattern that spans the entire space \cite{Hafting2005,Rowland2016}. Grid cells are closely related to place cells (which are the main target of \swr{} disruption): the firing field of a place cell is a linear combination of the firing fields of several grid cells, each with different tile size, tile spacing, and grid orientation. This reminds strongly of the mathematical concept of basis functions, particularly Fourier analysis \cite{Solstad2006}.}
+
+
+
+
+\section{Development of the RNN}
+\label{sec:development}
+
+Recurrent neural networks go as far back as the `cyclic nets' of McCulloch \& Pitts \cite{McCulloch1943}. The classical RNN, also called the Elman RNN \cite{Elman1988}, is formulated as follows:
+\begin{align}
+\h_t     &=  S_h( \W_{hh} \h\prev 
+	       			+ \W_{xh} \x_t + \bias_h)   \label{eq:RNN_h} \\
+\yhatv_t &=  S_y( \W_{hy} \h_t + \bias_y),      \label{eq:RNN_y}
+\end{align}
+where $S_h$ is a nonlinear `squashing' function, most often either the hyperbolic tangent $\tanh$, or the logistic sigmoid $\sigma(x) = 1 / (1 + \exp(-x))$. $\sigma$ compresses the real number line to $[0, 1]$, while $\tanh(x) = 2\ \sigma(x) - 1$ maps it to $[-1, 1]$. $S_y$ may be of the same type as $S_h$, or it may simply be the identity function when unrestricted output values are desired. $S_h$ and $S_y$ are applied point-wise, i.e. separately to each element of their argument vector.
+
+The coefficients in the matrices $\W_\_$ and the vectors $\bias_\_$ are called the ``weights'' and ``biases'', respectively.\footnote{Often collectively referred to simply as the weights.} They define the dynamical behaviour of the RNN in response to an input signal $\x$. The RNN of \cref{eq:RNN_h,eq:RNN_y} is quite similar to both linear dynamical systems (also known as linear state space models), and standard feedforward artificial neural networks. % This is shown briefly in \cref{sec:comparison}.
+
+The major improvement that made RNNs the expressive sequence modelling tools they are today, was the addition of so called 'gating units' in the 1990's. These are vectors of the same dimension as $\h$ and with each element $\in [0, 1]$, that are used multiplicatively in the update calculation for $\h_t$. Like $\h$ itself, they are parametrised (and therefore learnable) functions of $\h\prev$ and $\x_t$. Examples are $\update$ and $\reset$ from \cref{sec:GRU_eqs}. They allow the RNN to learn long-term dependencies \cite{LeCun2015}.
+
+The first RNN architecture to use these gating units, is the so called ``Long Short-Term Memory'', or LSTM for short \cite{Hochreiter1997}. The LSTM is also the most widely used RNN architecture: nearly all of the studies mentioned in \cref{sec:recent} use it. For the \swr{} detection algorithm, we use a variant of the LSTM, called the gated recurrent unit, or GRU \cite{Cho2014}. The GRU is simpler than the LSTM, while achieving comparable performance \cite{Chung2014}.
+
+
+
+
+\section{Update equations}
+\label{sec:GRU_eqs}
+
+This section formulates the RNN algorithm as used in the online detection phase. As laid out in \cref{sec:summary}, at each disrete time step $t$ the algorithm emits an output value $\yhat_t \in [0, 1]$ and updates its $N$-dimensional internal state vector $\h_t \in [-1, 1]^{N}$. The hidden state $\h_t$ is updated using only the previous hidden state $\h\prev$, and the current input sample $\x_t \in \reals^{M}$. ($M = 1$ when only one electrode is used).
+
+Concretely, these updates are carried out as follows:
+\begin{align}
+\yhat_t  &= \sigma( \vb{w}_{hy}\trans \h_t + b_y )           \label{eq:out}\\
+\h_t     &= \update \had \h\prev + (1-\update) \had \hcand,  \label{eq:hnew}
+\end{align}
+with
+\begin{align}
+\hcand  &= \tanh( \reset \had \W_{hh} \h\prev 
+				   + \W_{xh} \x_t + \bias_h ),  \label{eq:hcand}\\
+\update &= \sigma( \W_{hz} \h\prev 
+				   + \W_{xz} \x_t + \bias_z),   \label{eq:update}\\
+\reset  &= \sigma( \W_{hr} \h\prev 
+				   + \W_{xr} \x_t + \bias_r ).  \label{eq:reset}
+\end{align}
+$\sigma$ and $\tanh$ are defined as in \cref{sec:development}, and ``$\had$'' denotes point-wise multiplication.
+
+Each element of the hidden state $\h_t$ is thus a weighted average of its existing value, in $\h\prev$, and a candidate new value, in $\hcand$. The weighting, in $\update$, depends on both the current input $\x_t$, and the full previous hidden state $\h\prev$.
+
+Similarly, each element of the candidate new hidden state $\hcand$ is a function of both the current input $\x_t$, and all elements of the previous hidden state $\h\prev$. A so called ``reset'' multiplier, in $\reset$, determines how much the existing memory values in $\h\prev$ influence the candidate new memory value, compared to the influence of the current input $\x_t$. (When an element of $\reset$ is $0$, the corresponding hidden unit in $\hcand$ is only a function of the current input, and is thus decoupled from its past. The hidden unit in $\h_t$ can therefore be `reset').
+
+The coefficients in the matrices $\W_\_$ and in the vectors $\bias_\_$ are parameters of the algorithm.\footnotemark{} These are determined a priori (before online \swr{} detection), via an optimisation procedure described in \cref{sec:optimisation}. We provide a set of pre-optimised coefficients (available at [url]). These coefficients were used for the \swr{} detection results described in this paper, i.e. they yield good performance, are robust, and are broadly applicable. % todo: url
+\footnotetext{The vector $\vb{w}_{hy}$ and the scalar $b_y$ are also part of the weights and biases. They may be regarded as a one-row matrix and a one-dimensional vector, respectively.}
+
+The above equations \labelcref{eq:out} to \labelcref{eq:reset} for the GRU RNN define a so called one-layer network.\footnotemark{} An RNN with $L$ layers has $L$ corresponding hidden unit vectors $\h^{(1)}, \h^{(2)}, \tdots, \h^{(L)}$, that may each have a different dimension. The update functions for these hidden unit vectors can be formulated as follows. If $f^{(1)}(\h^{(1)}\prev, \x_t)$ is the function defined by \cref{eq:update,eq:hcand,eq:reset,eq:hnew}, we can define similar functions $f^{(2)}(\h^{(2)}\prev, \h^{(1)}_t), \  f^{(3)}(\h^{(3)}\prev, \h^{(2)}_t)$, and so forth. These functions all have the same form, but do not share weights and biases (i.e. each layer has separately learnable weights and biases). The output is then: $\yhat_t = \sigma( \vb{w}_{hy}\trans \h^{(L)}_t + b_y )$.
+
+\footnotetext{That is, one layer per timestep. A recurrent neural network can be regarded as a very deep feedforward neural network in which all the layers share the same weights.}
+
+
+
+\section{Optimisation procedure}
+\label{sec:optimisation}
+
+[..]
+
+
+% \section{Geometric interpretation}
+% \label{sec:geom}
+
+% A geometric interpretation of \cref{eq:out,eq:hnew,eq:update,eq:hcand,eq:reset} follows. Suppose that there are $n_h$ hidden units, and $n_x$ input values per time step.
+
+
+% \section{Comparison to other models}
+% \label{sec:comparison}
+
+% [..]
+
+% RNNs are similar to linear state space models. We first compare the `vanilla' RNN (also called the Elman RNN) to the linear state space model (SSM), as here the similarity is most striking.
+
+% A linear, multi-input multi-output (``MIMO'') state space model is described as follows:\footnotemark
+% \begin{align}
+% \h\next  &=  \W_{hh} \h_t + \W_{xh} \x_t  \label{eq:SSM_state}\\
+% \yv     &=  \W_{hy} \h_t + \W_{xy} \x_t,  \label{eq:SSM_observe}
+% \end{align}
+% whereas a MIMO Elman RNN, with feedthrough of the input to the output, is defined as:
+
+% The difference is thus that the RNN applies a nonlinear function in its state update rule. This allows the state vector to exhibit a broader range of behaviours than the stereotyped and well-studied state space trajectories of linear models. See \nameref{sec:geom} also for the advantage of nonlinear transformations for pattern recognition.
+
+% $\tanh$ is a common nonlinearity that has been found to work well, but other differentiable non-linear functions may also be used.
+
+% One minor difference between the GRU equations (\cref{eq:out,eq:hnew,eq:update,eq:hcand,eq:reset}) and the linear SSM and Elman RNN equations (\cref{eq:SSM_state,eq:SSM_observe,eq:RNN_h,eq:RNN_y}), is that the GRU RNN uses the \emph{current} input $\x_t$ to compute its new hidden state $\h_t$, whereas the linear SSM and the Elman models use the previous input for this (this can be seen by substituting $t-1$ for $t$ in \cref{eq:SSM_state,eq:SSM_observe,eq:RNN_h,eq:RNN_y}). Another difference is that in \cref{eq:out}, the output $\yhat_t$ is constrained between $0$ and $1$, while it is unconstrained in \cref{eq:SSM_observe} and \cref{eq:RNN_y}. We chose to constrain $\yhat_t$, for ease of training (see [..]), and for meaningful detection thresholds for experimenters (see [..]).
+
+% \footnotetext{We have written the linear state space model using the same notation as in \cref{eq:out,eq:hnew,eq:update,eq:hcand,eq:reset}, which parallels the neural network literature \cite{LeCun2015,Goodfellow2016,Graves2012}, and to some extent the probabilistic modelling literature \cite{Barber2016,Bishop2006}. It is also customary in signal processing to call the input signal $\x$ \cite{Oppenheim2009}. In the linear dynamical systems literature however, $\x$ is reserved for the state vector (which we write as $\h$). The input to the system is denoted by $\vb{u}$ (which we write as $\x$). The coefficient matrixes are denoted by $A, B, C$ and $D$ (for $\W_{hh}, \W_{xh}, \W_{hy}$ and $\W_{xy}$, respectively) \cite{Ljung1999,Overschee2012}.}
+
+% For an extended discussion of the relations between recurrent neural networks and linear state space models, see \cite{Suykens1996}, specifically Chapter 5. In this book, linear dynamical systems, Kalman filters, recurrent neural networks, digital filters, and optimal control and stability theory are unified in one framework, the so called ``$NL_q$ theory''.
+
+% % The Elman RNN is the recurrent version of a standard feedforward artificial neural network\footnotemark{}:  
+% % \footnotetext{Also called multi-layer perceptrons (MLP's).}
+% Note that RNNs only use the current input sample in each time step. This is in contrast with linear FIR and IIR filters, convolutional neural networks, and standard feedforward artifical neural networks, which use a sequence of $N$ past input samples to calculate an output value.
+
+
+\end{document}

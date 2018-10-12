@@ -1,0 +1,88 @@
+\sectionp{2p}{Linear signal-to-noise maximisation}\label{sec:GEVD-optim}
+
+In this chapter, we search for a linear combination of channels that yields an output signal $o_t$ useful for sharp wave-ripple detection. More precisely, we search for a vector $\w \in \reals^c$ in channel (or electrode) space to project the samples $\z_t \in \reals^c$ on, so that the output signal
+%
+\begin{equation}
+\label{eq:linear}
+o_t = \w^T \z_t
+\end{equation}
+%
+has high variance (or power) during SWR events, and low variance outside them. This principle is illustrated with a two-dimensional toy dataset in \cref{fig:GEVec_principle}. We can then detect SWR events using threshold crossings of the envelope of $o_t$, as discussed in \cref{sec:SOTA}.
+
+\begin{figure}
+\img[0.6]{Principle_scatter}
+\img[0.6]{Principle_strips}
+\captionn{Linear signal-to-noise maximisation}{Toy example to illustrate the generalized eigenvector approach to signal detection. \Left: multi-channel time-series data plotted in `phase space' (meaning without time axis), with blue dots representing samples where the signal was present, and orange dots representing samples where it was not. Actually toy data drawn from two 2-dimensional Gaussian distributions with different covariance matrices. Red vector: first eigenvector of the signal covariance matrix (also known as the first principal component). Green vector: first generalized eigenvector of the signal and noise covariance matrices. \Right: Projection of both data sets on both the ordinary eigenvector (``PCA'') and the generalized eigenvector (``GEVD''). The ratio of the projected signal data variance versus the projected noise data variance is maximised for the GEVD case.}
+\label{fig:GEVec_principle}
+\end{figure}
+
+The remainder of this section describes how the vector $\w$ can be found.
+
+
+
+\subsection{The optimization problem}
+
+Suppose all training samples $\z\train_t$ are gathered and divided over two data matrices $\Sm \in \reals^{c \cross n_S}$ and $\Nm \in \reals^{c \cross n_N}$, where $\Sm$ (for `signal') contains all $n_S$ samples of $\z\train_t$ where an SWR is present, and $\Nm$ (for `noise') contains all $n_N$ other samples. (These matrices can be easily constructed by concatenating all segments in $\z\train_t$ where an SWR is present, and all segments where there is no SWR present).
+
+\Cref{eq:linear} then becomes, in vector notation:
+%
+\begin{align*}
+\out_S &= \w^T \Sm \\
+\out_N &= \w^T \Nm,
+\end{align*}
+where each element of the row vectors $\out_S$ and $\out_N$ corresponds to one (multichannel) sample of $\Sm$ or $\Nm$. \Cref{fig:GEVec_principle} (right) shows the distribution of the values in two example data vectors $\out_S$ and $\out_N$.
+
+We want to find the weight vector $\what$ that maximises the variance of $\out_S$ versus the variance of $\out_N$, i.e.
+%
+\begin{align}
+\what &= \argmax_{\w} \frac{\Var(\out_S)}
+                           {\Var(\out_N)}  \label{eq:argmax_SNR} \\[1em]
+      &= \argmax_{\w} 
+         \frac{\frac{1}{n_S} \out_S \out_S^T}
+              {\frac{1}{n_N} \out_N \out_N^T}   \nonumber \\[1em]
+      &= \argmax_{\w}
+         \frac{\frac{1}{n_S} \w^T \Sm \Sm^T \w}
+              {\frac{1}{n_N} \w^T \Nm \Nm^T \w}  \nonumber
+\end{align}
+
+In this last equation, we recognize the empirical covariance matrices $\Rss$ and $\Rnn$, which are defined as:
+%
+\begin{align}
+\Rss &= \frac{1}{n_S} \Sm \Sm^T \label{eq:covariance_S}\\
+\Rnn &= \frac{1}{n_N} \Nm \Nm^T \label{eq:covariance_N}
+\end{align}
+%
+$\Rss \in \reals^{c \cross c}$ and $\Rnn \in \reals^{c \cross c}$ are symmetric matrices, where each diagonal element yields the variance of a channel, and each off-diagonal element yields the covariance between a pair of channels.
+
+The condition for the optimal weight vector, \cref{eq:argmax_SNR}, is thus equivalent to:
+%
+\begin{equation}
+\label{eq:argmax_R}
+\what = \argmax_{\w}
+       \frac{\w^T \Rss \w}
+            {\w^T \Rnn \w}
+\end{equation}
+%
+In \cref{apx:GEvecs-maximise-SNR}, we show that the solution $\what$ to this optimisation problem is the first so called ``generalized eigenvector'' of $(\Rss, \Rnn)$.
+
+
+
+\subsection{The generalized eigenvalue problem}
+\label{sec:generalized-eig-problem}
+
+The generalized eigenvalue problem for the ordered matrix pair $(\Rss, \Rnn)$ consists of finding the scalars $\lambda_i$ and corresponding vectors $\w_i$ for which the following holds:
+%
+\begin{equation}
+\label{eq:generalized-eig-problem}
+\Rss \w_i = \lambda_i \Rnn \w_i,
+\end{equation}
+%
+where $\lambda_i$ is a so called \emph{generalized eigenvalue} (GEVal) and $\w_i$ is the corresponding arbitrarily scaled \emph{generalized eigenvector} (GEVec). The largest scalar $\lambda_1$ for which \cref{eq:generalized-eig-problem} holds is the `first' GEVal, and the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
+
+If $\Rnn$ is of full rank and thus invertible, \cref{eq:generalized-eig-problem} is equivalent to
+\[
+\Rnn^{-1} \Rss \w_i = \lambda_i \w_i
+\]
+The generalised eigenvectors and eigenvalues of $(\Rss, \Rnn)$ are thus the ordinary eigenvectors and eigenvalues of $\Rnn^{-1} \Rss$. While mathematically exact, this is a poor method to calculate GEVecs in practice: when $\Rnn$ is ill-conditioned, small changes in $\Rnn$ (resulting from quantization and other sources of `noise') will then lead to disproportionally large errors in $\Rnn^{-1}$, and thus also in the the calculated GEVecs of $(\Rss, \Rnn)$ \cite{Trefethen1997,Golub2013}. $\Rnn$ is indeed likely to be ill-conditioned: the voltage traces recorded by two nearby electrodes (as in a tetrode or on a probe) will be very similar. 
+
+

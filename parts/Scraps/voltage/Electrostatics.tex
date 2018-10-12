@@ -1,0 +1,92 @@
+\section{Electric charges, fields, and potentials}
+
+Biological tissue contains a high number of mobile electric charges (mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}). Each charge is an electric monopole that emits an electric field, whose magnitude decays as $1/r^2$ (where $r$ is the distance from the charge). The electric field vectors point outwards for positive charges, and inwards for negative charges. All these electric fields summate linearly to form the total electric field vector $\E(\loc,t)$ at location $\loc$ and time $t$.
+
+These last facts (and more) are concisely described by the first of Maxwell's equations, also known as Gauss's law \cite{Feynman2013}:
+%
+\begin{equation}
+\label{eq:gauss}
+\div{\E(\loc,t)} = \frac{\rho(\loc,t)}{\eps_0},
+\end{equation}
+%
+where $\rho(\loc,t)$ (in \si{\coulomb\per\metre^3}) is the charge density at location $\loc$, and $\eps_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance (permitivity) of free space. (For an intuitive explanation of the $\div$ notation, see \cref{sec:div_curl}).
+
+In the complete Maxwell's equations (\cref{appendix_maxwell}), the electric and the magnetic fields are coupled, and cannot be described separately. When neither field changes too quickly over time however, the equations become decoupled. The electric field is then determined only by the locations of electric charges, and the existence of the magnetic field can be safely ignored. In electrophysiological conditions, this so called ``quasi-static'' assumption is met (\cite{Nunez2006,Plonsey2007}). The electric field is then completely described by the equations of electrostatics, namely \cref{eq:gauss} and the following \cref{eq:irrotational} -- even under normal time-varying conditions.
+%
+\begin{equation}
+\label{eq:irrotational}
+\curl{\E(\loc,t)} = \vb{0}
+\end{equation}
+%
+A consequence of \cref{eq:irrotational} is that a potential function can be defined for the electric field \cite{Feynman2013}. This is the electric field potential, $\phi(\loc,t)$. It is a scalar field that is defined such that
+%
+\begin{equation}
+\label{eq:potential}
+\E(\loc,t) = -\grad{\phi(\loc,t)};
+\end{equation}
+%
+i.e. such that the electric field points from locations of high potential to locations of lower potential. This is useful because the scalar field $\phi(\loc,t)$ is easier to reason about than the vector field $\E(\loc,t)$, while it contains the same amount of information. From \cref{eq:potential}, it is clear that $\phi(\loc,t)$ is only defined up to a constant. A natural choice of absolute electric potential is to shift the electric potential $\phi(\loc,t)$ so that a point with no charges around (or equivalently, surrounded by positive and negative charges that balance each other out) has $\phi(\loc,t) = \SI{0}{\volt}$ (see \cref{sec:appendix_potential}).
+
+In neuroscience, the electric potential $\phi(\loc,t)$ outside cells is often called the `local field potential' (LFP) -- especially when only frequencies below about \SI{500}{\hertz} are considered.\footnotemark{} The adjective `local' is a bit misleading: the LFP is not more `local' than any other electric field potential. The LFP, $\phi(\loc,t)$, is the quantity that we measure in sharp wave-ripple detection.\phantomsection\label{def:LFP}
+
+\footnotetext{The naming for $\phi(\loc,t)$ is in general inconsistent. It is variably denoted by `voltage', `electric field potential', `electric potential', `field potential', `potential field', or simply `potential'.}
+
+Although the above equations are complete, it is not clear from them how the LFP arises from charge distributions in the brain. The following section derives a more explicit formula for $\phi(\loc,t)$ in terms of free charges (i.e. mostly ions).
+
+
+
+
+\section{Electric potential in neural tissue}
+
+\Cref{eq:gauss,eq:irrotational} are valid from the scale of atoms to the scale of the brain and beyond; material (or tissue) properties appear implicitly as nanoscale variations in the charge density term. When working at macroscopic scales (as we do), it is easier however to use a slightly different but equivalent formulation, where material properties are explicitly built into the equation. This formulation rests on two ideas. The first is the separation of charges $\rho$ into bound charges $\rho_\bound$ and free charges $\rho_\free$ (which are mostly ions in the brain): $\rho = \rho_\bound + \rho_\free$. The second is the assumption that the polarisation of materials is directly proportional to the electric field strength. This is a common assumption, that is largely valid for brain tissue in normal conditions \cite{Nunez2006}. It can then be shown \cite{Feynman2013} that \cref{eq:gauss,eq:irrotational} are equivalent to:
+%
+\begin{align}
+\div(\eps_r(\loc,t)\; \E(\loc,t))
+    &= \frac{\rho_\free(\loc,t)}{\eps_0}   \label{eq:gauss_brain} \\
+\curl{\E(\loc,t)}
+    &= \vb{0},                             \label{eq:irrot_brain}
+\end{align}
+%
+where $\eps_r(\loc,t)$ is a dimensionless material property. $\eps_r(\loc,t) = \eps(\loc,t) / \eps_0$, with $\eps(\loc,t)$ the absolute permittivity of the material at location $\loc$ and $\eps_r(\loc,t)$ the relative permittivity of that material (also known as the dielectric constant; sometimes denoted by $\kappa$). $\eps$ and $\eps_r$ are scalars for a isotropic materials, and $3 \cross 3$ matrices for anisotropic materials.
+
+Broadly, the brain tissue relevant for sharp wave-ripples can be divided into two tissue types with different material properties. (See \cref{fig:neuropil}). The first type is the seawater-like fluid inside and in between cells. It has a relative permittivity $\eps_r \approx 75$ and is moderately conductive due to the free ions it contains (conductivity $\sigma \approx \SI{1}{\siemens\per\metre}$; compare with $\approx \SI{1e7}{\siemens\per\metre}$ for most metals) \cite{Michel2017,Martinsen2015,Marszalek1991,Nunez2006}. The other type are the lipid bilayer membranes, separating the insides from the outside of cells, organelles, and vesicles. They have a relative permittivity $\eps_r \approx 5$ and are ordinarily not conductive ($\sigma \approx \SI{1e-6}{\siemens\per\metre}$)\footnotemark{} \cite{Marszalek1991,Weaver2003}.
+
+\footnotetext{Translated to the scale of neural tissue, a patch of membrane (which is $\approx \SI{5}{\nano\metre}$ thick \cite{Goodsell2014}) of area $1 \cross 1 \si{\micro\metre^2}$ has a resistance of $\approx \SI{5}{\giga\ohm}$. A similar `slice' of extracellular fluid with a volume of $1 \si{\micro\metre^2} \cross \SI{5}{\nano\metre}$ has a resistance of $\approx \SI{5}{\kilo\ohm}$}
+%
+% Conductivity σ [S/m = S m^2 / m^3]
+% Resistivity ρ = 1 / σ [Ω m]
+% Conductance G [S = A/V]
+%
+% wikipedia:
+% ρ = R A / l  <=>  R  = ρ l / A  = l / (A σ)
+% => 1 / σ = A / (G l)
+% or G = σ * A / l
+% The longer, the less conductive. OK.
+
+% Extracellular space occupies 0.02 - 0.2 of cortex
+% Neurons: 0.4 - 0.5
+% Glia: 0.3 - 0.5
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{EM}
+\caption{\textbf{The environment in which recordings are made.} \emph{Figure
+adapted from \cite{Knott2008}}. Scanning electron micrograph of a slice of mouse cortex. (Rat hippocampal tissue looks similar, see e.g. \cite{Martin2017}). This type of tissue is called ``neuropil''. It consists of the long and narrow excrescences of neurons (dendrites and axons) and of glial cells, seen here in cross and through section. Note that cell bodies are much larger than the cross sections of dendrites and axons as seen here; a typical neural cell body (``soma'') of \SI{15}{\micro\metre} wide would be larger than this image (which is \SI{7}{\micro\metre} wide). Some landmarks are the many mitochondria (two of which are annotated with red *); two myelinated axons (green *); and all the lipid bilayers separating cells from their environment (thin black lines, two of which are highlighted in blue). The pink inset (\SI{1}{\micro\meter} by \SI{1.24}{\micro\meter}) shows two ``boutons'' (axon terminals) synapsing onto a dendrite. Note the synaptic vesicles (the many small dark circles), which encapsulate neurotransmitter molecules, ready for release in the synaptic clefts (black and white arrows).}
+\label{fig:neuropil}
+\end{figure}
+
+
+The relative permittivity $\eps_r(\loc,t)$ is therefore not uniform even throughout small regions in the brain. As a consequence, \cref{eq:gauss_brain,eq:irrot_brain} together with \cref{eq:potential} do not have a simple solution expressing the electric potential in terms of excess ion charges, and must instead be solved numerically.
+
+We can however get some sense for the behavior of the electric potential $\phi(\loc,t)$ by assuming a uniform permittivity $\eps$ throughout the neural tissue. (This assumption is often implicitly made -- and is rarely even mentioned -- in the electrophysiology literature \cite{Plonsey2007,Nunez2006,Destexhe2013}). It can then be shown that \cref{eq:gauss_brain,eq:irrot_brain,eq:potential} has an intuitive and straightforward solution for the electric potential \cite{Feynman2013}. When we divide the tissue in many tiny volumes $\dd{V}$ that each contain a net free charge density $\rho_\free(t)$ at time $t$, the electric potential at any point and time can be calculated as
+%
+\begin{equation}
+\label{eq:charge_sum}
+\phi(\loc,t) = \frac{1}{4 \pi \eps} \int_V \frac{\rho_\free(t)}{r} \dd{V},
+\end{equation}
+% 
+where $r$ is the distance from the measurement location $\loc$ to each tiny volume $\dd{V}$, and where we sum over the whole region $V$ where free charges are present.
+
+\Cref{eq:charge_sum} is a symbolical translation of the claim made in the introduction of this chapter, which I summarise here: Each free charge emits a potential field that decays as $1/r$. This potential field is positive around positive ions, and negative around negative ions. All these potential fields summate linearly, to form the total electric potential $\phi(\loc,t)$.
+
+This description is already useful to `explain' multiple phenomena observed in actual $\phi(\loc,t)$-recordings in the brain, as the next section shows.

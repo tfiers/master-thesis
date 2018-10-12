@@ -1,0 +1,41 @@
+
+\section{Manual labelling of sharp-wave ripples}
+
+
+In this section, we assess the amount of consensus between the scientists asked to label potential SWR events.
+
+A popular measure to quantify the agreement between two labellers is \emph{Cohen's $\kappa$}. It measures the proportion of events that are given the same label by both labellers (denoted by $p_o$), corrected by the expected proportion of events that are given the same label by chance (denoted by $p_e$). $\kappa \in [-1, 1]$ is defined as:
+\begin{equation}
+\kappa = \frac{p_o - p_e}{1 - p_e},
+\end{equation}
+%
+where $p_o$ and $p_e$ are estimated as in \cite{McHugh2012}.
+
+\begin{figure}
+\img[1.2]{labellers_A}
+\captionn{Example of scientist decisions}{Time series are two representative channels of the labelled LFP data. Each cluster of one to five vertical lines marks a candidate event. The colored lines indicate which labellers marked this event as a true SWR event (colors correspond to \cref{fig:upset}). Grey lines indicate events that were marked by no-one as a true SWR event. See \cref{fig:labellers_B} for additional examples.}
+\label{fig:labellers_A}
+\end{figure}
+
+\begin{figure}
+    \begin{subfigure}{0.6\textwidth}
+    \img{overlap}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+    \vspace{4em}
+    \begin{tabular}{r|l l l l l}
+    $N_\text{accepted}$ & FK   & FM   & CK   & DC  & JS  \\ \hline
+    Common set          & 111  & 137  & 147  & 78  & 151 \\
+    Personal set        & 112  & 101  & 123  & 92  & 111
+    \end{tabular} \\[4em]
+    \begin{tabular}{r|l l l l}
+    $\kappa$ &  FM   & CK    & DC    & JS     \\ \hline
+    FK       &  0.71 & 0.62  & 0.64  & 0.57   \\
+    FM       &       & 0.76  & 0.45  & 0.67   \\
+    CK       &       &       & 0.36  & 0.83   \\
+    DC       &       &       &       & 0.34
+    \end{tabular}
+    \end{subfigure}
+\captionn{Labeller agreement}{Left: Agreement between the neuroscientists (denoted by their initials) asked to label potential SWR events. Each row represents the set of events that were given the same label by the neuroscientists that have a colored marker in that row. (Visualised using \cite{Lex2014}). Top right: number of candidate events labelled as `true SWR events' by each neuroscientist, for both the set of events labelled by all neuroscientists (`Common set'), and the sets of events labelled only by one neuroscientist (`Personal set'). Each of these sets contained 200 candidate events in total. Bottom right: Cohen's $\kappa$ for each pair of neuroscientists.}
+\label{fig:upset}
+\end{figure}

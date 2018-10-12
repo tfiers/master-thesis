@@ -1,0 +1,184 @@
+
+\chapter{Relevant electromagnetic theory}
+\label{appendix_maxwell}
+
+
+\section{Maxwell's and Lorentz's equations}
+
+The following four equations give a complete (non-quantum\footnotemark{})
+description of the electric ($\E$) and the magnetic field ($\B$), in terms of
+charge ($\rho$) and current distributions ($\J$) and the mutual interactions
+of $\E$ and $\B$ over time.
+
+\footnotetext{At very small scales and very high field strengths (that are
+not relevant in neuroscience), the more general theory of quantum
+electrodynamics is needed.}
+
+\begin{align}
+\div{\E} &= \frac{\rho}{\epsilon_0} \\
+\curl{\E} &= -\pdv{\B}{t} \\
+\div{\B} &= 0 \\
+\curl{\B} &= \frac{1}{c^2} \qty( \pdv{\E}{t} + \frac{\J}{\varepsilon_0} )
+\end{align}
+%
+$\varepsilon_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance of
+free space, and $c \approx \SI{3e8}{\m\per\s} = \SI{300}{\GHz\mm}$ is the
+speed at which changes in $\E$ and $\B$ propagate. (For an intuitive explanation of the $\div$ and $\curl$ notation, see \cref{sec:div_curl}).
+
+% The first equation means that the electric field emanating from a tiny region of space is proportional to the amount of charge inside that region
+
+One additional equation, the Lorentz force law, completes the description of
+classical electromagnetism. Whereas Maxwell's equations describe the fields
+as caused by matter, Lorentz's equation describes the influence of the fields
+on matter. Namely, a charged particle with velocity $\vb{v}$ and charge $q$
+experiences the following force:
+\begin{equation}
+\F = q \qty(\E + \vb{v} \cross \B)
+\end{equation}
+
+Mobile charges and the electric and magnetic fields therefore interact with
+each other through feedback. This results in often very complex charge
+movements and field dynamics, until a steady state is reached.
+
+
+
+
+
+\section{Statics}
+
+When the time derivatives in Maxwell's equations are negligible, the electric and magnetic field become decoupled. The four equations then reduce to the governing equations for electrostatics:
+%
+\begin{align}
+\div{\E} &= \frac{\rho}{\epsilon_0} \\
+\curl{\E} &= 0,
+\end{align}
+
+and for magnetostatics:
+%
+\begin{align}
+\div{\B} &= 0 \\
+\curl{\B} &= \frac{\J}{c^2 \varepsilon_0}.
+\end{align}
+
+
+
+
+
+\section{Electric field potential}
+\label{sec:appendix_potential}
+
+The relationship between the electric field $\E(\loc,t)$ and the electric potential $\phi(\loc,t)$ is as follows. The electric potential difference between two points $\loc_a$ and $\loc_b$ is the negative line integral of the electric field along any curve connecting these two points (where $\dd{\s}$ is a tiny vector lying along the curve):
+%
+\begin{equation}
+\phi(\loc_a,t) - \phi(\loc_b,t) 
+    = - \int_{\loc_a}^{\loc_b} \E(\loc,t) \vdot \dd{\s}
+\end{equation}
+%
+An equivalent and arguably more elegant definition is the following. The electric field is the negative spatial gradient of the electric potential:
+%
+\begin{equation}
+\label{eq:potential_gradient}
+\E(\loc,t) = -\grad{\phi(\loc,t)},
+\end{equation}
+%
+i.e. the electric field points from locations of high potential to locations of lower potential.
+
+From \cref{eq:potential_gradient}, it is clear that the electric potential is only defined up to a constant (and that therefore only the electric potential \emph{difference} between two points is absolutely defined). We can easily define an absolute potential $\phi(\loc,t)$ however by fixing the voltage at a certain reference point. It makes sense to shift the electric potential such that it is zero for a reference point with no charges around (neither positive or negative); or equivalently, when the charges around this point balance each other out. (This is also what physicists do when they define the absolute electric potential at some point as the line integral of the electric field from that point to infinity, where it is implicitly assumed that infinity is uncharged).
+
+
+
+
+
+
+
+\section{Divergence and curl}
+\label{sec:div_curl}
+
+\subsection{Divergence}
+
+The divergence of a vector field at a certain point, $\div{\F}$, is a scalar
+value that measures the net flow of $\F$ out of ($+$) or into ($-$) a very
+small volume centered on this point.
+
+This net flow or `flux' $\varphi$ of the field $\F$ through a volume $V$ is
+the sum of individual flows through the surface of the volume. To calculate
+this sum, the bounding surface $S$ of the volume is divided into small
+surface patches $\dd{A}$. When the outward-pointing normal vector on such a
+surface patch is denoted by $\n$, the flow through this patch $\dd{A}$ can be
+written as $\F \cdot \n$. When the field vector $\F$ and the normal vector
+$\n$ point in the same direction, the field is flowing out of the volume at
+that location, and this inner product is positive. When they point in
+opposite directions, the field is flowing into the volume, and the product is
+negative.
+
+Symbolically, this is summarised as:
+\[
+\varphi = \iint_S{\F \cdot \n \dd{A}},
+\]
+
+The divergence is then simply this flux for a very small volume $V$, and
+normalised by the size of the volume, $\abs{V}$:
+\[
+\div{\F} = \lim_{\abs{V} \to 0}{\frac{\varphi}{\abs{V}}}
+\]
+
+
+\subsection{Curl}
+
+The curl $\curl{\F}$ of a vector field is a similarly intuitive measure, in
+the limit for small surfaces. In contrast with divergence however, the curl
+of a three-dimensional vector field at some point is not a scalar, but a
+three-dimensional vector. (In two dimensions however, the curl is a
+scalar)\footnote{This is because rotations in 2D are fully described with one
+number, while in 3D, curiously, three numbers are needed to fully describe
+them}. We define one component of the curl, along one coordinate axis
+$\xhatv$. The definitions for the other two coordinate axes are analogous.
+
+The curl $\qty(\curl{\F}) \cdot \xhatv$ of a vector field at a certain point
+and along the axis $\xhatv$, is a scalar value that measures the rotation of
+$\F$, or the net flow of $\F$ along a small loop, around $\xhatv$. This loop
+must lie in a plane that is perpendicular to the $\xhatv$ axis and that goes
+through the point where the curl is measured. The curl along $\xhatv$ is
+positive when the net flow along this loop is counterclockwise, and negative
+when it is clockwise.
+
+Let the loop be a closed path $C$ that encloses a planar surface $A$. The
+loop $C$ is divided in many counterclockwise-oriented vectors $\dd{\vb{l}}$.
+The rotation or net flow $O$ of $\F$ along the loop $C$ is then:
+\[
+O = \int_C{\F \cdot \dd{\vb{l}}}
+\]
+
+The curl in the $\xhatv$ direction is then this net loop flow, for a very
+small loop and normalised by the size of the enclosed surface, $\abs{A}$:
+\[
+\qty(\curl{\F}) \cdot \xhatv = \lim_{\abs{A} \to 0}{\frac{O}{\abs{A}}}
+\]
+
+
+
+% \section{Macroscopic formulation}
+
+% Here, we divide charges between free and bound:
+% Q = Q_b + Q_f
+% \rho = \rho_b + \rho_f
+
+% The bound charge is most conveniently described in terms of the polarization P(r,t) of the material, its dipole moment per unit volume.
+% % If P is uniform, a macroscopic separation of charge is produced only at the surfaces where P enters and leaves the material. For non-uniform P, a charge is also produced in the bulk.
+% % Nunez: "In tissue Pc [our P] is due mainly to membrane charge, which is much larger than the molecular and atomic charge effects common to physical materials."
+
+% Displacement field D (like E, but only due to free charges):
+% D(r,t) = eps_0 E(r,t) + P(r,t)
+
+% For linear, isotropic materials without additional polarisation
+% ("constitutive law"):
+% D(r,t) = eps E(r,t)
+
+% permittivity (distributed capacitance):
+% eps = eps_r eps_0
+% kappa = eps_r = eps / eps_0  (relative dielectric constant)
+
+% In anisotropic material, eps is a matrix.
+% In a nonlinear material, eps depends on the strength of the field.
+
+% The very complicated and granular bound charges and bound currents, therefore, can be represented on the macroscopic scale in terms of P and M, which average these charges and currents on a sufficiently large scale so as not to see the granularity of individual atoms, but also sufficiently small that they vary with location in the material.

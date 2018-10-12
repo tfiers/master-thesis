@@ -1,0 +1,220 @@
+
+\section{Computing the generalised eigenvalue decomposition}
+
+
+In the above, we have silently assumed that we have access to the generalised
+eigenvectors $\w_i$ of $(\A, \B)$. This section gives some insight into how
+these eigenvectors are actually calculated.
+
+From the definition of generalised eigenvectors (\cref{eq:GEVD}), if $\B$ is
+of full rank and thus invertible, we can write
+\[
+\B^{-1} \A \w_i = \lambda_i \w_i
+\]
+The generalised eigenvectors and eigenvalues of $(\A, \B)$ are thus the
+ordinary eigenvectors and eigenvalues of $\B^{-1} \A$.
+
+This is mathematically exact, but a poor method to actually calculate
+generalised eigenvectors on a computer when $\B$ is
+ill-conditioned\footnotemark{} (this is the case for e.g. $\B = \Rnn$ when
+two electrodes / channels are strongly correlated -- as is often the case in
+practice).
+
+\footnotetext{The condition $\kappa(\B)$ of a matrix $\B$ denotes how close
+$\B$ is to being rank-deficient. A matrix is rank-deficient (and has $\kappa
+= \infty$) when the dimension of the space spanned by its column vectors is
+lower than the number of those vectors. This is the case when one of the
+column vectors is a linear combination of the other column vectors.
+$\kappa(\B)$ is thus large, and $\B$ is ill-conditioned, when one of $\B$'s
+columns is \emph{almost} a linear combination of its other columns. (This is
+e.g. the case when $\B$ has two nearly identical columns).}
+%
+% The precise definition of $\kappa$ depends on which norm is chosen to
+% measure the size of vectors and matrices. For the 2-norm, $\kappa$ can be
+% calculated as $\kappa = \sigma_{\max} / \sigma_{\min}$ where
+% $\sigma_{\max}$ and $\sigma_{\min}$ are the largest and smallest singular
+% values of $\B$, respectively.
+
+The reason is two-fold. Small changes in an ill-conditioned $\B$ will lead to
+large changes in its inverse $\B^{-1}$ \cite{Trefethen1997,Golub2013}.
+Second, most numbers cannot be represented exactly in
+computers.\footnotemark{} Storing $\B$ on a computer inevitably leads to
+small representation errors, which in turn lead to disproportionally large
+errors in $\B^{-1}$, and therefore also in $\B^{-1}\A$, and in the calculated
+eigenvectors of $(\A,\B)$. We say that this is a numerically unstable method
+to calculate generalised eigenvectors.
+
+\footnotetext{Or at least not when floating point representations are used,
+as is most often done. Only finite sums (of e.g. 53 terms for the popular
+`double' floating point numbers of the IEEE 754 standard) of consecutive
+powers of 2 can be represented exactly. All other numbers are rounded to the
+nearest such digital number.}
+
+
+
+
+\subsection{A stable algorithm to compute generalised eigenvalues}
+
+In 1973, Moler and Stewart published the \emph{QZ-algorithm}, a numerically
+stable method to calculate generalised eigenvalues \cite{Moler1973}. It is a
+generalisation of the famous QR-algorithm \cite{Trefethen1997} for ordinary
+eigenvalue problems. The following paragraphs give an overview of the
+QZ-algorithm, without explaining details.
+
+The QZ-algorithm, similarly to the QR-algorithm, is an iterative procedure to
+calculate two upper triangular matrices $\Tt = f(\A)$ and $\Ss = f(\B)$ that
+have the same generalised eigenvalues as $\A$ and $\B$. As described above,
+the generalised eigenvalues of $(\Tt,\Ss)$ are mathematically equivalent to
+the ordinary eigenvalues of $\Ss^{-1} \Tt$. Because $\Tt$ and $\Ss$ are upper
+triangular however,\footnotemark{} we can extract their generalised
+eigenvalues without having to invert $\Ss$.
+
+\footnotetext{To be precise, only $\Ss$ is truly triangular; $\Tt$ is
+sometimes ``quasi-triangular''. This poses no problems; see \cite{Moler1973},
+\cite{Watkins2007}, or \cite{Golub2013} for how to adapt the reasoning in
+this section when $\Tt$ is quasi-triangular.}
+
+To show this, first note the following useful properties of triangular
+matrices \cite{Horn2013}: the inverse of a (square, invertible) upper
+triangular matrix is also an upper triangular matrix, and its diagonal
+entries are the reciprocals of the corresponding diagonal entries of the
+original matrix. $\Ss^{-1}$ is thus upper triangular, and its diagonal
+entries are $1 / s_{ii}$. The product of two upper triangular matrices is
+also an upper triangular matrix, and its diagonal entries are the products of
+the corresponding diagonal entries of the original matrices. The diagonal
+entries of $\Ss^{-1} \Tt$ are therefore equal to $t_{ii} / s_{ii}$. Finally,
+the eigenvalues of a triangular matrix are its diagonal elements. The
+eigenvalues of $\Ss^{-1}\Tt$ (and therefore also the generalised eigenvalues
+$\lambda_i$ of $(\Tt,\Ss)$) are thus the diagonal elements of $\Ss^{-1} \Tt$,
+i.e.
+%
+\begin{equation}
+\label{eq:lambda}
+\lambda_i = \frac{t_{ii}}{s_{ii}}.
+\end{equation}
+%
+Note that $t_{ii}$ and $s_{ii}$ can be read out from $\Tt$ and $\Ss$, without
+having to actually calculate $\Ss^{-1} \Tt$.
+
+If $\Tt$ and $\Ss$ are defined as $\Tt = \Q \A \Z$ and $\Ss = \Q \B \Z$, with
+$\Q$ and $\Z$ orthogonal transformations,\footnotemark{} the pair $(\Tt,
+\Ss)$ will have the same eigenvalues as $(\A, \B)$. This can be shown as
+follows. Suppose that $\lambda_i$ is an eigenvalue of $(\Tt,\Ss)$ with
+associated eigenvector $\x_i$. Then, from the definitions of $\Tt$ and $\Ss$
+and making use of $\Q^T \Q = \I$:
+\begin{align*}
+\Q \A \Z \x_i      &= \lambda_i \Q \B \Z \x_i  \\
+\A \Z \x_i         &= \lambda_i \B \Z \x_i  \\
+\A \w_i            &= \lambda_i \B \w_i,  
+\end{align*}
+with $\w_i = \Z \x_i$. $\lambda_i$ is thus also an eigenvector of $(\A, \B)$,
+with associated eigenvector $\w_i = \Z \x_i$.
+
+$\Q^T \Tt \Z^T = \A$ and $\Q^T \Ss \Z^T = \B$ are so called ``generalized
+Schur decompositions'' of $\A$ and $\B$. It can be shown that there exist
+such $\Q$ and $\Z$ that triangularize $\A$ and $\B$ \cite[Theorem
+3.1]{Stewart1972}. The iterative QZ-algorithm \cite{Moler1973} then describes
+how these $\Q$ and $\Z$ can actually be constructed.
+
+\footnotetext{An orthogonal transformation (by which most often actually an
+``orthonormal'' transformation is meant) is a linear transformation that can
+only rotate and flip vectors around the origin, without shearing or scaling
+them. The columns of its transformation matrix have norm $1$, and are
+orthogonal to each other. Therefore, if $\Q$ is an orthonormal matrix, its
+transpose is its inverse: $\Q^T \Q = \Q \Q^T = \I$.}
+
+More precisely, in each iteration of the QZ-algorithm, orthogonal matrices
+$\Q_k$ and $\Z_k$ are applied to $\A$ and $\B$, such that:
+%
+\begin{align*}
+\Tt &= \lim_{k \to \infty} \Q_k \cdots \Q_2 \Q_1 \A \Z_1 \Z_2 \cdots \Z_k \\
+\Ss &= \lim_{k \to \infty} \Q_k \cdots \Q_2 \Q_1 \B \Z_1 \Z_2 \cdots \Z_k,
+\end{align*}
+%
+i.e. $\Q = \Q_k \cdots \Q_2 \Q_1$ and $\Z = \Z_1 \Z_2 \cdots \Z_k$ for $k \to
+\infty$ (a product of orthogonal matrices is still an orthogonal matrix). In
+practice, a very good approximation to $\Tt$ and $\Ss$ is reached after
+already a few iterations.
+
+An important reason for using orthogonal transformations is that they do not
+amplify errors in the input matrices. Geometrically, small errors do not get
+stretched out -- they only rotate around the origin, without changing size.
+
+For descriptions of the practical QZ-algorithm (including how the orthogonal
+matrices $\Q_k$ and $\Z_k$ are actually found), see \cite{Moler1973} and
+\cite[Section 7.7]{Golub2013}. For a more recent description of the
+algorithm, with modern additions and generalisations, see \cite[Chapter
+6]{Watkins2007}.\footnote{When learning the QZ-algorithm, it makes sense to
+first learn the QR-algorithm, as the QZ-algorithm is a generalisation to it.
+\cite{Trefethen1997} gives a good didactic explanation of the QR-algorithm.}
+
+
+
+\subsection{Extracting eigenvectors from the Schur decompositions}
+
+The sources \cite{Moler1973}, \cite{Golub2013}, and \cite{Watkins2007} focus
+mostly on eigenvalues, and do not describe how the eigenvectors $\x_i$ of
+$(\Tt,\Ss)$ (and therefore of $(\A,\B)$) can be found.\footnotemark{} The
+process is relatively straightforward though.
+
+\footnotetext{\Cite{Moler1973} mentions only that ``the generalized
+eigenvectors of this reduced problem can be found by a back-substitution
+process which is a straightforward extension of the method used in
+\texttt{hqr2}'', where \texttt{hqr2} is a verbose ALGOL program from
+\cite{Wilkinson1971}.}
+
+Each generalised eigenvector $\x_i$ of $(\Tt,\Ss)$ must satisfy $\Tt \x_i =
+\lambda_i \Ss \x_i$ or $(\Tt - \lambda_i \Ss) \x_i = \vb{0}$. Let us denote
+the upper triangular matrix $(\Tt - \lambda_i \Ss)$ by $\M_i$. We then find
+the eigenvector $\x_i$ as a solution to
+\begin{equation}
+\label{eq:M}
+\M_i \x_i = \vb{0}
+\end{equation}
+%
+Due to \cref{eq:lambda}, for the $i$-th eigenvalue $\lambda_i$, the $i$-th
+diagonal element of $\M_i$ is zero, i.e. $m_{i,ii} = 0$.
+%
+For ease of reading, and with a straightforward generalisation to higher
+dimensions, suppose $N = 4$, i.e. $\M_i \in \reals^{4 \cross 4}$. \Cref{eq:M}
+is then expanded as:
+\begin{align*}
+m_{i,11} x_{i,1} 
++ m_{i,12} x_{i,2} + m_{i,13} x_{i,3} + m_{i,14} x_{i,4} &= 0 \\
+  m_{i,22} x_{i,2} + m_{i,23} x_{i,3} + m_{i,24} x_{i,4} &= 0 \\
+                     m_{i,33} x_{i,3} + m_{i,34} x_{i,4} &= 0 \\
+                                        m_{i,44} x_{i,4} &= 0
+\end{align*}
+%
+Suppose we are calculating the fourth eigenvector, i.e. the solution to $\M_4
+\x_4 = \vb{0}$. In the last equation, $m_{4,44} = 0$. We can therefore choose
+$x_{4,4}$ freely. $x_{4,3}$ can then be found by solving the second-to-last
+equation. Then the third-to-last equation can be solved, etcetera, until the
+whole eigenvector $\x_4$ is found.
+
+When calculating the third eigenvector, $m_{3,44}$ is generally not $0$.
+$x_{3,4}$ is then $0$. In the second-to-last equation, both $m_{3,33} = 0$
+and $x_{3,4} = 0$, and therefore $x_{3,3}$ can be freely chosen. $x_{3,2}$
+can then be calculated from the second equation, and so on.
+
+All generalised eigenvectors can be calculated via this back-substitution
+process with an increasing amount of zero components. Combined in one matrix,
+the eigenvectors $\x_i$ of $(\Tt,\Ss)$ thus have the following shape (where
+an $\cross$ represents a non-zero number):
+\[
+\begin{bmatrix}
+\cross & \cross & \cross & \cross \\
+     0 & \cross & \cross & \cross \\
+     0 &      0 & \cross & \cross \\
+     0 &      0 &      0 & \cross \\
+\end{bmatrix}
+\]
+
+Finally, the generalised eigenvectors $\w_i$ of $(\A, \B)$ are then found as
+$\w_i = \Z \x_i$.
+
+
+To calculate generalised eigenvectors in practice, the \texttt{eig(A,B)}
+functions from MATLAB or from SciPy's \texttt{linalg} module can be used,
+which both use implementations of the QZ-algorithm and the back-substitution
+process as described above.

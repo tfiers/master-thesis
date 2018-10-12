@@ -1,0 +1,155 @@
+
+\chapter{Overview of sharp wave-ripple detectors}
+
+
+Given a signal $\z_t$ and an associated task (such as ``detect the sharp
+wave-ripples in this hippocampal multi-electrode LFP signal''), there are a
+sheer infinite number of techniques available to tackle the problem.
+
+This chapter gives an overview of these techniques, and of how they differ or
+are equivalent. For a select number of techniques, we also present their
+performance in sharp-wave ripple detection. Two techniques are analysed in
+detail in the next two chapters (\namecref{sec:RNN} and \namecref{sec:GEVD}).
+
+% Different names are used for the same technique, and the same name is used for different techniques. % e.g. filtering, see Barber p. 527 footnote
+
+
+
+
+% \section{Signals and maps}
+\section{Signals}
+
+Let us first define the relevant signals.
+
+$\z_t \in \reals^C$ is the input sample at discrete time step
+$t$,\footnotemark{} with $C$ the number of electrodes (or `channels')
+simultaneously recorded from.
+
+The output is a one-dimensional variable $\in \reals$, signifying how
+strongly a sharp wave-ripple event is currently present in the input signal
+$\z_t$. For data-driven algorithms, we make a distinction between $x_t \in
+\reals$, which is the `ideal' output of the detection algorithm (this is
+implicitly or explicitly the training signal); and $\xhat_t$, which is the
+actual output of the algorithm for the input $\z_t$. For non-data-driven
+algorithms (such as classic temporal filtering), this distinction does not
+matter.
+
+The scientist running the SWR detection experiment imposes a threshold on
+$\xhat_t$, to continously make binary decisions on whether an SWR event is
+detected or not.
+
+Some detection algorithms additionally maintain an $M$-dimensional internal
+state vector, or 'memory', which we shall denote by $\h_t \in \reals^M$.
+
+\footnotetext{We consider only discrete-time systems, as \swr{} detection is
+mostly performed in the digital domain. (Though see \cite{Ego-Stengel2009}
+for an all-analog closed-loop SWR detection system).}
+
+
+
+
+% \section{Modelling versus machine learning}
+\section{A note about terminology}
+% \section{Modelling, science and engineering}
+
+We will use the terms `model' and `event detection algorithm'
+interchangeably, to denote the calculations that transform the $\z_t$ signal
+into an acceptable $x_t$ signal.
+
+The term ``model'' suggests that we want to build a causal or mechanistic
+mathematical model of the underlying data-generating system (the
+hippocampus), similarly to how mathematical equations are used to describe
+reality in physics, or to the generalised and multilevel linear models
+ubiquitous in the social sciences. Or, more pertinent to neural science, how
+nonlinear differential equations describe membrane current and action
+potential dynamics \cite{Hodgkin1952}, and how generalised linear models,
+convolutional neural networks, and recurrent neural networks describe and map
+to different components of the early visual processing \cite{Mante2005},
+higher order visual processing \cite{Nayebi2018}, and auditory processing
+\cite{Kell2018} systems.
+%
+% We *must* also cite Mante & Susillo's 2013 RNN somewhere :)
+
+In the case of the hippocampal local electric field potential, this would
+thus correspond to building a model of the hippocampus that generates the
+observed time series $\z_t$. This is emphathically \emph{not} what we want to
+do. Our primary goals are to detect sharp wave-ripples in the $\z_t$ signal,
+with as low a latency and as high a precision and sensitivity as possible.
+
+We can frame this task as an inverse modelling problem however. Let us
+imagine a very simplified model of the hippocampus, where it can exist in
+either of two states: SWR-generating or not. A forward model would then
+consist of calculations that generate realistic LFP time series given the
+state, or given the `inputs' to the hippocampus system. The inverse problem
+is to infer the state of the hippocampus (which is a `latent variable', to
+borrow a term from probabilistic modelling) from the observed LFP time series
+$\z_t$.
+
+% In general, signal processing techniques may be divided in two techniques:
+% Only care about I/O vs. care about internal state
+
+A final note: we will often use `the scientist' to mean the eventual operator
+and user of the sharp wave-ripple detection algorithm.
+
+
+
+
+\section{Typology of online event detectors}
+
+We can categorise event detectors along multiple axes.
+
+\subsection{Data-driven or not?}
+
+A first distinction can be made between data-driven and non-data-driven
+algorithms. Temporal linear time-invariant (LTI) filters belong to the
+non-data-driven category. The scientist chooses the frequency band(s) to
+suppress, and a few additional parameters that depend on the particular
+filter design method, such as the amount of attenuation and the `transition
+width' between pass- and stop-bands. The scientists learns good values for
+these parameters from experience over multiple experiments, either done by
+themselves, or by others, who transfer their knowledge through the literature
+or through lab training lineages and personal peer-to-peer communication.
+
+Most other algorithms belong to the data-driven class however. These are the
+(in)famous \emph{machine-learning} algorithms. Here, the algorithm parameters
+are not set by scientists, but are a function of the data (with `the data'
+being a dataset of the same type as the data on which the online algorithm
+will eventually be applied -- i.e. a dataset $\z_t$, and optionally a
+corresponding output time series $x_t$).
+
+Within this class of data-driven algorithms, a further distinction can be made between
+
+
+
+Examples include 
+
+linear filters whose parameters are a function of (labelled) data
+
+calculated through a decomposition of a 
+
+
+
+
+The distinction between these two categories is less clear than it might seem
+at first glance. . Similarly, prior knowledge about the problem at hand is
+often incorporated into the design of a particular data-driven algorithm
+implementation.
+
+The Bayesian framework is the proper method to unite both data-driven and
+non-data-driven algorithms into one continuum. We will not expand on this in
+this thesis.
+
+
+A first class only considers a fixed number $p$ of past input samples, $\z_t,
+\z_{t-1} \tdots \z_{t-p}$, to calculate the output $\xhat_t$ at time $t$.
+This includes FIR filters, and various 'memoryless' learning models such as
+generalised linear models, multi-layer perceptrons (AKA feedforward neural
+networks), convolutional neural networks, and support vector machines.
+
+On the other hand, some event detectors 
+
+
+\begin{enumerate}
+\item FIR filter. 
+\end{enumerate}
+

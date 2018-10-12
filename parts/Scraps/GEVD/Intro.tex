@@ -1,0 +1,62 @@
+\section{Introduction}
+\label{sec:GEVD_overview}
+
+In this chapter, we search for a linear combination of channels that yields
+an output signal $y_t$ useful for sharp wave-ripple (SWR) detection. More
+precisely, we search for a vector $\w \in \reals^C$ in channel (or electrode)
+space to project the samples $\z_t \in \reals^C$ on, so that the signal
+%
+\begin{equation}
+\label{eq:linear}
+y_t = \w^T \z_t
+\end{equation}
+%
+has high variance (or power) during SWR events, and low variance outside
+them. This principle is illustrated with a two-dimensional toy dataset in
+\cref{fig:GEVD_principle}. (We can then detect SWR events using threshold
+crossings of the envelope of $y_t$, as discussed in \cref{sec:SOTA}).
+
+
+\begin{figure}
+\includegraphics[width=0.6\textwidth]{GEVD_principle_scatter}
+\includegraphics[width=0.6\textwidth]{GEVD_principle_strips}
+\captionn{Signal-to-noise maximisation via the GEVD}{Toy example to
+illustrate the generalised eigenvalue decomposition (GEVD) principle for
+signal detection. \emph{Left}: multi-channel time-series data plotted in
+`phase space' (meaning without time axis), with blue dots representing
+samples where the signal was present, and orange dots representing samples
+where it was not. Actually toy data drawn from two 2-dimensional Gaussian
+distributions with different covariance matrices. Red vector: first
+eigenvector of the signal covariance matrix (also known as the first
+principal component). Green vector: first generalised eigenvector of the
+signal and noise covariance matrices. \emph{Right}: Projection of both data
+sets on both the ordinary eigenvector (``PCA'') and the generalised
+eigenvector (``GEVD''). The ratio of the projected signal data variance
+versus the projected noise data variance is maximised for the GEVD case.}
+\label{fig:GEVD_principle}
+\end{figure}
+
+
+We assume the input signal $\z_t$ to be zero mean. This is achieved with a
+straightforward preprocessing step in offline SWR detection, and can be
+approximated in online SWR detection by keeping track of a running mean of
+$\z_t$, such as an exponentially weighted moving average.
+
+This is a supervised (or data-driven) method: we need to have access to
+training data $\z\train_t$, and an associated labelling $x\train_t$ which
+marks when there is an SWR event present in $\z\train_t$, and when there is
+not. These can then be used to find a good weight vector $\w$, that can then
+be applied to detect SWR events in unlabelled data $\z\test_t$.
+
+The algorithm as described above is also a purely spatial filtering method
+(at each timestep $t$, only current information from the different channels
+is used in calculating the output $y_t$, without incorporating temporal
+information from previous timesteps $t_p < t$). The algorithm can be adapted
+to also incorporate temporal information, by defining a vector
+$\z^\text{stack}_t \in
+\reals^{C \cdot P}$, which consists of stacked sample vectors (each
+consisting of $C$ channels) from $P$ different timesteps $t_p \leq t$. The
+linear weights $\w^\text{stack} \in \reals^{C \cdot P}$ are then calculated
+in the same way as for $\w$.
+
+The following sections describes how the vector $\w$ can be found.

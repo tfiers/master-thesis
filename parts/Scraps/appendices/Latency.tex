@@ -1,0 +1,21 @@
+
+\chapter{Latency}
+
+
+\section{Closed-loop neurostimulation systems}
+\label{A:real_systems}
+
+% Also: SpikeGadgets, NSpike (Loren & Jadhav), OpenEphys SfN poster, Neuralynx, Neuropixel
+
+By a small margin, \citefull{Girardeau2009} were the first to publish a closed-loop hippocampal ripple disruption study. The main component of their closed-loop system were two synchronised \emph{Power1401} units, \pounds 7000 all-in-one processing devices by UK electrophysiology firm \textsf{CED (Cambridge Electronic Design)}. They each contain a 1GHz ARM microprocessor and 1GB of memory, and perform analog-to-digital (A/D) conversion, execution of the detection algorithm, and generation of the stimulating waveform, all on the same board. The electric signals were recorded with 9-site probes, as well as single-wire electrodes, and tetrodes. They were then buffered by a unity gain ``pre-amplifier'', and amplified 1000x by an ``L2'' device from \textsf{Neuralynx} (MT, USA), before being fed to the Power1401's. The same setup was used in \citefull{Girardeau2014}.
+
+\citefull{Ego-Stengel2009} are the only study considered here that used an all-analog closed-loop system. Specifically, they connected two \emph{KrohnHite 3384} analog filters in series, both set-up as 8th-order Butterworth filters. (The first device lowpass filtering at 400 Hz, and the second highpass filtering at 100 Hz). The total gain was 10,000; Finally an \emph{FHC Window Discriminator} performed threshold-crossing detection. They exclusively used tetrodes for their recordings.
+
+\citefull{Talakoub2016} are again unique, in two ways. They are the only group considered here that studied hippocampal ripple disruption in primates (specifically, macaques) instead of in rodents. Second, they are the only group using an FPGA to run their ripple detection algorithm, instead of a microprocessor (\citeauthor*{Ciliberti2017}, \citeauthor*{Dutta2018}) or a microcontroller (\citeauthor*{Girardeau2009}). Specifically, after data acquisition using tetrodes, a Neuralynx \emph{HS36} `headstage' (amplification/buffering), and a Neuralynx \emph{Digital Lynx SX} system (A/D conversion), the digital signal was processed on a Neuralynx ``High Performance Processing'' unit (`HPP'), which contains a Xilinx FPGA. Stimulation was performed using an \emph{STG4002 stimulator} by the German electrophysiology firm \textsf{MCS (Multi Channel Systems)}.
+
+
+
+\section{Algorithm execution time}
+
+% I estimate how long each operation takes: mainly read & from mem durations;
+% And how long one time-step of the algorithm takes in total to run on a CPU.

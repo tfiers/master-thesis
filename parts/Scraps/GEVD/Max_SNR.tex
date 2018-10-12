@@ -1,0 +1,71 @@
+\section{Signal-to-noise maximisation}
+\label{sec:GEVD_SNR}
+
+Suppose all training samples $\z\train_t$ are gathered and divided over two
+data matrices $\Sm \in \reals^{C \cross N_s}$ and $\Nm \in \reals^{C \cross
+N_n}$, where $\Sm$ (for `signal') contains all $N_s$ samples of $\z\train_t$
+where an SWR was present, and $\Nm$ (for `noise') contains all $N_n$ other
+samples. (These matrices can be constructed by simply concatenating all
+segments in $\z\train_t$ where an SWR was present, and all segments where
+there was no SWR present).
+
+As described in the previous section, we project the data onto the weight
+vector $\w$. For the data matrices, this becomes, in vector notation:
+%
+\begin{align*}
+\y_s &= \w^T \Sm \\
+\y_n &= \w^T \Nm,
+\end{align*}
+where each element of the row vectors $\y_s$ and $\y_n$ corresponds to one
+(multichannel) sample of $\Sm$ or $\Nm$. \Cref{fig:GEVD_principle} (right)
+shows the distribution of the values in two example data vectors $\y_s$ and
+$\y_n$.
+
+We want to find the weight vector $\what$ that maximises the variance of
+$\y_s$ versus the variance of $\y_n$, i.e.
+%
+\begin{align}
+\what &= \argmax_{\w} \frac{\Var(\y_s)}
+                           {\Var(\y_n)}  \nonumber \\[1em]
+      &= \argmax_{\w} 
+         \frac{\frac{1}{N_s} \y_s \y_s^T}
+              {\frac{1}{N_n} \y_n \y_n^T}   \label{eq:argmax_SNR} \\[1em]
+      &= \argmax_{\w}
+         \frac{\frac{1}{N_s} \w^T \Sm \Sm^T \w}
+              {\frac{1}{N_n} \w^T \Nm \Nm^T \w}  \nonumber
+\end{align}
+
+The signal and noise covariance matrices $\Rss \in \reals^{C \cross C}$ and
+$\Rnn \in \reals^{C \cross C}$ are defined as:\footnotemark{}
+%
+\begin{align}
+\Rss &= \frac{1}{N_s} \Sm \Sm^T \label{eq:covariance_s}\\
+\Rnn &= \frac{1}{N_n} \Nm \Nm^T \label{eq:covariance_n}
+\end{align}
+%
+($\Rss$ and $\Rnn$ are symmetric. The diagonal elements yield the variance of
+each channel, and the off-diagonal elements yield the covariance between
+pairs of channels).
+
+\footnotetext{To be precise, these are only estimates of the `true'
+covariance matrices of two random, \emph{ergodic} variables $\z_{s,t}$ and
+$\z_{n,t}$, of which the data in $\Sm$ and $\Nm$ are some samples.
+\Cref{eq:covariance_s,eq:covariance_n} are then correct definitions only in
+the limit for $N_s \to \infty$ and $N_n \to
+\infty$.}
+
+The expression for the optimal weight vector (\cref{eq:argmax_SNR}) then
+becomes:
+%
+\begin{equation}
+\label{eq:argmax_R}
+\what = \argmax_{\w}
+       \frac{\w^T \Rss \w}
+            {\w^T \Rnn \w}
+\end{equation}
+%
+This quotient of quadratic forms is the `generalised Rayleigh quotient' of
+$\Rss$ and $\Rnn$. It reaches its maximum when $\w$ is the first so caled
+`generalised eigenvector' of $\Rss$ and $\Rnn$. The following section defines
+these terms, and proves the ``$\argmax$'' --- ``first generalised
+eigenvector'' correspondence.

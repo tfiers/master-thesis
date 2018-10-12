@@ -1,0 +1,166 @@
+\section{Maximising the generalised Rayleigh quotient}
+
+In the following, we assume two symmetric matrices $\A \in \reals^{N \cross
+N}$ and $\B \in \reals^{N \cross N}$ (i.e. $\A = \A^T$ and $\B =
+\B^T$).
+
+
+
+\subsection{The generalised Rayleigh quotient}
+
+The generalised Rayleigh quotient of a non-zero vector $\w \in \reals^N$ and
+the ordered matrix pair $(\A,\B)$ is the scalar $r(\w)$ defined as:
+%
+\begin{equation}
+\label{eq:Rayleigh}
+r(\w) = \frac{\w^T \A \w}
+             {\w^T \B \w}
+\end{equation}
+
+
+
+\subsection{The generalised eigenvalue decomposition}
+
+The generalised eigenvalue problem for the ordered matrix pair $(\A,\B)$
+consists of finding the scalars $\lambda_i$ and corresponding vectors $\w_i$
+for which the following holds:
+%
+\begin{equation}
+\label{eq:GEVD}
+\A \w_i = \lambda_i \B \w_i
+\end{equation}
+
+We can gather all generalised eigenvectors $\w_i$ as columns of a matrix
+$\W$, and gather the corresponding generalised eigenvalues $\lambda_i$ in a
+diagonal matrix $\Lambda$. The generalised eigenvalue decomposition (GEVD) of
+$(\A,\B)$ is then:
+\[
+\A \W = \Lambda \B \W
+\]
+
+
+
+\subsection{Theorem}
+
+The first generalised eigenvector $\w_1$ of $(\A,\B)$ (which corresponds to
+the largest generalised eigenvalue $\lambda_1$) is also the vector $\what$
+that maximises the generalised Rayleigh quotient $r(\w)$.
+
+
+
+\subsection{Proof}
+
+As a first step, we will show that if $\what$ is the maximum of $r(\w)$, that
+it is indeed an eigenvector of $(\A,\B)$. In the second step, we will show
+that the largest eigenvalue $\lambda_1$ of $(\A,\B)$ corresponds to the
+maximum of $r(\w)$.
+
+If $\what$ is a maximum of $r(\w)$, then
+\begin{equation}
+\label{eq:critical}
+\grad{r(\what) = \vb{0}}.
+\end{equation}
+
+To calculate the gradient of $r(\w)$, we first expand the inner product
+\begin{equation*}
+\begin{split}
+\w^T \A \w = & \; w_1 w_1 a_{11} + w_1 w_2 a_{12} + \tdots \\
+                 & +  w_2 w_1 a_{21} + w_2 w_2 a_{22} + \tdots \\
+                 & +  \tdots
+\end{split}
+\end{equation*}
+%
+The partial derivative with respect to say, the second element of $\w$ then
+becomes:
+\begin{align*}
+\pdv{w_2}(\w^T \A \w) &= \sum_{i=1}^N w_i a_{2i} 
+                             + \sum_{j=1}^N w_j a_{j2} \\
+                             % 
+                          &= 2 \; \sum_{i=1}^N w_i a_{2i},
+\end{align*}
+where the two sums are equal because $\A$ is symmetric. Note that
+$\sum_{i=1}^N w_i a_{2i}$ is the second element of the vector $\A \w$.
+Because analogous expressions hold for partial derivatives with respect to
+the other elements of $\w$, we have:
+\[
+\grad(\w^T \A \w) = 2 \A \w
+\]
+
+Similarly, we have:
+\begin{align*}
+\pdv{w_2}(\frac{1}{\w^T \B \w})
+    &= \frac{-1}{\qty(\w^T \B \w)^2} \; \pdv{w_2}(\w^T \B \w) \\
+    &= \frac{-1}{\qty(\w^T \B \w)^2} \; 2 \sum_{i=1}^N w_i b_{2i},
+\end{align*}
+and
+\[
+\grad(\frac{1}{\w^T \B \w})
+    = \frac{-1}{\qty(\w^T \B \w)^2} \; 2 \B \w
+\]
+
+We can now calculate
+\begin{align*}
+\grad{r(\w)} &= \frac{1}{\w^T \B \w} \grad(\w^T \A \w)
+                + \qty(\w^T \A \w) \; 
+                  \grad(\frac{1}{\w^T \B \w})  \\[1em]
+             % &= \frac{1}{\w^T \B \w} 2 \A \w
+             %    + \w^T \A \w 
+             %      \frac{-1}{\qty(\w^T \B \w)^2} 2 \B \w  \\
+             &= \frac{2 \A \w \qty(\w^T \B \w) 
+                      - 2 \B \w \qty(\w^T \A \w)}
+                     {\qty(\w^T \B \w)^2}
+\end{align*}
+
+With \cref{eq:critical}, we now have the following condition for our
+maximising vector $\what$:
+\[
+2 \A \what \qty(\what^T \B \what) 
+    &= 2 \B \what \qty(\what^T \A \what)
+\]
+or
+\begin{align*}
+\A \what &= \frac{\what^T \A \what}
+                 {\what^T \B \what} \; \B \what  \\[1em]
+\A \what &= r(\what) \; \B \what
+\end{align*}
+This is the generalised eigenvalue/eigenvector definition (\cref{eq:GEVD})
+for $\w_i = \what$ and $\lambda_i = r(\what)$.
+
+We have thus shown that if $\what$ is a maximum of $r(\w)$, that it is a
+eigenvector of $(\A,\B)$, with $r(\what)$ its corresponding eigenvalue.
+
+As the second step, we now show that $r(\what)$ is the \emph{largest}
+eigenvalue of $(\A,\B)$. We follow the reasoning of \cite{Trefethen1997} (p.
+204), who prove a related result for the ordinary Rayleigh quotient.
+
+We will rewrite the generalised Rayleigh quotient $r(\w)$ by writing the
+arbitrary vector $\w$ as a linear combination of the generalised eigenvectors
+$\w_i$ of $(\A,\B)$: $\w = \sum_i c_i \w_i$. Then:
+\begin{align*}
+r(\w) &= \frac{\qty(\sum_i c_i \w_i)^T \A \qty(\sum_i c_i \w_i)}
+              {\qty(\sum_i c_i \w_i)^T \B \qty(\sum_i c_i \w_i)} \\[1em]
+              % 
+      &= \frac{\sum_i c_i^2 \w_i^T \A \w_i}
+              {\sum_i c_i^2 \w_i^T \B \w_i} \\[1em]
+              % 
+      &= \frac{\sum_i c_i^2 \lambda_i \w_i^T \B \w_i}
+              {\sum_i c_i^2 \w_i^T \B \w_i}
+\end{align*}
+
+Generalised eigenvectors are defined up to a scaling factor. We may therefore
+define our $\w_i$ to be scaled such that $\w_i^T \B \w_i = 1$. We then have:
+\[
+r(\w) = \frac{\sum_i c_i^2 \lambda_i}{\sum_i c_i^2}.
+\]
+%
+Each generalised Rayleigh quotient is thus a convex combination of
+generalised eigenvalues $\lambda_i$. The maximum of a convex combination of
+one-dimensional points is obtained in the largest of these points. If
+$\lambda_1$ is thus the largest generalised eigenvalue of $(\A,\B)$, then
+$\max{r(\w)} = \lambda_1$.
+
+We have thus shown that $\what = \argmax r(\w) = \w_1$, where $\w_1$ is an
+eigenvector of $(\A,\B)$, and that its corresponding eigenvalue $\lambda_1 =
+\max r(\w) = r(\what)$ is the largest of the eigenvalues of $(\A,\B)$.
+
+% \qed

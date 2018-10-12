@@ -1,0 +1,69 @@
+
+\section{Latency}
+
+
+% An algorithm for closed-loop brain stimulation needs to be \emph{fast}, that is, have low latency between the onset of the event in the brain and the time of stimulation. In this section, we characterise this closed-loop latency.
+
+% We base our latency analysis on a representative set of closed-loop disruption systems from the hippocampus literature \cite{Girardeau2009,Ego-Stengel2009,Jadhav2012,Girardeau2014,Talakoub2016,Ciliberti2017,Dutta2018}. For a detailed description of the systems used in these labs, and the differences and similarities between them, see \cref{A:real_systems}.
+
+% We decompose the latency into a sequence of steps. Next, we estimate the time cost of each step. Finally, we propose what would constitute a good latency improvement, taking into account the state of the art in sharp-wave ripple detection, the biological effect of stimulus onset time, and the typical duration of an SWR event.
+
+
+
+% % \subsection{Overview}
+% \subsection{System description}
+
+
+% \subsection{Transmission latencies}
+
+% \subsection{Algorithmic latencies}
+
+% The algorithmic latency of a linear filter can be accurately estimated a priori when the filter weights are known, using the filter's \emph{group delay} function. The following paragraph describes how this is done (see also \cref{fig:grpdelay}). We find that this technique matches the empirically observed latency well (compare \cref{fig:grpdelay} and fig. X).
+% % todo: reference figure with empirical causal_IIR detection latency.
+
+% For each frequency of the output signal that is used for event detection (i.e. all frequencies in the ripple band for ripple detection), we calculate the group delay $G(f)$ (\cref{fig:grpdelay-plot}). We define it as:
+% \[
+% 	G(f) = f_S\ \tau\left( 2 \pi \frac{f}{f_N} \right),
+% \]
+% with
+% \[
+% 	\tau(\omega) = - \dv{\omega}\ \angle H(\omega).
+% \]
+% $\angle H$ is the frequency-domain phase response of the bandpass filter, $\omega$ is a normalised angular frequency, \gls{fs} is the sampling frequency of the filtered signal, and \gls{fnyq} $= \frac{f_S}{2}$ is the corresponding Nyquist frequency. $G(f)$ then yields the delay, in seconds, of a frequency $f$ after passing through the linear filter \cite{Oppenheim2009,Lyons2010}. Calculating this delay for every frequency in the ripple band yields a delay distribution (\cref{fig:grpdelay-dist}), from which we can directly infer the algorithmic filter latency of the bandpass-filter-based SWR detector.
+
+% \begin{figure}
+% \begin{subfigure}{0.48\textwidth}
+% 	\caption{Group delay $G(f)$ for the bandpass filter in a ripple detector}
+% 	% todo: reference used filter
+% 	\includegraphics[width=\textwidth]{plot/group_delay}
+% 	\label{fig:grpdelay-plot}
+% \end{subfigure}
+% \hfill
+% \begin{subfigure}{0.48\textwidth}
+% 	\caption{Group delay distribution for frequencies in the ripple band}
+% 	\includegraphics[width=\textwidth]{plot/delay_dist}
+% 	\label{fig:grpdelay-dist}
+% \end{subfigure}
+% \caption{The latency introduced by linear bandpass filters can be accurately estimated a priori using the filter's group delay. \subref{fig:grpdelay-plot} The   The ripple band was defined here as 100--200 Hz (see section X). % todo
+% (Boxplot whiskers extend to the 5th and the 95th percentiles of the data. `N' is the number of frequencies in the ripple band for which the group delay was calculated. Density estimate calculated with an exponential kernel (see \cref{sec:kde-kernels}). Kernel bandwidth selected using Silverman's rule of thumb \cite{Silverman1986}).}
+% \label{fig:grpdelay}
+% \end{figure}
+
+% \subsection{Computational latencies}
+
+% These are the latencies caused by the physical execution of the detection algorithm in hardware.
+
+% % We assume that the signal processing algorithm is executed on a microcontroller or on a microprocessor (where the algorithm is specified in a programming language like C and runs as a sequence of steps), and not on an FPGA\footnotemark[1] or an ASIC\footnotemark[2] (where the algorithm is specified in a hardware description language and runs in parallel). As we will see 
+
+% % \footnotetext[1]{Field-Programmable Gate Array}
+% % \footnotetext[2]{Application Specific Integrated Circuit}
+
+% \subsection{State of the art}
+
+% \subsection{Biological effect of stimulus time}
+
+% % late: no deal
+
+% \subsection{SWR event duration}
+
+% \subsection{Conclusion}
