@@ -22,6 +22,6 @@
 \begin{deflist}
 \notation{\z_t}{Digitized LFP sample at discrete time step $t$. $\z_t \in \reals^c$, with $c$ the number of channels (i.e. the number of electrodes simultaneously recorded from). Input to an SWR detection algorithm.}
 \notation{o_t}{Output signal of an SWR detection algorithm, $\in \reals$.}
-\notation{p_t}{Transformation of $o_t$, constrained to $\reals^+$. Should be high when the corresponding input sample $\z_t$ is part of an SWR segment, and low when it is not. $\ p_t = \abs{o_t}$ for online linear filters; $p_t = \sigmoid(o_t)$ for the RNN's of \cref{ch:RNN}.}
+\notation{p_t}{Transformation of $o_t$, so that it is constrained to $\reals^+$. Should be high when the corresponding input sample $\z_t$ is part of an SWR segment, and low when it is not. $\ p_t = \abs{o_t}$ for online linear filters; $p_t = \sigmoid(o_t)$ for the RNN's of \cref{ch:RNN}.}
 \notation{y_t}{Binary target signal, used when training data-driven SWR detection algorithms. We define $y_t = 1$ when the corresponding input sample $\z_t$ is part of an SWR segment, and $y_t = 0$ when it is not.}
 \end{deflist}

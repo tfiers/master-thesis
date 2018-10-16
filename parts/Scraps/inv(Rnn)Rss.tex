@@ -1,0 +1,5 @@
+If $\Rnn$ is of full rank and thus invertible, \cref{eq:generalized-eigenproblem} is equivalent to
+\[
+\Rnn^{-1} \Rss \w_i = \lambda_i \w_i
+\]
+The generalised eigenvectors and eigenvalues of $(\Rss, \Rnn)$ are thus the ordinary eigenvectors and eigenvalues of $\Rnn^{-1} \Rss$. While mathematically exact, this is a poor method to calculate GEVecs in practice: when $\Rnn$ is ill-conditioned, small changes in $\Rnn$ (resulting from quantization and other sources of `noise') will then lead to disproportionally large errors in $\Rnn^{-1}$, and thus also in the the calculated GEVecs of $(\Rss, \Rnn)$ \cite{Trefethen1997,Golub2013}. $\Rnn$ is indeed likely to be ill-conditioned: the voltage signals recorded by two nearby electrodes (as in a tetrode or on a probe) will be very similar. The columns in $\Rnn$ corresponding to these channels will therefore also be very similar, resulting in an $\Rnn$ matrix that is close to being rank-deficient (i.e. ill-conditioned).

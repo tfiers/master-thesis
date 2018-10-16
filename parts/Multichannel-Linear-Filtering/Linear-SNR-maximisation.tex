@@ -16,7 +16,7 @@ has high variance (or power) during SWR events, and low variance outside them. T
 \label{fig:GEVec_principle}
 \end{figure}
 
-The remainder of this section describes how the vector $\w$ can be found.
+The remainder of this section describes how this vector $\w$ can be found.
 
 
 
@@ -67,22 +67,21 @@ In \cref{apx:GEvecs-maximise-SNR}, we show that the solution $\what$ to this opt
 
 
 
-\subsection{The generalized eigenvalue problem}
-\label{sec:generalized-eig-problem}
+\subsection{The generalized eigenproblem}
+\label{sec:generalized-eigenproblem}
 
-The generalized eigenvalue problem for the ordered matrix pair $(\Rss, \Rnn)$ consists of finding the scalars $\lambda_i$ and corresponding vectors $\w_i$ for which the following holds:
+An arbitrarily scaled vector $\w_i$ is a so called \emph{generalized eigenvector} (GEVec) for the ordered matrix pair $(\Rss, \Rnn)$ when the following holds:
 %
 \begin{equation}
-\label{eq:generalized-eig-problem}
+\label{eq:generalized-eigenproblem}
 \Rss \w_i = \lambda_i \Rnn \w_i,
 \end{equation}
 %
-where $\lambda_i$ is a so called \emph{generalized eigenvalue} (GEVal) and $\w_i$ is the corresponding arbitrarily scaled \emph{generalized eigenvector} (GEVec). The largest scalar $\lambda_1$ for which \cref{eq:generalized-eig-problem} holds is the `first' GEVal, and the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
+where the scalar $\lambda_i$ is the so called \emph{generalized eigenvalue} (GEVal) corresponding to $\w_i$. The largest scalar $\lambda_1$ for which \cref{eq:generalized-eigenproblem} holds is the `first' GEVal, and as mentioned before, the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
 
-If $\Rnn$ is of full rank and thus invertible, \cref{eq:generalized-eig-problem} is equivalent to
-\[
-\Rnn^{-1} \Rss \w_i = \lambda_i \w_i
-\]
-The generalised eigenvectors and eigenvalues of $(\Rss, \Rnn)$ are thus the ordinary eigenvectors and eigenvalues of $\Rnn^{-1} \Rss$. While mathematically exact, this is a poor method to calculate GEVecs in practice: when $\Rnn$ is ill-conditioned, small changes in $\Rnn$ (resulting from quantization and other sources of `noise') will then lead to disproportionally large errors in $\Rnn^{-1}$, and thus also in the the calculated GEVecs of $(\Rss, \Rnn)$ \cite{Trefethen1997,Golub2013}. $\Rnn$ is indeed likely to be ill-conditioned: the voltage traces recorded by two nearby electrodes (as in a tetrode or on a probe) will be very similar. 
+Since the 1960's, numerically stable algorithms exist that solve the generalised eigenproblem \cref{eq:generalized-eigenproblem} \cite{Golub2013}. A specialized algorithm is applicable when the input matrices are symmetric -- as is the case for $\Rss$ and $\Rnn$. This algorithm (based on the Cholesky factorization and the classical QR-algorithm for ordinary eigenproblems) is implemented in the LAPACK software package (as \texttt{dsygv}), and can be easily accessed using e.g. the \texttt{eig} function from MATLAB, or the \texttt{eigh} function from SciPy's \texttt{linalg} module.
 
 
+\begin{figure}
+\captionn{A signal-to-noise maximising linear combination of channels}{}
+\end{figure}
