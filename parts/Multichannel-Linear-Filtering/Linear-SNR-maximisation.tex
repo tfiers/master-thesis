@@ -1,4 +1,5 @@
-\sectionp{2p}{Linear signal-to-noise maximisation}\label{sec:GEVD-optim}
+\sectionp{2p}{Linear signal-to-noise maximisation}
+\label{sec:LSM}
 
 In this chapter, we search for a linear combination of channels that yields an output signal $o_t$ useful for sharp wave-ripple detection. More precisely, we search for a vector $\w \in \reals^c$ in channel (or electrode) space to project the samples $\z_t \in \reals^c$ on, so that the output signal
 %
@@ -8,6 +9,7 @@ o_t = \w^T \z_t
 \end{equation}
 %
 has high variance (or power) during SWR events, and low variance outside them. This principle is illustrated with a two-dimensional toy dataset in \cref{fig:GEVec_principle}. We can then detect SWR events using threshold crossings of the envelope of $o_t$, as discussed in \cref{sec:SOTA}.
+% todo: mention zero-mean
 
 \begin{figure}
 \img[0.6]{Principle_scatter}
@@ -77,11 +79,15 @@ An arbitrarily scaled vector $\w_i$ is a so called \emph{generalized eigenvector
 \Rss \w_i = \lambda_i \Rnn \w_i,
 \end{equation}
 %
-where the scalar $\lambda_i$ is the so called \emph{generalized eigenvalue} (GEVal) corresponding to $\w_i$. The largest scalar $\lambda_1$ for which \cref{eq:generalized-eigenproblem} holds is the `first' GEVal, and as mentioned before, the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
+for some scalar $\lambda_i$, which is called the \emph{generalized eigenvalue} (GEVal) corresponding to $\w_i$. The largest scalar $\lambda_1$ for which \cref{eq:generalized-eigenproblem} holds is the `first' GEVal, and as mentioned before, the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
 
 Since the 1960's, numerically stable algorithms exist that solve the generalised eigenproblem \cref{eq:generalized-eigenproblem} \cite{Golub2013}. A specialized algorithm is applicable when the input matrices are symmetric -- as is the case for $\Rss$ and $\Rnn$. This algorithm (based on the Cholesky factorization and the classical QR-algorithm for ordinary eigenproblems) is implemented in the LAPACK software package (as \texttt{dsygv}), and can be easily accessed using e.g. the \texttt{eig} function from MATLAB, or the \texttt{eigh} function from SciPy's \texttt{linalg} module.
 
 
 \begin{figure}
-\captionn{A signal-to-noise maximising linear combination of channels}{}
+\img[1.1]{LSM-comp}
+\captionn{SNR-maximising linear combinations of channels}{
+  \panel{A} Example input and output signals.
+    \Top: multi-channel LFP $\z_t$. Blue band: reference SWR segment.
+    \Bottom: output envelopes $\p_t$, for different filtering algorithms. Dashed horizontal lines: thresholds for which each output envelope reaches a recall value of 90 \%. Green triangles: correct detections. Red triangles: incorrect detections.}
 \end{figure}
