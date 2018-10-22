@@ -17,13 +17,13 @@ We divided the 34-minute long LFP recording into two datasets. The first 60\% wa
 
 It is clear that the GEVec filter output indeed has high power during SWR events, as promised by theory. The filter weights and input-output excerpts reveal that the GEVec output is composed mainly of a few channels in the stratum radiatum (channels 4-5-6 here), where they pick up the sharp waves. However, the filter output envelope is also high for sharp wave-like activity on the stratum radiatum channels without or with only very weak ripple activity in the higher channels: see \cref{fig:GEVec-extract-a,fig:GEVec-extract-b,fig:GEVec-extract-d}. This results in false positive detections.
 
-We also notice some premature detections (\cref{fig:GEVec-extract-a,fig:GEVec-extract-c}), where the sharp wave -- and thus also the GEVec filter output -- of an SWR-complex already has high power before the ripple has started. The GEVec detection then happens before the start of the reference SWR-segment, which is based on ripple power. These early detections thus count (arguably unfairly so) as false positives, under the evaluation scheme that we use.
+We also notice some premature detections (\cref{fig:GEVec-extract-a,fig:GEVec-extract-c}), where the sharp wave -- and thus also the GEVec filter output -- already has high power before the corresponding ripple has started. The GEVec detection then happens before the start of the reference SWR-segment, which is based on ripple power. These early detections thus count (arguably unfairly so) as false positives, under the evaluation scheme that we use.
 
 \begin{figure}
 \img{PR-and-latency}
 \captionn[]{Sensitivity, precision \& latency tradeoffs, }{for different linear filters \& for a range of thresholds.\newline
-Each threshold setting for an algorithm corresponds to a point on the precision-recall curve in the bottom-left panel, and to a distribution of relative detection latencies. The median and interquartile range of this distribution are plotted in the top or right panel (as a point of the bold curve or a slice of the shaded band, respectively).\newline
-These latency distribution plots are divided over two panels so that their entire range can be clearly visualised, both for the low recall -- high precision regime as for high recall -- low precision regime. The cutoff is made at the point where recall equals precision (AKA the $\max{F_1}$ point), marked with shaded black circles.}
+Each threshold setting for an algorithm corresponds to a point on the precision-recall curve in the bottom-left panel, and to a distribution of relative detection latencies. The median and interquartile range of this distribution are plotted in the top-left or bottom-right panel (as a point of the bold curve, and a slice of the shaded band, respectively).\newline
+These latency distribution plots are divided over two panels so that their entire range can be clearly visualized, both for the low recall -- high precision regime as for the high recall -- low precision regime. The cutoff is made at the point where recall equals precision (AKA the $\max{F_1}$ point), marked with shaded black circles.}
 \label{fig:LSM-PR-and-latency}
 \end{figure}
 
