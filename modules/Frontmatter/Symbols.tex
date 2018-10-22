@@ -7,8 +7,7 @@
 \section*{Notation}
 
 \begin{deflist}
-\notation{N}{Integers are denoted in uppercase italic.}
-\notation{y}{Scalars $\in \reals$ are denoted in lowercase italic.}
+\notation{y}{Scalars are denoted in lowercase italic.}
 \notation{\z}{Vectors are denoted in lowercase boldface.}
 \notation{\A}{Matrices are denoted in uppercase boldface.}
 \notation{\had}{Elementwise multiplication. (``Hadamard product'').}
@@ -23,6 +22,18 @@
 \begin{deflist}
 \notation{\z_t}{Digitized LFP sample at discrete time step $t$. $\z_t \in \reals^C$, with $C$ the number of channels (i.e. the number of electrodes simultaneously recorded from). Input to an SWR detection algorithm.}
 \notation{o_t}{Output signal of an SWR detection algorithm, $\in \reals$.}
-\notation{p_t}{Transformation of $o_t$, so that it is constrained to $\reals^+$. Should be high when the corresponding input sample $\z_t$ is part of an SWR segment, and low when it is not. $\ p_t = \abs{o_t}$ for online linear filters; $p_t = \sigmoid(o_t)$ for the RNN's of \cref{ch:RNN}.}
+\notation{n_t}{`Envelope'. Transformation of $o_t$, so that it is constrained to $\reals^+$. Should be high when the corresponding input sample $\z_t$ is part of an SWR segment, and low when it is not. $\ n_t = \abs{o_t}$ for online linear filters; $n_t = \sigmoid(o_t)$ for the RNN's of \cref{ch:RNN}.}
 \notation{y_t}{Binary target signal, used when training data-driven SWR detection algorithms. We define $y_t = 1$ when the corresponding input sample $\z_t$ is part of an SWR segment, and $y_t = 0$ when it is not.}
+\end{deflist}
+
+
+
+\section*{Measures \& parameters}
+
+\begin{deflist}
+\notation{P}{Precision. Also known as positive predictive value. The fraction of correct detections versus all detections.}
+\notation{R}{Recall. Also known as sensitivity, hit rate, or true positive rate. The fraction of detected reference SWR segments versus all reference SWR segments.}
+\notation{F_\beta}{F-score: weighted harmonic mean of recall and precision. $F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}$. Measures detection performance ``for a user who attaches $\beta$ times as much importance to recall as to precision.'' \cite{Rijsbergen1979}}
+\notation{F_1}{F-score where recall and precision are weighted equally. For the common case where the $P R$-curve is concave, $F_1(T)$ is maximal when $P(T) = R(T)$ ($= F_1(T)$).}
+\notation{T}{Detection threshold applied to the envelope $n_t\,$, $T \in (\min{n_t},\ \max{n_t})$. Each threshold $T$ yields a different $P$-value, $R$-value, $F_1$-value, etc.}
 \end{deflist}

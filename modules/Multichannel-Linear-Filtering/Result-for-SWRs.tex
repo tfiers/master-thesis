@@ -1,24 +1,32 @@
-\section{Result for sharp wave-ripples}
+\section{Result for SWR detection}
 
-We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$ and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate the GEVec-based algorithm, and to compare it to the state-of-the-art method (the single-channel online band-pass filter).
+We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$, and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate this filter $\what$, and to compare it to the state-of-the-art method (the single-channel online band-pass filter).
 
 \begin{figure}
 \img[1.1]{LSM-comp}
 \captionn{Linear, SNR-maximising combinations of electrodes}{
   \panel{A} Example input and output signals.
     \Top: multi-channel LFP, $\z_t$. Light-blue vertical band: a reference SWR segment.
-    \Bottom: output envelopes $\p_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 90\%. Green triangles: correct detections. Red triangles: incorrect detections.
+    \Bottom: output envelopes $\n_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 80\%. Green triangles: correct detections. Red triangles: incorrect detections.
   \panel{B} Generalised eigenvector $\what$ (i.e. the weights of the multichannel filter), for a purely spatial filter.
-  \panel{C} Generalised eigenvector $\what$ for a spatiotemporal filter, with a one-sample delay.}
+  \panel{C} Generalised eigenvector $\what$ for a spatiotemporal filter with a one-sample delay.}
 \label{fig:LSM-comp}
 \end{figure}
 
-\Panelref{fig:LSM-comp}{A} shows an excerpt of the test input signal, and the corresponding filter output envelopes (blue for state-of-the art method, orange for GEVec-based multichannel method). Additional excerpts are shown in \cref{fig:GEVec-extracts}. The elements of $\what$ (i.e. the filter weights) are visualized in \panelref{fig:LSM-comp}{B}.
+\Panelref{fig:LSM-comp}{A} shows an excerpt of the test input signal, and the corresponding filter output envelopes (blue for state-of-the art method, orange for GEVec-based multichannel method. Filter outputs $o_t$ are rectified to obtain envelopes $n_t = \abs{o_t}$). Additional excerpts are shown in \cref{fig:GEVec-extracts}. The elements of $\what$ (i.e. the filter weights) are visualized in \panelref{fig:LSM-comp}{B}.
 
+It is clear that the GEVec filter output indeed has high power during SWR events, as promised by theory. The filter weights and input-output excerpts reveal that the GEVec output is composed mainly of a few channels in the stratum radiatum (channels 4-5-6 here), where they pick up the sharp waves. However, the filter output envelope is also high for sharp wave-like activity on the stratum radiatum channels without or with only very weak ripple activity in the higher channels: see \cref{fig:GEVec-extract-a,fig:GEVec-extract-b,fig:GEVec-extract-d}. This results in false positive detections.
 
+We also notice some premature detections (\cref{fig:GEVec-extract-a,fig:GEVec-extract-c}), where the sharp wave -- and thus also the GEVec filter output -- of an SWR-complex already has high power before the ripple has started. The GEVec detection then happens before the start of the reference SWR-segment, which is based on ripple power. These early detections thus count (arguably unfairly so) as false positives, under the evaluation scheme that we use.
 
 \begin{figure}
 \img{PR-and-latency}
-\caption{..}
+\captionn[]{Sensitivity, precision \& latency tradeoffs, }{for different linear filters \& for a range of thresholds.\newline
+Each threshold setting for an algorithm corresponds to a point on the precision-recall curve in the bottom-left panel, and to a distribution of relative detection latencies. The median and interquartile range of this distribution are plotted in the top or right panel (as a point of the bold curve or a slice of the shaded band, respectively).\newline
+These latency distribution plots are divided over two panels so that their entire range can be clearly visualised, both for the low recall -- high precision regime as for high recall -- low precision regime. The cutoff is made at the point where recall equals precision (AKA the $\max{F_1}$ point), marked with shaded black circles.}
 \label{fig:LSM-PR-and-latency}
 \end{figure}
+
+This effect, where the sharp wave is discernible before the ripple, results in faster detections when the detection \emph{does} fall within the reference segment. When all 468 SWR events from the training set are analysed, we find a large improvement in detection latency: at thresholds where both methods detect 80\% of these reference SWR segments, the median absolute detection latency drops from 24 ms for the state-of-the-art online band-pass filter to 12 ms for the GEVec-based filter. The relative detection latency drops by 32.5 percentage points, from 58.1\% to 25.6\%. Similar latency improvements are found for other recall and precision values: see \cref{fig:LSM-PR-and-latency}.
+
+This strong improvement in detection latency trades off with an increase in false positives, as was already observed qualitatively. At the aforementioned sensitivity of 80\%, the state-of-the-art method has a precision of 94\%, whereas the GEVec-based method has a precision of only 63\% (i.e. more than a third of detected events are classfied as `false positives'). This strong decrease in precision is true over the entire PR-curve: see \cref{fig:LSM-PR-and-latency}.
