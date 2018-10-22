@@ -1,0 +1,10 @@
+\sectionp{1p}{Combining space and time}
+\label{sec:spatiotemporal}
+
+The GEVec-based algorithm as described above is a purely \emph{spatial} filtering algorithm: at each timestep $t$, only current information from the different channels is used in calculating the output $o_t$, without incorporating temporal information from previous timesteps $t_p < t$.
+
+The algorithm can be easily adapted to also incorporate temporal information however, by defining a vector $\z\stack_t \in \reals^{CP}$, which consists of stacked sample vectors (each consisting of $C$ channels) from $P$ different timesteps $t_p \leq t$. The linear weights $\w\stack \in \reals^{CP}$ used to obtain the output signal $o_t = (\w\stack_t)^T \z\stack_t$ are then calculated analogously to the purely spatial filter, i.e. as the first generalised eigenvector of the ordered pair $(\Rss\stack, \Rnn\stack)$, with both covariance matrices $\in \reals^{CP \cross CP}$.
+
+Adding just one such delayed timestep (i.e. $P = 2$) yields a major performance improvement, while not increasing latency much (\cref{fig:LSM-PR-and-latency}): ...
+
+The GEVec and an example of its output envelope is shown in \cref{fig:LSM-comp}.

@@ -1,0 +1,24 @@
+\section{Result for sharp wave-ripples}
+
+We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$ and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate the GEVec-based algorithm, and to compare it to the state-of-the-art method (the single-channel online band-pass filter).
+
+\begin{figure}
+\img[1.1]{LSM-comp}
+\captionn{Linear, SNR-maximising combinations of electrodes}{
+  \panel{A} Example input and output signals.
+    \Top: multi-channel LFP, $\z_t$. Light-blue vertical band: a reference SWR segment.
+    \Bottom: output envelopes $\p_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 90\%. Green triangles: correct detections. Red triangles: incorrect detections.
+  \panel{B} Generalised eigenvector $\what$ (i.e. the weights of the multichannel filter), for a purely spatial filter.
+  \panel{C} Generalised eigenvector $\what$ for a spatiotemporal filter, with a one-sample delay.}
+\label{fig:LSM-comp}
+\end{figure}
+
+\Panelref{fig:LSM-comp}{A} shows an excerpt of the test input signal, and the corresponding filter output envelopes (blue for state-of-the art method, orange for GEVec-based multichannel method). Additional excerpts are shown in \cref{fig:GEVec-extracts}. The elements of $\what$ (i.e. the filter weights) are visualized in \panelref{fig:LSM-comp}{B}.
+
+
+
+\begin{figure}
+\img{PR-and-latency}
+\caption{..}
+\label{fig:LSM-PR-and-latency}
+\end{figure}

@@ -8,86 +8,24 @@ In this chapter, we search for a linear combination of channels that yields an o
 o_t = \w^T \z_t
 \end{equation}
 %
-has high variance (or power) during SWR events, and low variance outside them. This principle is illustrated with a two-dimensional toy dataset in \cref{fig:GEVec_principle}. We can then detect SWR events using threshold crossings of the envelope of $o_t$, as discussed in \cref{sec:SOTA}.
-% todo: mention zero-mean
+has high variance (or power) during SWR events, and low variance outside them.\footnotemark{} This principle is illustrated with a two-dimensional toy dataset in \cref{fig:GEVec_principle}. We can then detect SWR events using threshold crossings of the envelope of $o_t$, as discussed in \cref{sec:SOTA}.
+
+\footnotetext{We assume that the input signals are zero-mean, such that the power $P$ of the output signal equals its variance:
+%
+$P_o = \ev{o_t^2} = \ev{(o_t - \mu_o)^2} = \Var(o_t)$ when $\mu_o = 0$, which is the case for zero-mean input channels:
+%
+$\mu_o = \ev{o_t} = \ev{\w^T \z_t} = \sum_i w_i \ev{z_{t,i}} = 0$ when $\ev{z_{t,i}} = 0$ for all channels $i$.
+%
+\\This zero-mean assumption is reasonably well fulfilled for the analysed recording: the sample values of a 10-second moving average of the recording have a median of -0.02 \uV{} and an interquartile range of 0.13 \uV{}. In comparison, the RMS-value of the recording is 210 \uV{}.}
+
 
 \begin{figure}
-\img[0.6]{Principle_scatter}
-\img[0.6]{Principle_strips}
-\captionn{Linear signal-to-noise maximisation}{Toy example to illustrate the generalized eigenvector approach to signal detection. \Left: multi-channel time-series data plotted in `phase space' (meaning without time axis), with blue dots representing samples where the signal was present, and orange dots representing samples where it was not. Actually toy data drawn from two 2-dimensional Gaussian distributions with different covariance matrices. Red vector: first eigenvector of the signal covariance matrix (also known as the first principal component). Green vector: first generalized eigenvector of the signal and noise covariance matrices. \Right: Projection of both data sets on both the ordinary eigenvector (``PCA'') and the generalized eigenvector (``GEVD''). The ratio of the projected signal data variance versus the projected noise data variance is maximised for the GEVD case.}
+\img[0.4]{scatter}\hfill
+\img[0.55]{strips}
+\captionn{Linear signal-to-noise maximisation}{Toy example to illustrate the generalized eigenvector approach to signal detection.
+\Left: multi-channel time-series data plotted in `phase space' (meaning without time axis), with blue dots representing samples where the signal was present, and orange dots representing samples where it was not. Actually toy data drawn from two 2-dimensional Gaussian distributions with different covariance matrices. Red vector: first eigenvector of the signal covariance matrix (also known as the first principal component). Green vector: first generalized eigenvector of the signal and noise covariance matrices.
+\Right: Projection of both data sets on both the ordinary eigenvector (``PCA'') and the generalized eigenvector (``GEVec''). The ratio of the projected signal data variance versus the projected noise data variance is maximised for the GEVec case.}
 \label{fig:GEVec_principle}
 \end{figure}
 
-The remainder of this section describes how this vector $\w$ can be found.
-
-
-
-\subsection{The optimization problem}
-
-Suppose all training samples $\z\train_t$ are gathered and divided over two data matrices $\Sm \in \reals^{c \cross n_S}$ and $\Nm \in \reals^{c \cross n_N}$, where $\Sm$ (for `signal') contains all $n_S$ samples of $\z\train_t$ where an SWR is present, and $\Nm$ (for `noise') contains all $n_N$ other samples. (These matrices can be easily constructed by concatenating all segments in $\z\train_t$ where an SWR is present, and all segments where there is no SWR present).
-
-\Cref{eq:linear} then becomes, in vector notation:
-%
-\begin{align*}
-\out_S &= \w^T \Sm \\
-\out_N &= \w^T \Nm,
-\end{align*}
-where each element of the row vectors $\out_S$ and $\out_N$ corresponds to one (multichannel) sample of $\Sm$ or $\Nm$. \Cref{fig:GEVec_principle} (right) shows the distribution of the values in two example data vectors $\out_S$ and $\out_N$.
-
-We want to find the weight vector $\what$ that maximises the variance of $\out_S$ versus the variance of $\out_N$, i.e.
-%
-\begin{align}
-\what &= \argmax_{\w} \frac{\Var(\out_S)}
-                           {\Var(\out_N)}  \label{eq:argmax_SNR} \\[1em]
-      &= \argmax_{\w} 
-         \frac{\frac{1}{n_S} \out_S \out_S^T}
-              {\frac{1}{n_N} \out_N \out_N^T}   \nonumber \\[1em]
-      &= \argmax_{\w}
-         \frac{\frac{1}{n_S} \w^T \Sm \Sm^T \w}
-              {\frac{1}{n_N} \w^T \Nm \Nm^T \w}  \nonumber
-\end{align}
-
-In this last equation, we recognize the empirical covariance matrices $\Rss$ and $\Rnn$, which are defined as:
-%
-\begin{align}
-\Rss &= \frac{1}{n_S} \Sm \Sm^T \label{eq:covariance_S}\\
-\Rnn &= \frac{1}{n_N} \Nm \Nm^T \label{eq:covariance_N}
-\end{align}
-%
-$\Rss \in \reals^{c \cross c}$ and $\Rnn \in \reals^{c \cross c}$ are symmetric matrices, where each diagonal element yields the variance of a channel, and each off-diagonal element yields the covariance between a pair of channels.
-
-The condition for the optimal weight vector, \cref{eq:argmax_SNR}, is thus equivalent to:
-%
-\begin{equation}
-\label{eq:argmax_R}
-\what = \argmax_{\w}
-       \frac{\w^T \Rss \w}
-            {\w^T \Rnn \w}
-\end{equation}
-%
-In \cref{apx:GEvecs-maximise-SNR}, we show that the solution $\what$ to this optimisation problem is the first so called ``generalized eigenvector'' of $(\Rss, \Rnn)$.
-
-
-
-\subsection{The generalized eigenproblem}
-\label{sec:generalized-eigenproblem}
-
-An arbitrarily scaled vector $\w_i$ is a so called \emph{generalized eigenvector} (GEVec) for the ordered matrix pair $(\Rss, \Rnn)$ when the following holds:
-%
-\begin{equation}
-\label{eq:generalized-eigenproblem}
-\Rss \w_i = \lambda_i \Rnn \w_i,
-\end{equation}
-%
-for some scalar $\lambda_i$, which is called the \emph{generalized eigenvalue} (GEVal) corresponding to $\w_i$. The largest scalar $\lambda_1$ for which \cref{eq:generalized-eigenproblem} holds is the `first' GEVal, and as mentioned before, the corresponding GEVec $\w_1$ is the solution $\what$ to \cref{eq:argmax_R}.
-
-Since the 1960's, numerically stable algorithms exist that solve the generalised eigenproblem \cref{eq:generalized-eigenproblem} \cite{Golub2013}. A specialized algorithm is applicable when the input matrices are symmetric -- as is the case for $\Rss$ and $\Rnn$. This algorithm (based on the Cholesky factorization and the classical QR-algorithm for ordinary eigenproblems) is implemented in the LAPACK software package (as \texttt{dsygv}), and can be easily accessed using e.g. the \texttt{eig} function from MATLAB, or the \texttt{eigh} function from SciPy's \texttt{linalg} module.
-
-
-\begin{figure}
-\img[1.1]{LSM-comp}
-\captionn{SNR-maximising linear combinations of channels}{
-  \panel{A} Example input and output signals.
-    \Top: multi-channel LFP $\z_t$. Blue band: reference SWR segment.
-    \Bottom: output envelopes $\p_t$, for different filtering algorithms. Dashed horizontal lines: thresholds for which each output envelope reaches a recall value of 90 \%. Green triangles: correct detections. Red triangles: incorrect detections.}
-\end{figure}
+The next two sections describe how this vector $\w$ can be found.

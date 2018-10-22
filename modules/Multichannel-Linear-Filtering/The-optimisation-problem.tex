@@ -1,0 +1,43 @@
+\section{The optimisation problem}
+
+Suppose all training samples $\z\train_t$ are gathered and divided over two data matrices $\Sm \in \reals^{C \cross N_S}$ and $\Nm \in \reals^{C \cross N_N}$, where $\Sm$ (for `signal') contains all $N_S$ samples of $\z\train_t$ where an SWR is present, and $\Nm$ (for `noise') contains all $N_N$ other samples. (These matrices can be easily constructed by concatenating all segments in $\z\train_t$ where an SWR is present, and all segments where there is no SWR present).
+
+\Cref{eq:linear} then becomes, in vector notation:
+%
+\begin{align*}
+\out_S &= \w^T \Sm \\
+\out_N &= \w^T \Nm,
+\end{align*}
+where each element of the row vectors $\out_S$ and $\out_N$ corresponds to one (multichannel) sample of $\Sm$ or $\Nm$. \Cref{fig:GEVec_principle} (right) shows the distribution of the values in two example data vectors $\out_S$ and $\out_N$.
+
+We want to find the weight vector $\what$ that maximises the variance of $\out_S$ versus the variance of $\out_N$, i.e.
+%
+\begin{align}
+\what &= \argmax_{\w} \frac{\Var(\out_S)}
+                           {\Var(\out_N)}  \label{eq:argmax_SNR} \\[1em]
+      &= \argmax_{\w} 
+         \frac{\frac{1}{N_S} \out_S \out_S^T}
+              {\frac{1}{N_N} \out_N \out_N^T}   \nonumber \\[1em]
+      &= \argmax_{\w}
+         \frac{\frac{1}{N_S} \w^T \Sm \Sm^T \w}
+              {\frac{1}{N_N} \w^T \Nm \Nm^T \w}  \nonumber
+\end{align}
+
+In this last equation, we recognize the empirical covariance matrices $\Rss$ and $\Rnn$, which are defined as:
+%
+\begin{align}
+\Rss &= \frac{1}{N_S} \Sm \Sm^T \label{eq:covariance_S}\\
+\Rnn &= \frac{1}{N_N} \Nm \Nm^T \label{eq:covariance_N}
+\end{align}
+%
+$\Rss \in \reals^{C \cross C}$ and $\Rnn \in \reals^{C \cross C}$ are symmetric matrices, where each diagonal element yields the variance of a channel, and each off-diagonal element yields the covariance between a pair of channels.
+
+The condition for the optimal weight vector, \cref{eq:argmax_SNR}, is thus equivalent to:
+%
+\begin{equation}
+\label{eq:argmax_R}
+\what = \argmax_{\w} \frac{\w^T \Rss \w}
+                          {\w^T \Rnn \w}
+\end{equation}
+%
+In \cref{apx:GEvecs-maximise-SNR}, we show that the solution $\what$ to this optimisation problem is the first so called ``generalized eigenvector'' of $(\Rss, \Rnn)$.
