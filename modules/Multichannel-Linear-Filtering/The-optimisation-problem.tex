@@ -1,6 +1,6 @@
-\section{The optimisation problem}
+\subsection{The optimisation problem}
 
-Suppose all training samples $\z\train_t$ are gathered and divided over two data matrices $\Sm \in \reals^{C \cross N_S}$ and $\Nm \in \reals^{C \cross N_N}$, where $\Sm$ (for `signal') contains all $N_S$ samples of $\z\train_t$ where an SWR is present, and $\Nm$ (for `noise') contains all $N_N$ other samples. (These matrices can be easily constructed by concatenating all segments in $\z\train_t$ where an SWR is present, and all segments where there is no SWR present).
+Suppose all training samples $\z\train_t$ are gathered and divided over two data matrices $\Sm \in \reals^{C \cross N_S}$ and $\Nm \in \reals^{C \cross N_N}$, where $\Sm$ (for `signal') contains all $N_S$ samples of $\z\train_t$ where an SWR is present, and $\Nm$ (for `noise') contains all $N_N$ other samples. (These matrices can be easily constructed by concatenating segments from $\z\train_t$).
 
 \Cref{eq:linear} then becomes, in vector notation:
 %
@@ -8,7 +8,7 @@ Suppose all training samples $\z\train_t$ are gathered and divided over two data
 \out_S &= \w^T \Sm \\
 \out_N &= \w^T \Nm,
 \end{align*}
-where each element of the row vectors $\out_S$ and $\out_N$ corresponds to one (multichannel) sample of $\Sm$ or $\Nm$. \Cref{fig:GEVec_principle} (right) shows the distribution of the values in two example data vectors $\out_S$ and $\out_N$.
+where each element of the row vectors $\out_S$ and $\out_N$ is a filtered sample of $\Sm$ and $\Nm$, respectively. \Cref{fig:GEVec_principle} (right) shows the distribution of the values in two example data vectors $\out_S$ and $\out_N$.
 
 We want to find the weight vector $\what$ that maximises the variance of $\out_S$ versus the variance of $\out_N$, i.e.
 %

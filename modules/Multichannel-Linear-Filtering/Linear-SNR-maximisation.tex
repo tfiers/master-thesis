@@ -16,7 +16,8 @@ $P_o = \ev{o_t^2} = \ev{(o_t - \mu_o)^2} = \Var(o_t)$ when $\mu_o = 0$, which is
 %
 $\mu_o = \ev{o_t} = \ev{\w^T \z_t} = \sum_i w_i \ev{z_{t,i}} = 0$ when $\ev{z_{t,i}} = 0$ for all channels $i$.
 %
-\\This zero-mean assumption is reasonably well fulfilled for the analysed recording: the sample values of a 10-second moving average of the recording have a median of -0.02 \uV{} and an interquartile range of 0.13 \uV{}. In comparison, the RMS-value of the recording is 210 \uV{}.}
+\\This zero-mean assumption is reasonably well fulfilled for the analysed recording: the sample values of a 10-second moving average of the recording are near zero (median -0.02 \uV{}, IQR 0.13 \uV{}. In comparison, the RMS-value of the recording is 210 \uV{}).
+\\Input data that is not zero-mean can be readily transformed to be so (even in an online setting), by subtracting a (moving) average from the input signal.}
 
 
 \begin{figure}

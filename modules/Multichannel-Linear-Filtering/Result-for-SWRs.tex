@@ -1,13 +1,13 @@
 \section{Result for SWR detection}
 
-We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$, and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate this filter $\what$, and to compare it to the state-of-the-art method (the single-channel online band-pass filter).
+We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$, and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate this filter $\what$, and to compare it to the state-of-the-art method (the single-channel online band-pass filter). The 60-40 division was chosen arbitrarily, under the constraint that there are sufficient amounts of both training and test data.
 
 \begin{figure}
 \img[1.1]{LSM-comp}
 \captionn{Linear, SNR-maximising combinations of electrodes}{
   \panel{A} Example input and output signals.
     \Top: multi-channel LFP, $\z_t$. Light-blue vertical band: a reference SWR segment.
-    \Bottom: output envelopes $\n_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 80\%. Green triangles: correct detections. Red triangles: incorrect detections.
+    \Bottom: output envelopes $n_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 80\%. Green triangles: correct detections. Red triangles: incorrect detections. Brackets indicate envelope range (min, max) over the entire test set.
   \panel{B} Generalised eigenvector $\what$ (i.e. the weights of the multichannel filter), for a purely spatial filter.
   \panel{C} Generalised eigenvector $\what$ for a spatiotemporal filter with a one-sample delay.}
 \label{fig:LSM-comp}
@@ -27,6 +27,6 @@ These latency distribution plots are divided over two panels so that their entir
 \label{fig:LSM-PR-and-latency}
 \end{figure}
 
-This effect, where the sharp wave is discernible before the ripple, results in faster detections when the detection \emph{does} fall within the reference segment. When all 468 SWR events from the training set are analysed, we find a large improvement in detection latency: at thresholds where both methods detect 80\% of these reference SWR segments, the median absolute detection latency drops from 24 ms for the state-of-the-art online band-pass filter to 12 ms for the GEVec-based filter. The relative detection latency drops by 32.5 percentage points, from 58.1\% to 25.6\%. Similar latency improvements are found for other recall and precision values: see \cref{fig:LSM-PR-and-latency}.
+This effect, where the sharp wave is discernible before the ripple, results in faster detections when the detection \emph{does} fall within the reference segment. When all 468 SWR events from the test set are analysed, we find a large improvement in detection latency: at thresholds where both methods detect 80\% of these reference SWR segments, the median absolute detection latency drops from 24 ms for the state-of-the-art online band-pass filter to 12 ms for the GEVec-based filter. The relative detection latency drops by 32.5 percentage points, from 58.1\% to 25.6\%. Similar latency improvements are found for other recall and precision values: see \cref{fig:LSM-PR-and-latency}.
 
 This strong improvement in detection latency trades off with an increase in false positives, as was already observed qualitatively. At the aforementioned sensitivity of 80\%, the state-of-the-art method has a precision of 94\%, whereas the GEVec-based method has a precision of only 63\% (i.e. more than a third of detected events are classified as false positives). This strong decrease in precision is true over the entire $PR$-curve: see \cref{fig:LSM-PR-and-latency}.
