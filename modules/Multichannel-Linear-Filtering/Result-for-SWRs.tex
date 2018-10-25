@@ -1,6 +1,8 @@
 \section{Result for SWR detection}
 
-We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$, and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate this filter $\what$, and to compare it to the state-of-the-art method (the single-channel online band-pass filter). The 60-40 division was chosen arbitrarily, under the constraint that there are sufficient amounts of both training and test data.
+We divided the 34-minute long LFP recording into two datasets. The first 60\% was used as training data, to calculate the covariance matrices $\Rss$ and $\Rnn$, and to calculate from these the optimal linear combination of channels $\what$, as described in the preceding sections. The remaining 40\% was used to evaluate this filter $\what$, and to compare it to the state-of-the-art method (the single-channel online band-pass filter).\footnotemark{}
+
+\footnotetext{The 60-40 division was chosen arbitrarily -- under the constraint that there are sufficient amounts of both training and test data.}
 
 \begin{figure}
 \img[1.1]{LSM-comp}
