@@ -1,0 +1,13 @@
+\subsection{Choosing the number of delays}
+
+\begin{figure}
+\img{searcharray}
+\captionn
+{Performance of the GEVec-based SWR detector, for different delay line lengths}
+{At the chosen 1000 Hz sampling rate, each delay corresponds to 1 ms. The red baseline is the state-of-the-art SWR detector. Detection latency is specified as a fraction of the duration of the corresponding SWR event, and is evaluated at the threshold where each detector reaches its maximum $F_1$-score. In the latency panel, bold lines and shaded areas indicate the median and the interquartile range of the latency distributions, respectively.}
+\label{fig:num-delays}
+\end{figure}
+
+Adding more delays improves detection accuracy even further -- up to a peak \emph{max $F_1$} of 93\% at about eleven delays. (This corresponds to eleven milliseconds, or approximately half a ripple phase). Detection latency also increases with increasing number of delays, but only slightly, always staying well below the state-of-the-art latency. Like the \emph{max $F_1$} score, latency stagnates after about eleven delays. Further, we note that the latency distributions of the GEVec-based detectors have a lower spread than those of the state-of-the-art detector.
+
+There is thus a slight tradeoff to be made when choosing the number of delays for a GEVec-based detector: using more delays yields detectors that are more accurate, but also slightly slower. Given that the decrease in speed is minor (about five percentage-points), we recommend choosing the amount of delays that maximizes detection accuracy. In this analysis, this optimal point is reached at an eleven milliseconds-long delay line.
