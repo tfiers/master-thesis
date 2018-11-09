@@ -1,11 +1,11 @@
-\chapter{Generalized eigenvectors maximise signal-to-noise}
+\chapter{Generalized eigenvectors maximize signal-to-noise}
 \label{apx:GEvecs-maximise-SNR}
 
-In this appendix we show that the solution $\what$ to \cref{eq:argmax_R} is equivalent to the first generalized eigenvector $\w_1$ of the ordered symmetric, matrix pair $(\Rss, \Rnn)$ (as defined in \cref{sec:generalized-eigenproblem}).
+In this appendix, we show that the weight vector that maximizes the ratio of signal to noise variance (i.e. the solution $\what$ to \cref{eq:argmax_R}) is equivalent to the first generalized eigenvector $\w_1$ of the ordered pair of covariance matrices $(\Rss, \Rnn)$ (as defined in \cref{sec:generalized-eigenproblem}).
 
-\Cref{eq:argmax_R} is a quotient of quadratic forms, namely the so called ``generalized Rayleigh quotient'' of $(\Rss, \Rnn)$. In the following, we denote this matrix pair with $(\A,\B)$, for lighter notation.
+This ratio of variances in \cref{eq:argmax_R} is a quotient of quadratic forms, namely the so called ``generalized Rayleigh quotient'' of $(\Rss, \Rnn)$.
 
-The generalized Rayleigh quotient of a non-zero vector $\w \in \reals^N$ and the ordered matrix pair $(\A,\B)$ is thus the scalar $r(\w)$ defined as:
+Formally, the generalized Rayleigh quotient of a non-zero vector $\w \in \reals^N$ and the ordered, symmetric matrix pair $(\A,\B)$ is the scalar $r(\w)$ defined as:
 %
 \begin{equation}
 \label{eq:Rayleigh}
@@ -19,7 +19,7 @@ We must then prove the following:
 
 \subsection{Theorem}
 
-The first generalized eigenvector $\w_1$ of $(\A,\B)$, which corresponds to the largest generalized eigenvalue $\lambda_1$, is also the vector $\what$ that maximises the generalized Rayleigh quotient $r(\w)$.
+The generalized eigenvector $\w_1$ corresponding to the largest generalized eigenvalue $\lambda_1$ of $(\A,\B)$, is also the vector $\what$ that maximises the generalized Rayleigh quotient $r(\w)$ of $(\A,\B)$.
 
 
 
@@ -56,7 +56,7 @@ This is the generalized eigenvalue/eigenvector definition (\cref{eq:generalized-
 
 We have thus shown that if $\what$ is a maximum of $r(\w)$, that it is an eigenvector of $(\A,\B)$, with $r(\what)$ its corresponding eigenvalue.
 
-As the second step, we now show that $r(\what)$ is the \emph{largest} eigenvalue of $(\A,\B)$. We follow the reasoning of \cite[p. 204]{Trefethen1997}, who prove a related result for the ordinary Rayleigh quotient.
+As the second step, we now show that $r(\what)$ is the \emph{largest} eigenvalue of $(\A,\B)$. We follow the reasoning of \citeauthor{Trefethen1997}, who prove a related result for the ordinary Rayleigh quotient \cite[p. 204]{Trefethen1997}.
 
 We will rewrite the generalized Rayleigh quotient $r(\w)$ by writing the arbitrary vector $\w$ as a linear combination of the generalized eigenvectors $\w_i$ of $(\A,\B)$: $\w = \sum_i c_i \w_i$. Then:
 \begin{align*}
@@ -67,10 +67,10 @@ r(\w) &= \frac{\qty(\sum_i c_i \w_i)^T \A \qty(\sum_i c_i \w_i)}
               {\sum_i c_i^2 \w_i^T \B \w_i} \\[1em]
               % 
       &= \frac{\sum_i c_i^2 \lambda_i \w_i^T \B \w_i}
-              {\sum_i c_i^2 \w_i^T \B \w_i}
+              {\sum_i c_i^2 \w_i^T \B \w_i}.
 \end{align*}
 
-generalized eigenvectors are defined up to a scaling factor. We may therefore define our $\w_i$ to be scaled such that $\w_i^T \B \w_i = 1$. We then have:
+Generalized eigenvectors are defined up to a scaling factor. We may therefore define our $\w_i$ to be scaled such that $\w_i^T \B \w_i = 1$. We then have:
 \[
 r(\w) = \frac{\sum_i c_i^2 \lambda_i}{\sum_i c_i^2}.
 \]

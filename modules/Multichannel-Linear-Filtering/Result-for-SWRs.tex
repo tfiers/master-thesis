@@ -10,8 +10,8 @@ We divided the 34-minute long LFP recording into two datasets. The first 60\% wa
   \panel{A} Example input and output signals.
     \Top: multi-channel LFP, $\z_t$. Light-blue vertical band: a reference SWR segment.
     \Bottom: output envelopes $n_t$, for different filtering algorithms. Dashed horizontal lines: detection thresholds, chosen so that each algorithm reaches a recall value of 80\%. Green triangles: correct detections. Red triangles: incorrect detections. Brackets indicate envelope range (min, max) over the entire test set.
-  \panel{B} Generalised eigenvector $\what$ (i.e. the weights of the multichannel filter), for a purely spatial filter.
-  \panel{C} Generalised eigenvector $\what$ for a spatiotemporal filter with a one-sample delay.}
+  \panel{B} Generalized eigenvector $\what$ (i.e. the weights of the multichannel filter), for a purely spatial filter.
+  \panel{C} Generalized eigenvector $\what$ for a spatiotemporal filter with a one-sample delay.}
 \label{fig:LSM-comp}
 \end{figure}
 
@@ -22,7 +22,7 @@ It is clear that the GEVec filter output indeed has high power during SWR events
 We also notice some premature detections (\cref{fig:GEVec-extract-a,fig:GEVec-extract-c}), where the sharp wave -- and thus also the GEVec filter output -- already has high power before the corresponding ripple has started. The GEVec detection then happens before the start of the reference SWR-segment, which is based on ripple power. These early detections thus count (arguably unfairly so) as false positives, under the evaluation scheme that we use.
 
 \begin{figure}
-\img{PR-and-latency}
+\img[0.94]{PR-and-latency}
 \captionn[]{Sensitivity, precision \& latency tradeoffs, }{for different linear filters \& for a range of thresholds.\newline
 Each threshold setting for an algorithm corresponds to a point on the precision-recall curve in the bottom-left panel, and to a distribution of relative detection latencies. The median and interquartile range of this distribution are plotted in the top-left or bottom-right panel (as a point of the bold curve, and a slice of the shaded band, respectively).\newline
 These latency distribution plots are divided over two panels so that their entire range can be clearly visualized, both for the low recall -- high precision regime as for the high recall -- low precision regime. The cutoff is made at the point where recall equals precision (AKA the $\max{F_1}$ point), marked with shaded black circles.}

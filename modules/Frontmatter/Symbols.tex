@@ -12,8 +12,8 @@
 \notation{\A}{Matrices are denoted in uppercase boldface.}
 \notation{\ev{\cdot}}{Time-average of a signal.}
 \notation{\had}{Elementwise multiplication. (``Hadamard product'').}
-\notation{\sigmoid(\cdot)}{Sigmoid `squashing' function. $\sigmoid(x) = \frac{1}{1 + \exp(-x)} \qc \in (0, 1)$.}
-\notation{\tanh(\cdot)}{Hyperbolic tangent. $\tanh(x) = 2\ \sigmoid(x) - 1 \qc \in (-1, 1)$.}
+\notation{\sigmoid(\cdot)}{Sigmoid `squashing' function, $\reals \rightarrow (0, 1)$. $ \ \sigmoid(x) = \frac{1}{1 + \exp(-x)}$.}
+\notation{\tanh(\cdot)}{Hyperbolic tangent, $\reals \rightarrow (-1, 1)$. $ \ \tanh(x) = 2\, \sigmoid(x) - 1$.}
 \end{deflist}
 
 
@@ -32,9 +32,9 @@
 \section*{Measures \& parameters}
 
 \begin{deflist}
+\notation{T}{Detection threshold applied to the envelope $n_t\,$, $T \in (\min{n_t},\ \max{n_t})$. Each threshold $T$ yields a different $P$-value, $R$-value, $F_1$-value, etc.}
 \notation{P}{Precision. Also known as positive predictive value. The fraction of correct detections versus all detections.}
 \notation{R}{Recall. Also known as sensitivity, hit rate, or true positive rate. The fraction of detected reference SWR segments versus all reference SWR segments.}
 \notation{F_\beta}{F-score: weighted harmonic mean of recall and precision. $F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}$. Measures detection performance ``for a user who attaches $\beta$ times as much importance to recall as to precision.'' \cite{Rijsbergen1979}}
 \notation{F_1}{F-score where recall and precision are weighted equally. For the common case where the $P R$-curve is concave, $F_1(T)$ is maximal when $P = R$ ($= F_1$).}
-\notation{T}{Detection threshold applied to the envelope $n_t\,$, $T \in (\min{n_t},\ \max{n_t})$. Each threshold $T$ yields a different $P$-value, $R$-value, $F_1$-value, etc.}
 \end{deflist}

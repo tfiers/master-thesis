@@ -1,0 +1,25 @@
+\subsection{Selecting channels}
+
+Many CA1 LFP recordings are not made with multichannel probes, but rather with one or more tetrodes. It is therefore relevant to ask how GEVec-based detectors perform on these types of recordings. We can approximate this setting with our current multichannel probe recording, by only using one or a few channels.
+
+Each such selection of input channels, in combination with a certain number of delays, yields a different GEVec-based SWR detector. We evaluate and compare these detectors using the test data set, analyzing both accuracy (\cref{fig:PR-searchgrid}) and latency (\cref{fig:Latency-searchgrid}).
+
+
+\begin{figure}
+\img[1.16]{PR-searchgrid}
+\captionn[]{Accuracy of GEVec-based SWR detectors, }{for different combinations of active input channels and number of delays. Active input channels are marked in solid black on a schematic of the probe tip. (Height of schematic: 687 \si{\micro\metre}). The percentage and background color of each panel indicate the maximum $F_1$ value obtained for that GEVec-based SWR detector. Each panel includes the same baseline from the state-of-the-art SWR detector, in gray.}
+\label{fig:PR-searchgrid}
+\end{figure}
+
+\begin{figure}
+\img[1.16]{Latency-searchgrid}
+\captionn{Latency of GEVec-based SWR detectors}{See \cref{fig:PR-searchgrid} for legend.}
+\label{fig:Latency-searchgrid}
+\end{figure}
+
+
+We note some general trends. Using no extra delays results in low accuracy detectors, no matter which channels are included (top row of \cref{fig:PR-searchgrid}). For most input channel combinations, the tradeoff in number of delays observed in the previous section is preserved: using more delays increases accuracy (up to a certain point), while also increasing detection latency.
+
+The weight visualizations of \cref{fig:LSM-comp} show a relatively high weight for the stratum radiatum / sharp wave channels. Using only one such channel as input results in low accuracy detectors however, no matter how many delays are used (second column of \cref{fig:PR-searchgrid,fig:Latency-searchgrid}). Using four such channels (second to last row) results in detectors with an accuracy approaching, but not reaching, that of the state-of-the art ripple-based detector when a sufficient number of delays is used. Interestingly, none of these four channels (numbers 2 to 5) display any noticeable ripple activity (\panelref{fig:LSM-comp}{A}).
+
+% continue: single-channel pyr / ripple.
