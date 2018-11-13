@@ -1,0 +1,31 @@
+\chapter{SWR detection in the literature}
+\label{apx:SWR-detection-literature}
+
+We gathered a representative sample of research papers that use automated offline sharp wave-ripple detection. This appendix quotes these papers; specifically their description of the SWR detection procedure. Emphasis is added.
+
+
+\subsection{\authoryear{Nadasdy1999}}
+
+``For the extraction of sharp-wave (SPW) ripple events during sleep, the wide-band recorded data were bandpass filtered digitally (\textbf{150–250 Hz}). The power (\textbf{root mean square}) of the filtered signal was calculated, and the beginning, peak, and end of individual ripple episodes were determined. The threshold for ripple detection was set to \textbf{7 SDs above the background mean} power (Csicsvari et al., 1999 \cite{Csicsvari1999}).'' \cite{Nadasdy1999}
+
+
+\subsection{\authoryear{Csicsvari2000}}
+
+``\emph{Detection of SPW-Associated Fast Ripples}: The procedures described here were identical to those described earlier (Csicsvari et al., 1999b \cite{Csicsvari1999a}). The wide-band (1–5 kHz) recorded data was digitally band-pass filtered (\textbf{80–250 Hz}), and the power (\textbf{root-mean-square}) of the filtered signal was calculated for each electrode. The mean and standard deviation (SD) of the power signal were calculated to determine the detection threshold. Oscillatory epochs with a power of \textbf{one} or more \textbf{SD above the mean} were detected. The beginning and the end of oscillatory epochs were marked at points where the power fell below \textbf{0.5 SD}. Theta periods, detected by using the theta-delta power ratio (Csicsvari et al., 1999a \cite{Csicsvari1999}), were excluded from the analysis.'' \cite{Csicsvari2000}
+
+
+\subsection{\authoryear{Behrens2005}}
+
+``For ripple detection, raw data were filtered with a Spike 2 software band-pass filter of \textbf{40--400 Hz} (threshold: \textbf{4--6} times the s.d. of \textbf{eventless baseline noise}). For sharp wave detection, recordings were low-pass filtered at 20 Hz.'' \cite{Behrens2005}
+
+
+\subsection{\authoryear{Sadowski2016}}
+
+``Ripples were detected offline in the LFP recorded on one CA1 channel. Raw LFP signal was filtered between \textbf{120 and 250 Hz}, and deflections in the ripple \textbf{power envelope} greater than \textbf{5 SDs from the mean} were classified as ripple events. Ripple start times were defined locally as when ripple power exceeded \textbf{2 SDs}. Samples of raw LFP and detected ripple times were compared manually to verify detection fidelity.'' \cite{Sadowski2016}
+
+
+\subsection{\authoryear{Dutta2018}}
+
+``Post-recording, ripple events were defined on tetrodes that displayed characteristics of the CA1 area of the hippocampus. Specifically, the recorded LFP in one of the channels of the selected tetrode (same one subject to online detection for our realtime analysis) first had a digital reference subtracted away. This signal was then LFP band filtered with a 400 Hz low-pass infinite impulse response (IIR) filter (from Trodes). Afterwards the signal was decimated and ripple band filtered (\textbf{150–250 Hz}) with a \textbf{25 tap} finite impulse response (\textbf{FIR}) filter. Ripple band filtering was done using a forward and a time-reversed path, resulting in a net \textbf{zero group delay} (time shift from filtering). The instantaneous power of the ripple band filtered signal was then calculated via a \textbf{Hilbert Transform} and further \textbf{smoothened with a Gaussian kernel} with a \textbf{4 ms standard deviation}. Ripple events were detected as times when z-score of the smoothened power signal signal exceeded a threshold of \textbf{3 z-units} for \textbf{at least 15 ms}. The canonical ripple epochs were defined as the time points from which the processed signal \textbf{returned down to the mean before and after threshold crossings} \cite{Cheng2008,Kemere2013}.
+
+In cases when multiple electrodes (typically channels on different tetrodes) are available for ripple detection, a different canonical definition is required. Ripples were initially defined using as above for each electrode. A canonical multichannel ripple was defined as one which is simultaneously detected on each electrode (two in our analysis). The multichannel ripple epoch is defined as the union of the detected single-channel ripple epochs, i.e., the start of the earliest ripple detected and to end with bound of last ripple detected. As such, we obtain a conservative ripple detection latency estimate while covering the entire span of the time the LFP is in a high ripple band power state. We reanalyzed our data with the canonical ripples being defined on different channels and tetrodes with a 300 tap bandpass FIR filter allowing 1\% “ripple” in the passband with −30 dB suppression in the stopband but our results and subsequent conclusions remained consistent.'' \cite{Dutta2018}
