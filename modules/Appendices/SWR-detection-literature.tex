@@ -1,4 +1,38 @@
 \chapter{SWR detection in the literature}
+
+
+
+\section{Frequency bands}
+
+\begin{table}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Source                     & Theta (Hz) & High gamma (Hz) & Ripple (Hz)  \\
+\midrule
+\citefull{Nadasdy1999}     &            &                 & 150 -- 250  \\
+\citefull{Csicsvari2000}   &            &                 & 80 -- 250   \\
+\citefull{Behrens2005}     &            &                 & 40 -- 400   \\
+\citefull{OKeefe2007}      & 6 -- 12    & 30 -- 100       & 100 -- 200  \\
+\citefull{Ego-Stengel2009} &            &                 & 100 -- 400  \\
+\citefull{Buzsaki2015}     & 6 -- 10    & 100+            & 110 -- 200  \\
+\citefull{Colgin2016}      & 6 -- 12    & 60 -- 100       & 150 -- 200  \\
+\citefull{Sadowski2016}    &            &                 & 120 -- 250  \\
+\citefull{Eichenbaum2017}  & 4 -- 12    & 80 -- 140       & \\
+\citefull{Dutta2018}       &            &                 & 150 -- 250  \\
+\citefull{Olafsdottir2018} & 6 -- 12    &                 & 140 -- 250  \\
+\midrule
+\texttt{fklab}             & 6 -- 12    & 60 -- 140       & 140 -- 225  \\
+L2 recording               & 5 -- 10    &                 & 100 -- 200  \\
+\bottomrule
+\end{tabular}
+\captionn[, ]{Frequency bands of hippocampal LFP events}{according to different sources (both original research papers and literature reviews). When the source does not make a distinction between high and low gamma, the full gamma range is given. Note that \citeauthor*{Behrens2005} considered artificially induced SWR's in ex-vivo hippocampus slices. `\texttt{fklab}' refers to the default frequency bands used in the data-analysis software used in the Kloosterman lab. The last row refers to the dataset analysed in this thesis.}
+\label{tab:bands}
+\end{table}
+
+
+
+\clearpage
+\section{Detection algorithms}
 \label{apx:SWR-detection-literature}
 
 We gathered a representative sample of research papers that use automated offline sharp wave-ripple detection. This appendix quotes these papers; specifically their description of the SWR detection procedure. Emphasis is added.

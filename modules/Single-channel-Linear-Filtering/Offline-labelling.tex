@@ -9,7 +9,7 @@ SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what the
 
 
 
-\subsection{Automated offline ripple detection}
+\subsection{Overview of offline ripple detection}
 
 The main steps of the offline SWR detection algorithm that most studies use -- such as the ones cited in \cref{apx:SWR-detection-literature}, and this thesis itself -- can be summarized as follows:
 \begin{enumerate}
@@ -25,33 +25,65 @@ The main steps of the offline SWR detection algorithm that most studies use -- s
 
 \begin{figure}
 \includegraphics{figures/107_2--107_8}
-\captionn{Steps for automated, offline SWR labelling}{See text for details. Each vertical scalebar indicates the same voltage range. $H[o_t]$ denotes the Hilbert transform of $o_t$. Note its phase lag of 90\si{\degree} with respect to $o_t$. In the second panel from the bottom, note the two threshold crossings of $T\low$ (marked with black dots) that did not result in a ripple segment, because the second threshold $T\high$ was not reached. The distribution of the envelope $n_t$ was estimated using the entire dataset (and not just the displayed time slice).}
+\captionn{Steps for automated, offline SWR labelling}{See text for details. Each vertical scalebar indicates the same voltage range. $H[o_t]$ denotes the Hilbert transform of $o_t$. Note its phase lag of 90\si{\degree} with respect to $o_t$. In the second panel from the bottom, note the two threshold crossings of $T\low$ (marked with black dots) that did not result in a ripple segment, because the second threshold $T\high$ was not reached. The distribution of the envelope $n_t$ was estimated using the entire dataset (and not just the displayed fragment).}
 \label{fig:offline-steps}
 \end{figure}
 
 
-The following few subsections describe these detection steps in more detail, and compare our method and parameter choices with those made in the literature.
 
-If not mentioned otherwise, our parameter choices were made as follows:
+\subsection{Validating parameter choices}
+
+Some of the above steps have free parameters (such as the ripple frequency band used for filtering, or the threshold multipliers $\alpha\high$ and $\alpha\low$). If not mentioned otherwise, our parameter choices were made as follows:
+
 In a first pass of the offline detection algorithm, ripples were detected using a very broad-band filter and a low detection threshold. This ensured that all `true' SWR's were included in the detected events set (in addition to many spurious detections).
 
-Next, five neuroscientists were independently asked to decide for each detected event whether it was an SWR event or not. (This was done through a custom-made web app, an example view of which is depicted in \cref{fig:labelface-UI}). Only the events that were labelled as an SWR by at least three neuroscientists were retained.
+Next, five neuroscientists were independently asked to decide for each detected event whether it was an SWR event or not. This was done through a custom-made web app, an example screen of which is depicted in \cref{fig:labelface-UI}. Note that the labellers could factor multiple recording channels into their decision, including stratum radiatum channels displaying sharp wave activity. Only the events that were labelled as an SWR by at least three neuroscientists were retained.
 
-Lastly, when setting a parameter of the final offline ripple detection algorithm, the algorithm's output was compared with the decisions made by the neuroscientists. The parameter was then adjusted until the output of the algorithm matched the neuroscientist decisions reasonably well.
+Lastly, when setting the parameters of the final offline ripple detection algorithm, the algorithm's output was compared to the decisions made by the neuroscientists. The parameters were then adjusted until the output of the algorithm matched the neuroscientists' decisions reasonably well.
 
+The following subsections describe the detection steps in more detail, and compare our choices of methods and parameters to those made in the literature.
 
 
 \subsection{Band-pass filter}
 
-The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear, time-invariant filter with zero output lag. The frequency band was chosen based on t
+The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear, time-invariant filter with zero output lag.
+% todo: mention downsampling
+
+Many other studies use a higher left bound, of about 140--150 Hz (see \cref{tab:bands}). Using such a high bound however resulted in ripples that went undetected (even at low detection thresholds), although they were convicingly marked as SWR's by the neuroscientists.
+
+The band-pass filter was designed using the windowed-sinc method, with a Kaiser window (using SciPy's \texttt{firwin} and \texttt{kaiserord} functions) \cite{Roelandts2016,Jones2018a}. The transition width was chosen to be 10\% of the bandwidth (i.e. 10 Hz), and the attenuation to be 40 dB, resulting in an FIR filter of order 150 (at a 1000 Hz sampling frequency).
+
+The filter was applied bidirectionally, resulting in a zero-lag output, and a total attenuation of 80 dB. \Cref{fig:offline-steps} shows an example of the filter output in green.
+
+We cannot compare our filtering method with the literature, as most studies do not mention such information.
 
 
 
 \subsection{Envelope}
 
+Next, the instantaneous envelope $u_t$ of the filter output $o_t$ was calculated using its Hilbert transform\footnotemark{} $H[o_t]$:
+%
+\begin{equation}
+\label{eq:Hilbert_envelope}
+u_t = \sqrt{o_t^2 + H[o_t]^2},
+\end{equation}
+
+\footnotetext{To be precise, $H$ is a discrete approximation to the continuous Hilbert transform $\mathcal{H}$. There are multiple ways to make a discrete approximation to $\mathcal{H}$ \cite{Oppenheim2009}. Most of them make use of the discrete Fourier transform, which makes computing $H$ an efficient operation. We used SciPy's \texttt{hilbert} function (which, confusingly, does not return the Hilbert transform of its input, but rather its analytical signal), and zero-padded the input signal to the nearest power of 2 or 3 to benefit optimally from the fast Fourier transform algorithm.}
+
+The Hilbert transform delays each frequency component of a signal by 90\si{\degree} \cite{Lyons2010} (see the gray signal in \cref{fig:offline-steps}). This means that the envelope of a narrowband signal such as $o_t$ can be easily obtained as the magnitude of the so called `analytic signal' $o_t + j H[o_t]$, as in \cref{eq:Hilbert_envelope}.\footnotemark{}
+
+\footnotetext{To see why, consider a local approximation of the narrowband signal $o_t$ by a sinusoid $a \cos{\omega t}$. Its Hilbert transform is then $a \sin{\omega t}$. From \cref{eq:Hilbert_envelope}, the envelope $u_t$ will be locally approximated by the magnitude of the original signal: $u_t = \sqrt{(a \cos{\omega t})^2 + (a \sin{\omega t})^2} = \abs{a}$.}
+
+After calculating $u_t$, a final, smoothed envelope $n_t$ was obtained by convolving $u_t$ with a Gaussian kernel ($\sigma$ = 7.5 ms, support radius of $4 \sigma$). Compare the blue ($u_t$) and the red signal ($n_t$) in \cref{fig:offline-steps}.
+
+Other studies (such as \cite{Nadasdy1999} and \cite{Csicsvari2000}) use a ``root-mean-square'' approach. In these studies, presumably, the square $o_t^2$ of the bandpass-filtered signal is smoothed using some kernel (of unspecified type and bandwidth) to obtain a ``mean-square'' signal, of which then the square root is taken.
+
 
 
 \subsection{Thresholds}
+
+
+\subsection{Segment post-processing}
 
 
 
