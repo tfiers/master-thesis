@@ -99,23 +99,17 @@ The detection multiplier $\beta\high$ varies wildly between studies: from 1, ove
 
 \footnotetext{Threshold multipliers cannot be compared precisely: a different background `noise' level or ripple incidence rate will result in different $\mean{n_t}$ and $\std(n_t)$ values. This means that $\beta\high$ needs to change to maintain an equal threshold $T\high$ -- which is necessary when the ripples to be detected have not changed their magnitude.}
 
-To roughly compare our thresholds to those in the literature, we calculate the $\beta$ multipliers corresponding to our chosen $\alpha$ values. Given that our dataset has a mean envelope magnitude of 22.3 \uV{} and a standard deviation of 22.9 \uV{}, we find $\beta\high = 3.63$ and $\beta\low = 1.70$. These values fall near the center of those reported in the literature (see \cref{apx:SWR-detection-literature}).
+To compare our thresholds to those in the literature, we calculate the $\beta$ multipliers corresponding to our chosen $\alpha$ values. Given that our dataset has a mean envelope magnitude of 22.3 \uV{} and a standard deviation of 22.9 \uV{}, we find $\beta\high = 3.63$ and $\beta\low = 1.70$. These values fall near the center of those reported in the literature (see \cref{apx:SWR-detection-literature}).
 % todo: calculate ripple magnitude and background magnitude
-
 
 
 
 \subsection{Segment post-processing}
 
+Finally, two add-hoc rules were applied to the automatically detected ripple segments. First, segments with only a small gap between them (of less than 10 ms) were joined together. Then, segments of too short a duration (less than 25 ms) were eliminated.
+
+This step is rarely done in other studies. An exception is e.g. \cite{Dutta2018}, were segments shorter than 15 ms were eliminated.
 
 
-% Decision: 
-% - details in text, or in figure.
-% - put numbers in figure caption, see if it works, if not, move to text.
-% What is it?
-% - smoothing kernel & bw
-% - Hilbert transform, it's magnitude, kernel, and phase shift effect
-% - bandpass filter type, band, order, freq response, zero-lag
-% - 
 
-% standardized data
+% todo: standardized data
