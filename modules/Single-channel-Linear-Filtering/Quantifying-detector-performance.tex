@@ -1,4 +1,87 @@
 \sectionp{4p}{Quantifying detector performance}
 \label{sec:eval}
 
-We often want to summarize the accuracy of a detector in a single number. We choose the maximum $F_1$-score of the detector as this number.
+\Cref{sec:offline} described how we annotated our dataset with `reference' SWR segments, using an offline algorithm. These reference segments can now be used to benchmark the performance of an online SWR detection algorithm. This section describes how this is done.
+
+
+
+\subsection{Generating online detections}
+
+Each online SWR detection algorithm studied in this thesis generates an output envelope $n_t$, where samples $n_t$ of larger magnitude denote a higher belief that the corresponding input sample $\z_t$ is part of an SWR event. (See \panelref{fig:LSM-comp}{A} for three example output envelopes).
+
+These output envelopes $n_t$ can be converted to a discrete set of detection times by applying a threshold $T$ to the envelope. Additionally, we require a certain minimum duration between online detections (which we will call the ``lockout time'', $L$). The set $D$ of detection times $t_d$ (with $d = 0, 1, \tdots$) is then:
+\begin{equation}
+D = \{ \ t_d \mid \quad t_d > t_{d-1} + L \quad 
+                  \text{and} \quad n_{t_d} > T \ \}.
+\end{equation}
+
+
+In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time of $L = $ 34 ms.
+% The threshold $T$ on the other hand was not set to a fixed value. Each threshold will yield [more on this later].
+
+
+
+\subsection{Quantifying detector accuracy}
+
+In the following, we denote reference SWR segments as the closed intervals $s_r = [ t\start_r,\ t\eend_r ]$ (with $r = 0, 1, \tdots$). The set of all reference segments is denoted by $S = \{ s_r \}$.
+
+To benchmark the performance of an online SWR detection algorithm (at a certain threshold $T$), we compare its detections $D$ with the offline reference segments $S$, and divide both sets into two subsets each: namely detected versus undetected reference segments, and correct versus incorrect detections. Formally:
+%
+\begin{align}
+D\correct    &= \{ t_d \mid \exists s_r : t_d \in s_r \}   \\
+D\incorrect  &= D \setminus D\correct                      \\
+S\detected   &= \{ s_r \mid \exists t_d : t_d \in s_r \}   \\
+S\undetected &= S \setminus S\detected,
+\end{align}
+%
+i.e. correct online detections are contained within a reference segment, and detected reference segments contain at least one online detection. \Panelref{fig:LSM-comp}{A} shows some example correct and incorrect detections (green and red triangles, respectively).
+
+Next, the number of detected reference segments is counted, and compared to the total number of reference segments. This fraction is the recall $R$ of the SWR detector (also known as sensitivity, hit rate, or true positive rate). Formally:
+\begin{equation}
+R = \frac{\abs{S\detected}}{\abs{S}}
+\end{equation}
+
+Similarly, the number of correct detections is counted, and compared to the total number of detections. This fraction is the precision $P$ of the SWR detector (also known as the positive predictive value):
+\begin{equation}
+P = \frac{\abs{D\correct}}{\abs{D}}
+\end{equation}
+
+Its opposite is the false discovery rate (FDR), which counts the number of so called ``false positive'' detections:
+\begin{equation}
+FDR = 1 - P = \frac{\abs{D\incorrect}}{\abs{D}}
+\end{equation}
+
+Each detection threshold yields a different $(P, R)$-combination. This is often a trade-off: higher thresholds yield more precise detectors (less false positive detections), at the cost of a lower sensitivity (more missed reference SWR segments). Conversely, lower thresholds generally yield more sensitive but also less precise SWR detectors.
+
+This is why the performance of a detection algorithm is often given for a \emph{range} of thresholds, instead of for only a single threshold: different users of the SWR detection algorithm may prefer different trade-offs between latency and precision. (One user might require a minimal amount of false detections, for example, while another may want to detect as many SWR events as possible, without caring about false detections). When precision and recall are plotted against each other for a range of different thresholds, the result is a so called ``$PR$-curve'' (see the lower-left panel of \cref{fig:LSM-PR-and-latency} for an example). Generally, higher quality detectors have $PR$-curves that draw nearer to the top-right $(1, 1)$-corner.
+
+The precision and recall values for a given threshold can be summarized in a single number: the so called $F$-score. It is defined as:
+\begin{equation}
+F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}.
+\end{equation}
+It is the mean of recall and precision (more precisely: their harmonic mean, as precision and recall are ratio's), with recall weighted by $\beta^2$. It measures detection performance ``for a user who attaches $\beta$ times as much importance to recall as to precision.'' \cite{Rijsbergen1979}
+
+For example, the $F_1$-score weighs recall and precision equally. When we want to summarize the accuracy of a detector in a single number, we will often choose the maximum $F_1$-score of the detector (over the entire threshold range) as this number.
+
+A note on terminology: we will refer to the precision and sensitivity performance of a detector often simply as the `accuracy' of the detector. This is a shorthand, and does not refer to the technical definition of accuracy.\footnotemark{}
+
+\footnotetext{Technically, accuracy is the sum of true positive and true negative cases, divided by the total number of cases. This concept does  does not readily apply to SWR detection, as there is no straightforward definition of "true negative" cases here. Only false positives ($D\incorrect$), true positives ($D\correct$ and $S\detected$), and false negatives ($S\undetected$) are clearly defined.}
+
+
+
+
+\subsection{Quantifying detector latency}
+
+Besides counting how many SWR segments were detected, we are also interested in how early they were detected. For each detected reference segment $s_r = [ t\start_r,\ t\eend_r ]$, we note the first online detection $t_d$ contained within it (reference segments may contain multiple online detections).
+
+The absolute detection latency $AL_r$ of this SWR segment is then defined as:
+\begin{equation}
+AL_r = t_d - t\start_r 
+\end{equation}
+
+We also define a detection latency, $RL$, relative to the duration of the SWR segment in question:
+\begin{equation}
+RL_r = \frac{AL_r}{t\eend_r - t\start_r} 
+\end{equation}
+
+Whereas an SWR detector yields only a single precision and a single recall value for a given threshold, it yields two entire sets of absolute and relative detection latencies (namely one absolute and one relative latency value for each detected reference segment). This is why we often summarize latency performance using the median of one of these sets. When not otherwise specified, the median latency or the latency distribution of the threshold with maximal $F_1$-score is reported.

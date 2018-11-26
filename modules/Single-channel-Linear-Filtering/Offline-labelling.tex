@@ -45,7 +45,7 @@ Lastly, when setting the parameters of the final offline ripple detection algori
 The following subsections describe the detection steps in more detail, and compare our choices of methods and parameters to those made in the literature.
 
 
-\subsection{Band-pass filter}
+\subsection{Band-pass filter design}
 
 The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear, time-invariant filter with zero output lag.
 % todo: mention downsampling
@@ -56,11 +56,11 @@ The band-pass filter was designed using the windowed-sinc method, with a Kaiser 
 
 The filter was applied bidirectionally, resulting in a zero-lag output, and a total attenuation of 80 dB. \Cref{fig:offline-steps} shows an example of the filter output in green.
 
-We cannot compare our filtering method with the literature, as most studies do not mention such information.
+We cannot compare our filter design method with the literature, as most studies do not mention such information.
 
 
 
-\subsection{Envelope}
+\subsection{Envelope calculation}
 
 Next, the instantaneous envelope $u_t$ of the filter output $o_t$ was calculated using its Hilbert transform\footnotemark{} $H[o_t]$:
 %
@@ -81,7 +81,7 @@ Other studies (such as \cite{Nadasdy1999} and \cite{Csicsvari2000}) use a ``root
 
 
 
-\subsection{Thresholds}
+\subsection{Threshold calculation}
 
 The two detection thresholds were calculated as follows:
 \begin{align}
@@ -97,7 +97,7 @@ Most studies calculate thresholds as follows: $T\high = \mean{n_t} + \beta\high 
 
 The detection multiplier $\beta\high$ varies wildly between studies: from 1, over 3, 4, and 5, up until 7 (\cite{Csicsvari2000,Dutta2018,Behrens2005,Sadowski2016,Nadasdy1999}, respectively).\footnotemark{} It is clear that such different thresholds will give very different sensitivity-precision trade-offs for SWR detection (the lower thresholds yielding more false positive detections, and the higher thresholds yielding more missed true SWR events).
 
-\footnotetext{Threshold multipliers cannot be compared precisely: a different background `noise' level or ripple incidence rate will result in different $\mean{n_t}$ and $\std(n_t)$ values. This means that $\beta\high$ needs to change to maintain an equal threshold $T\high$ -- which is necessary when the ripples to be detected have not changed their magnitude.}
+\footnotetext{Threshold multipliers cannot be compared precisely: a different background `noise' level or ripple incidence rate will result in different $\mean{n_t}$ and $\std(n_t)$ values. This means that $\beta\high$ needs to change to maintain an equal threshold $T\high$; which is necessary when the ripples to be detected have not changed their magnitude.}
 
 To compare our thresholds to those in the literature, we calculate the $\beta$ multipliers corresponding to our chosen $\alpha$ values. Given that our dataset has a mean envelope magnitude of 22.3 \uV{} and a standard deviation of 22.9 \uV{}, we find $\beta\high = 3.63$ and $\beta\low = 1.70$. These values fall near the center of those reported in the literature (see \cref{apx:SWR-detection-literature}).
 % todo: calculate ripple magnitude and background magnitude
