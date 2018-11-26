@@ -8,6 +8,12 @@ SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what the
 `Offline' here means that SWR detection happens after the recording has been completed, and that there are thus no real-time constraints on the detection algorithm. This means that 1) there are no hard bounds on algorithm execution time, and 2) that the algorithm can use information `from the future': when deciding whether a recording sample $\z_t$ belongs to an SWR segment, it can use samples $\z_{t_f}$ in its decision that occured after $\z_t$ (i.e. $t_f > t$), instead of using only past samples $\z_{t_p}$ (where $t_p \leq t$).
 
 
+\begin{figure}
+\includegraphics{figures/107_2--107_8}
+\captionn{Steps for automated, offline SWR labelling}{See text for details. Each vertical scalebar indicates the same voltage range. $H[o_t]$ denotes the Hilbert transform of $o_t$. Note its phase lag of 90\si{\degree} with respect to $o_t$. In the second panel from the bottom, note the two threshold crossings of $T\low$ (marked with black dots) that did not result in a ripple segment, because the second threshold $T\high$ was not reached. The distribution of the envelope $n_t$ was estimated using the entire dataset (and not just the displayed fragment).}
+\label{fig:offline-steps}
+\end{figure}    
+
 
 \subsection{Overview of offline ripple detection}
 
@@ -23,40 +29,35 @@ The main steps of the offline SWR detection algorithm that most studies use -- s
 
 \Cref{fig:offline-steps} visualizes each step, as applied to a fragment of our dataset. Note that this procedure only detects ripples, and not sharp waves.\footnote{Although interestingly, the sharp wave part of sharp wave-ripples was discovered before the ripple part \cite[p. 1]{Buzsaki2015}.}
 
-\begin{figure}
-\includegraphics{figures/107_2--107_8}
-\captionn{Steps for automated, offline SWR labelling}{See text for details. Each vertical scalebar indicates the same voltage range. $H[o_t]$ denotes the Hilbert transform of $o_t$. Note its phase lag of 90\si{\degree} with respect to $o_t$. In the second panel from the bottom, note the two threshold crossings of $T\low$ (marked with black dots) that did not result in a ripple segment, because the second threshold $T\high$ was not reached. The distribution of the envelope $n_t$ was estimated using the entire dataset (and not just the displayed fragment).}
-\label{fig:offline-steps}
-\end{figure}
 
 
 
 \subsection{Validating parameter choices}
 \label{sec:validating-parameter-choices}
 
-Some of the above steps have free parameters (such as the ripple frequency band used for filtering, or the threshold multipliers $\alpha\high$ and $\alpha\low$). If not mentioned otherwise, our parameter choices were made as follows:
+Some of the above steps have free parameters (such as the ripple frequency band used for filtering, or the threshold multipliers $\alpha\high$ and $\alpha\low$). If not mentioned otherwise, our parameter choices were made as follows.
 
 In a first pass of the offline detection algorithm, ripples were detected using a very broad-band filter and a low detection threshold. This ensured that all `true' SWR's were included in the detected events set (in addition to many spurious detections).
 
-Next, five neuroscientists were independently asked to decide for each detected event whether it was an SWR event or not. This was done through a custom-made web app, an example screen of which is depicted in \cref{fig:labelface-UI}. Note that the labellers could factor multiple recording channels into their decision, including stratum radiatum channels displaying sharp wave activity. Only the events that were labelled as an SWR by at least three neuroscientists were retained.
+Next, five neuroscientists were independently asked to decide for each detected event whether it was a sharp wave-ripple or not. This was done through a custom-made web app, an example screen of which is shown in \cref{fig:labelface-UI}. Note that the labellers could factor multiple recording channels into their decision, including stratum radiatum channels displaying sharp wave activity. Only the events that were labelled as an SWR by at least three neuroscientists were retained.
 
-Lastly, when setting the parameters of the final offline ripple detection algorithm, the algorithm's output was compared to the decisions made by the neuroscientists. The parameters were then adjusted until the output of the algorithm matched the neuroscientists' decisions reasonably well.
+Finally, when setting the parameters of the eventual offline ripple detection algorithm, the algorithm's output was compared to the decisions made by the neuroscientists. The parameters were then adjusted until the output of the algorithm matched the neuroscientists' decisions reasonably well.
 
 The following subsections describe the detection steps in more detail, and compare our choices of methods and parameters to those made in the literature.
 
 
 \subsection{Band-pass filter design}
 
-The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear, time-invariant filter with zero output lag.
+The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear time-invariant filter with zero output lag.
 % todo: mention downsampling
 
-Many other studies use a higher left bound, of about 140--150 Hz (see \cref{tab:bands}). Using such a high bound however resulted in ripples that went undetected (even at low detection thresholds), although they were convicingly marked as SWR's by the neuroscientists.
+Many other studies use a higher left bound, of about 140--150 Hz (see \cref{tab:bands}). Using such a high bound in our dataset however resulted in ripples that went undetected (even at low detection thresholds), although they were convicingly marked as SWR's by the neuroscientists.
 
 The band-pass filter was designed using the windowed-sinc method, with a Kaiser window (using SciPy's \texttt{firwin} and \texttt{kaiserord} functions) \cite{Roelandts2016,Jones2018a}. The transition width was chosen to be 10\% of the bandwidth (i.e. 10 Hz), and the attenuation to be 40 dB, resulting in an FIR filter of order 150 (at a 1000 Hz sampling frequency).
 
 The filter was applied bidirectionally, resulting in a zero-lag output, and a total attenuation of 80 dB. \Cref{fig:offline-steps} shows an example of the filter output in green.
 
-We cannot compare our filter design method with the literature, as most studies do not mention such information.
+(We cannot easily compare our filter design method with the literature, as most studies do not mention anything about filter design besides the frequency band used).
 
 
 
