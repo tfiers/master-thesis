@@ -1,7 +1,7 @@
 \chapterp{4p}{Performance quantification of online SWR detectors}
-\label{sec:eval}
+\label{ch:eval}
 
-\Cref{sec:offline} described how we annotated our dataset with `reference' SWR segments, using an offline algorithm. These reference segments can now be used to benchmark the performance of an online SWR detection algorithm. This section describes how this is done.
+\Cref{ch:offline} described how we annotated our dataset with `reference' SWR segments, using an offline algorithm. These reference segments can now be used to benchmark the performance of an online SWR detection algorithm. This section describes how this is done.
 
 
 
@@ -19,10 +19,9 @@ D = \{ \ t_d \mid \quad  n_{t_d} > T  \quad
 
 
 In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time of $L = $ 34 ms.
+% Todo: lit review of lockout times (in Scraps already I think)
 
-The threshold $T$ is generally set by the user of the online SWR detection algorithm
-
-% The threshold $T$ on the other hand was not set to a fixed value. Each threshold will yield [more on this later].
+The threshold $T$ is generally set by the user of the online SWR detection algorithm (see the discussion in the next section).
 
 
 
