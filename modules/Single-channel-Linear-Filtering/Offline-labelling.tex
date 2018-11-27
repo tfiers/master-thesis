@@ -1,4 +1,4 @@
-\sectionp{3p}{Offline labelling of SWR segments}
+\chapterp{3p}{Offline labelling of SWR segments}
 \label{sec:offline}
 
 To quantify the performance of a sharp wave-ripple (SWR) detection algorithm, we need an evaluation or `test' recording, annotated with the segments of time when actual SWR events were present. This section describes how such annotations can be made, and how our data specifically was annotated.
@@ -15,7 +15,7 @@ SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what the
 \end{figure}    
 
 
-\subsection{Overview of offline ripple detection}
+\section{Overview of offline ripple detection}
 
 The main steps of the offline SWR detection algorithm that most studies use -- such as the ones cited in \cref{apx:SWR-detection-literature}, and this thesis itself -- can be summarized as follows:
 \begin{enumerate}
@@ -32,7 +32,7 @@ The main steps of the offline SWR detection algorithm that most studies use -- s
 
 
 
-\subsection{Validating parameter choices}
+\section{Validating parameter choices}
 \label{sec:validating-parameter-choices}
 
 Some of the above steps have free parameters (such as the ripple frequency band used for filtering, or the threshold multipliers $\alpha\high$ and $\alpha\low$). If not mentioned otherwise, our parameter choices were made as follows.
@@ -46,7 +46,7 @@ Finally, when setting the parameters of the eventual offline ripple detection al
 The following subsections describe the detection steps in more detail, and compare our choices of methods and parameters to those made in the literature.
 
 
-\subsection{Band-pass filter design}
+\section{Band-pass filter design}
 
 The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz, using a linear time-invariant filter with zero output lag.
 % todo: mention downsampling
@@ -61,7 +61,7 @@ The filter was applied bidirectionally, resulting in a zero-lag output, and a to
 
 
 
-\subsection{Envelope calculation}
+\section{Envelope calculation}
 
 Next, the instantaneous envelope $u_t$ of the filter output $o_t$ was calculated using its Hilbert transform\footnotemark{} $H[o_t]$:
 %
@@ -82,7 +82,7 @@ Other studies (such as \cite{Nadasdy1999} and \cite{Csicsvari2000}) use a ``root
 
 
 
-\subsection{Threshold calculation}
+\section{Threshold calculation}
 
 The two detection thresholds were calculated as follows:
 \begin{align}
@@ -91,7 +91,7 @@ T\high &= \alpha\high \times \median{n_t} \\
 T\low  &= \alpha\low  \times \median{n_t}
 \end{align}
 %
-where $\median{n_t}$ denotes the median of the smoothed envelope $n_t$. As per the procedure described in ``\nameref{sec:validating-parameter-choices}'', we set $\alpha\high = 6.2$ and $\alpha\low = 3.6$. At a median envelope magnitude $\median{n_t} = \SI{17.0}{\micro\volt}$, this results in thresholds $T\high = \SI{105.4}{\micro\volt}$ and $T\low = \SI{61.2}{\micro\volt}$.
+where $\median{n_t}$ denotes the median of the smoothed envelope $n_t$. As per the procedure described in \cref{sec:validating-parameter-choices}, we set $\alpha\high = 6.2$ and $\alpha\low = 3.6$. At a median envelope magnitude $\median{n_t} = \SI{17.0}{\micro\volt}$, this results in thresholds $T\high = \SI{105.4}{\micro\volt}$ and $T\low = \SI{61.2}{\micro\volt}$.
 
 Most studies calculate thresholds as follows: $T\high = \mean{n_t} + \beta\high \times \std(n_t)$. Here $\mean{n_t}$ denotes the mean of the envelope, $\std(n_t)$ denotes its standard deviation, and $\beta\high$ is a custom multiplier analogous to $\alpha\high$. For the non-negative, assymetric distributions of envelope signals, using both a measure of center and a measure of spread to define thresholds seems unnecessary (see the distribution of $n_t$ in \cref{fig:offline-steps}), which is why we chose to use only one measure (namely the median).
 % One advantage of the median over the mean, is that the former is far less sensitive to outliers of than the latter. Our dataset did not seem to include any outliers, such as erroneous samples with improbably high magnitude, however.
@@ -105,7 +105,7 @@ To compare our thresholds to those in the literature, we calculate the $\beta$ m
 
 
 
-\subsection{Segment post-processing}
+\section{Segment post-processing}
 
 Finally, two add-hoc rules were applied to the automatically detected ripple segments. First, segments with only a small gap between them (of less than 10 ms) were joined together. Then, segments of too short a duration (less than 25 ms) were eliminated.
 

@@ -1,11 +1,11 @@
-\sectionp{4p}{Quantifying detector performance}
+\chapterp{4p}{Performance quantification of online SWR detectors}
 \label{sec:eval}
 
 \Cref{sec:offline} described how we annotated our dataset with `reference' SWR segments, using an offline algorithm. These reference segments can now be used to benchmark the performance of an online SWR detection algorithm. This section describes how this is done.
 
 
 
-\subsection{Generating online detections}
+\section{Generating online detections}
 
 Each online SWR detection algorithm studied in this thesis generates an output envelope $n_t$, where samples $n_t$ of larger magnitude denote a higher belief that the corresponding input sample $\z_t$ is part of an SWR event. (See \panelref{fig:LSM-comp}{A} for three example output envelopes).
 
@@ -15,15 +15,18 @@ D = \{ \ t_d \mid \quad  n_{t_d} > T  \quad
                   \text{and} \quad  t_d > t_{d-1} + L  \ \}.
 \end{equation}
 
-\footnotetext{In general, this threshold can be adaptive (based on a moving average of signal statistics, for example), and we should therefore write ``$T_t$'' to be precise. In this thesis we only evaluate online detectors using constant thresholds however.}
+\footnotetext{In general, this threshold can be adaptive (based on a moving average of signal statistics, for example), and we should therefore write ``$T_t$'' to be precise. In this thesis we only evaluate online detectors using constant thresholds $T$.}
 
 
 In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time of $L = $ 34 ms.
+
+The threshold $T$ is generally set by the user of the online SWR detection algorithm
+
 % The threshold $T$ on the other hand was not set to a fixed value. Each threshold will yield [more on this later].
 
 
 
-\subsection{Quantifying detector accuracy}
+\section{Quantifying detector accuracy}
 
 In the following, we denote reference SWR segments as the closed intervals $s_r = [ t\start_r,\ t\eend_r ]$ (with $r = 0, 1, \tdots$). The set of all reference segments is denoted by $S = \{ s_r \}$.
 
@@ -80,7 +83,7 @@ Note that there are two types of ``true positives'': correct detections $\in D\c
 
 
 
-\subsection{Quantifying detector latency}
+\section{Quantifying detector latency}
 
 Besides counting how many SWR segments were detected, we are also interested in how early they were detected. For each detected reference segment $s_r = [ t\start_r,\ t\eend_r ]$, we note the first online detection $t_d$ contained within it (reference segments may contain multiple online detections).
 
