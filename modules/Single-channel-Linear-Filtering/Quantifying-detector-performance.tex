@@ -9,11 +9,13 @@
 
 Each online SWR detection algorithm studied in this thesis generates an output envelope $n_t$, where samples $n_t$ of larger magnitude denote a higher belief that the corresponding input sample $\z_t$ is part of an SWR event. (See \panelref{fig:LSM-comp}{A} for three example output envelopes).
 
-These output envelopes $n_t$ can be converted to a discrete set of detection times by applying a threshold $T$ to the envelope. Additionally, we require a certain minimum duration between online detections (which we will call the ``lockout time'', $L$). The set $D$ of detection times $t_d$ (with $d = 0, 1, \tdots$) is then:
+These output envelopes $n_t$ can be converted to a discrete set of detection times by applying a threshold $T$ to the envelope.\footnotemark{} Additionally, we require a certain minimum duration between online detections (which we will call the ``lockout time'', $L$). The set $D$ of detection times $t_d$ (with $d = 0, 1, \tdots$) is then:
 \begin{equation}
 D = \{ \ t_d \mid \quad  n_{t_d} > T  \quad 
                   \text{and} \quad  t_d > t_{d-1} + L  \ \}.
 \end{equation}
+
+\footnotetext{In general, this threshold can be adaptive (based on a moving average of signal statistics, for example), and we should therefore write ``$T_t$'' to be precise. In this thesis we only evaluate online detectors using constant thresholds however.}
 
 
 In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time of $L = $ 34 ms.
