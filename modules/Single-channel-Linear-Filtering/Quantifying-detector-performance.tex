@@ -11,8 +11,8 @@ Each online SWR detection algorithm studied in this thesis generates an output e
 
 These output envelopes $n_t$ can be converted to a discrete set of detection times by applying a threshold $T$ to the envelope. Additionally, we require a certain minimum duration between online detections (which we will call the ``lockout time'', $L$). The set $D$ of detection times $t_d$ (with $d = 0, 1, \tdots$) is then:
 \begin{equation}
-D = \{ \ t_d \mid \quad t_d > t_{d-1} + L \quad 
-                  \text{and} \quad n_{t_d} > T \ \}.
+D = \{ \ t_d \mid \quad  n_{t_d} > T  \quad 
+                  \text{and} \quad  t_d > t_{d-1} + L  \ \}.
 \end{equation}
 
 
@@ -36,20 +36,27 @@ S\undetected &= S \setminus S\detected,
 %
 i.e. correct online detections are contained within a reference segment, and detected reference segments contain at least one online detection. \Panelref{fig:LSM-comp}{A} shows some example correct and incorrect detections (green and red triangles, respectively).
 
-Next, the number of detected reference segments is counted, and compared to the total number of reference segments. This fraction is the recall $R$ of the SWR detector (also known as sensitivity, hit rate, or true positive rate). Formally:
+Next, the number of detected reference segments is counted, and compared to the total number of reference segments. This fraction is the recall $R$ of the SWR detector (also known as sensitivity, hit rate, or true positive rate):
 \begin{equation}
 R = \frac{\abs{S\detected}}{\abs{S}}
+  = \frac{\text{\# of detected reference segments}}
+         {\text{total \# of reference segments}}
 \end{equation}
 
 Similarly, the number of correct detections is counted, and compared to the total number of detections. This fraction is the precision $P$ of the SWR detector (also known as the positive predictive value):
 \begin{equation}
 P = \frac{\abs{D\correct}}{\abs{D}}
+  = \frac{\text{\# of correct detections}}
+         {\text{total \# of detections}}
 \end{equation}
 
 Its opposite is the false discovery rate (FDR), which counts the number of so called ``false positive'' detections:
-\begin{equation}
-FDR = 1 - P = \frac{\abs{D\incorrect}}{\abs{D}}
-\end{equation}
+\begin{align}
+FDR = \frac{\abs{D\incorrect}}{\abs{D}} 
+    = \frac{\text{\# of incorrect detections}}
+           {\text{total \# of detections}}
+   = 1 - P
+\end{align}
 
 Each detection threshold yields a different $(P, R)$-combination. This is often a trade-off: higher thresholds yield more precise detectors (less false positive detections), at the cost of a lower sensitivity (more missed reference SWR segments). Conversely, lower thresholds generally yield more sensitive but also less precise SWR detectors.
 
@@ -65,7 +72,8 @@ For example, the $F_1$-score weighs recall and precision equally. When we want t
 
 A note on terminology: we will refer to the precision and sensitivity performance of a detector often simply as the `accuracy' of the detector. This is a shorthand, and does not refer to the technical definition of accuracy.\footnotemark{}
 
-\footnotetext{Technically, accuracy is the sum of true positive and true negative cases, divided by the total number of cases. This concept does  does not readily apply to SWR detection, as there is no straightforward definition of "true negative" cases here. Only false positives ($D\incorrect$), true positives ($D\correct$ and $S\detected$), and false negatives ($S\undetected$) are clearly defined.}
+\footnotetext{Technically, accuracy is the sum of true positive and true negative cases, divided by the total number of cases. This concept does  does not readily apply to SWR detection, as there is no straightforward definition of "true negative" cases here. Only false positives ($D\incorrect$), true positives ($D\correct$ and $S\detected$), and false negatives ($S\undetected$) are clearly defined.\newline
+Note that there are two types of ``true positives'': correct detections $\in D\correct$, and detected reference segments $\in S\detected$ (with $\abs{D\correct} \geq \abs{S\detected}$, because one reference segment may contain multiple detections).}
 
 
 
