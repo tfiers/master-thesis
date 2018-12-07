@@ -3,9 +3,9 @@
 
 To quantify the performance of a sharp wave-ripple (SWR) detection algorithm, we need an evaluation or `test' recording, annotated with the segments of time when actual SWR events were present. This section describes how such annotations can be made, and how our data specifically was annotated.
 
-SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what their voltage traces look like. In other words, there is no ground truth available to know when SWR's occur. Scientists looking to annotate their LFP recordings with SWR segments therefore have to rely either on judgement calls by human labellers, or on an automated, offline SWR detection algorithm. The former could be considered more subjective, and is definitely more labour intensive than the latter -- especially if multiple scientists are consulted to obtain a consensus labelling. Most studies use an automated, offline algorithm to detect SWR segments (see \cref{apx:SWR-detection-literature} for some examples).
+SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what their voltage traces look like. In other words, there is no ground truth available to know when SWR's occur. Scientists looking to annotate their LFP recordings with SWR segments therefore have to rely either on judgement calls by human labellers, or on an automated, offline SWR detection algorithm. The former could be considered more subjective, and is definitely more labour intensive than the latter -- especially if multiple scientists are consulted to obtain a consensus labelling. Most studies use an automated, offline algorithm to detect SWR segments (see \cref{apx:SWR-detection-literature} for relevant quotes from a collection of such studies).
 
-`Offline' here means that SWR detection happens after the recording has been completed, and that there are thus no real-time constraints on the detection algorithm. This means that 1) there are no hard bounds on algorithm execution time, and 2) that the algorithm can use information `from the future': when deciding whether a recording sample $\z_t$ belongs to an SWR segment, it can use samples $\z_{t_f}$ in its decision that occured after $\z_t$ (i.e. $t_f > t$), instead of using only past samples $\z_{t_p}$ (where $t_p \leq t$).
+`Offline' here means that SWR detection happens after the recording has been completed, and that there are thus no real-time constraints on the detection algorithm. This means that 1) there are no hard bounds on algorithm execution time, and 2) that the algorithm can use information `from the future': when deciding whether a recording sample $\z_t$ belongs to an SWR segment, it can consider samples $\z_{t_f}$ that occured after $\z_t$ (i.e. $t_f > t$), instead of considering only past samples $\z_{t_p}$ (where $t_p \leq t$).
 
 
 \begin{figure}
@@ -17,7 +17,7 @@ SWR's are an empirical phenomenon of hippocampal area CA1, `defined' by what the
 
 \section{Overview of offline ripple detection}
 
-The main steps of the offline SWR detection algorithm that most studies use -- such as the ones cited in \cref{apx:SWR-detection-literature}, and this thesis itself -- can be summarized as follows:
+The main steps of the offline SWR detection algorithm that most studies use -- such as the ones cited in \cref{apx:SWR-detection-literature}, and the one of this thesis -- can be summarized as follows:
 \begin{enumerate}
 \item Use a single channel of input data; namely from an electrode in the pyramidal cell layer of CA1, where the ripple part of SWR's is most strongly present. (We will denote this voltage signal with $z_t$);
 \item Band-pass filter the recording to retain only `ripple' frequencies. (We will denote the filter output as $o_t$);

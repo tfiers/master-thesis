@@ -1,8 +1,7 @@
 \chapter{SWR detection in the literature}
 
+We gathered a representative sample of research papers that discuss sharp wave-ripples (and/or other hippocampal oscillations). Different studies define these oscillations with different frequency bands -- these differences are listed in \cref{tab:bands}. \Cref{apx:SWR-detection-literature,apx:online-SWR-detection-literature} quote papers that use SWR detection; specifically their description of the SWR detection procedure. Emphasis is added.
 
-
-\section{Frequency bands}
 
 \begin{table}
 \begin{tabular}{@{}lllll@{}}
@@ -10,13 +9,17 @@
 Source                     & Theta (Hz) & High gamma (Hz) & Ripple (Hz)  \\
 \midrule
 \citefull{Nadasdy1999}     &            &                 & 150 -- 250  \\
-\citefull{Csicsvari2000}   &            &                 & 80 -- 250   \\
-\citefull{Behrens2005}     &            &                 & 40 -- 400   \\
+\citefull{Csicsvari2000}   &            &                 &  80 -- 250  \\
+\citefull{Behrens2005}     &            &                 &  40 -- 400  \\
 \citefull{OKeefe2007}      & 6 -- 12    & 30 -- 100       & 100 -- 200  \\
+\citefull{Girardeau2009}   &            &                 & 100 -- 200  \\
 \citefull{Ego-Stengel2009} &            &                 & 100 -- 400  \\
+\citefull{Jadhav2012}, online &         &                 & 100 -- 400  \\
+\citefull{Jadhav2012}, offline &        &                 & 150 -- 250  \\
 \citefull{Buzsaki2015}     & 6 -- 10    & 100+            & 110 -- 200  \\
 \citefull{Colgin2016}      & 6 -- 12    & 60 -- 100       & 150 -- 200  \\
 \citefull{Sadowski2016}    &            &                 & 120 -- 250  \\
+\citefull{Talakoub2016}    &            &                 &  80 -- 150  \\
 \citefull{Eichenbaum2017}  & 4 -- 12    & 80 -- 140       & \\
 \citefull{Dutta2018}       &            &                 & 150 -- 250  \\
 \citefull{Olafsdottir2018} & 6 -- 12    &                 & 140 -- 250  \\
@@ -25,17 +28,17 @@ Source                     & Theta (Hz) & High gamma (Hz) & Ripple (Hz)  \\
 L2 recording               & 5 -- 10    &                 & 100 -- 200  \\
 \bottomrule
 \end{tabular}
-\captionn[, ]{Frequency bands of hippocampal LFP events}{according to different sources (both original research papers and literature reviews). When the source does not make a distinction between high and low gamma, the full gamma range is given. Note that \citeauthor*{Behrens2005} considered artificially induced SWR's in ex-vivo hippocampus slices. `\texttt{fklab}' refers to the default frequency bands used in the data-analysis software used in the Kloosterman lab. The last row refers to the dataset analysed in this thesis.}
+\captionn[, ]{Frequency bands of hippocampal LFP events}{according to different sources (both original research papers and literature reviews). When the source does not make a distinction between high and low gamma, the full gamma range is given. Note that \citeauthor*{Behrens2005} considered artificially induced SWR's in ex-vivo hippocampus slices. \Citeauthor*{Talakoub2016} studied macaque monkeys; other primary research papers studied rats. `\texttt{fklab}' refers to the default frequency bands used in the data-analysis software used in the Kloosterman lab. The last row refers to the dataset analysed in this thesis.}
 \label{tab:bands}
 \end{table}
 
 
 
-\clearpage
-\section{Detection algorithms}
-\label{apx:SWR-detection-literature}
 
-We gathered a representative sample of research papers that use automated offline sharp wave-ripple detection. This appendix quotes these papers; specifically their description of the SWR detection procedure. Emphasis is added.
+
+\clearpage
+\section{Offline detection algorithms}
+\label{apx:SWR-detection-literature}
 
 
 \subsection{\authoryear{Nadasdy1999}}
@@ -53,6 +56,16 @@ We gathered a representative sample of research papers that use automated offlin
 ``For ripple detection, raw data were filtered with a Spike 2 software band-pass filter of \textbf{40--400 Hz} (threshold: \textbf{4--6} times the s.d. of \textbf{eventless baseline noise}). For sharp wave detection, recordings were low-pass filtered at 20 Hz.'' \cite{Behrens2005}
 
 
+\subsection{\authoryear{Girardeau2009}}
+
+``Offline ripple detection was performed by band-pass filtering (\textbf{100--200 Hz}), \textbf{squaring and normalizing}, then thresholding the field potential recorded in CA1 pyramidal layer. Ripples were defined as events peaking at \textbf{>5 standard deviations} and lasting \textbf{<100 ms}.'' \cite{Girardeau2009}
+
+
+\subsection{\authoryear{Jadhav2012}}
+
+``SWRs were detected during post-hoc analysis as described previously (11, 23). Raw LFPs recorded from the tetrodes used for online SWR detection were filtered between \textbf{150 – 250 Hz} and the SWR envelope was determined using a \textbf{Hilbert transform}. The envelope was \textbf{smoothed with a Gaussian with a s.d. of 4 ms and a width of 32 ms}. SWRs were defined as contiguous periods when the smoothed SWR envelope stayed \textbf{above 3 s.d.} of the mean [sic] for \textbf{at least 15 ms} on at least one tetrode.'' \cite{Jadhav2012}
+
+
 \subsection{\authoryear{Sadowski2016}}
 
 ``Ripples were detected offline in the LFP recorded on one CA1 channel. Raw LFP signal was filtered between \textbf{120 and 250 Hz}, and deflections in the ripple \textbf{power envelope} greater than \textbf{5 SDs from the mean} were classified as ripple events. Ripple start times were defined locally as when ripple power exceeded \textbf{2 SDs}. Samples of raw LFP and detected ripple times were compared manually to verify detection fidelity.'' \cite{Sadowski2016}
@@ -62,4 +75,60 @@ We gathered a representative sample of research papers that use automated offlin
 
 ``Post-recording, ripple events were defined on tetrodes that displayed characteristics of the CA1 area of the hippocampus. Specifically, the recorded LFP in one of the channels of the selected tetrode (same one subject to online detection for our realtime analysis) first had a digital reference subtracted away. This signal was then LFP band filtered with a 400 Hz low-pass infinite impulse response (IIR) filter (from Trodes). Afterwards the signal was decimated and ripple band filtered (\textbf{150–250 Hz}) with a \textbf{25 tap} finite impulse response (\textbf{FIR}) filter. Ripple band filtering was done using a forward and a time-reversed path, resulting in a net \textbf{zero group delay} (time shift from filtering). The instantaneous power of the ripple band filtered signal was then calculated via a \textbf{Hilbert Transform} and further \textbf{smoothened with a Gaussian kernel} with a \textbf{4 ms standard deviation}. Ripple events were detected as times when z-score of the smoothened power signal signal exceeded a threshold of \textbf{3 z-units} for \textbf{at least 15 ms}. The canonical ripple epochs were defined as the time points from which the processed signal \textbf{returned down to the mean before and after threshold crossings} \cite{Cheng2008,Kemere2013}.
 
-In cases when multiple electrodes (typically channels on different tetrodes) are available for ripple detection, a different canonical definition is required. Ripples were initially defined using as above for each electrode. A canonical multichannel ripple was defined as one which is simultaneously detected on each electrode (two in our analysis). The multichannel ripple epoch is defined as the union of the detected single-channel ripple epochs, i.e., the start of the earliest ripple detected and to end with bound of last ripple detected. As such, we obtain a conservative ripple detection latency estimate while covering the entire span of the time the LFP is in a high ripple band power state. We reanalyzed our data with the canonical ripples being defined on different channels and tetrodes with a 300 tap bandpass FIR filter allowing 1\% “ripple” in the passband with −30 dB suppression in the stopband but our results and subsequent conclusions remained consistent.'' \cite{Dutta2018}
+In cases when multiple electrodes (typically channels on different tetrodes) are available for ripple detection, a different canonical definition is required. Ripples were initially defined using as above for each electrode. A canonical multichannel ripple was defined as one which is simultaneously detected on each electrode (two in our analysis). The multichannel ripple epoch is defined as the union of the detected single-channel ripple epochs, i.e., the start of the earliest ripple detected and to end with bound of last ripple detected. As such, we obtain a conservative ripple detection latency estimate while covering the entire span of the time the LFP is in a high ripple band power state. We reanalyzed our data with the canonical ripples being defined on different channels and tetrodes with a 300 tap bandpass FIR filter allowing 1\% “ripple” in the passband with -30 dB suppression in the stopband but our results and subsequent conclusions remained consistent.'' \cite{Dutta2018}
+
+
+
+\clearpage
+\section{Online detection algorithms}
+\label{apx:online-SWR-detection-literature}
+
+
+
+
+\subsection{\authoryear{Girardeau2009}}
+
+``The onset of SPW-Rs was detected online by filtering the signal in the ripple-band and thresholding it. [..] In both cases (test and control) the number of stimulations was \textbf{limited to 5 per second}.'' \cite{Girardeau2009}
+
+
+\subsection{\authoryear{Ego-Stengel2009}}
+
+``We selected one tetrode in CA1, for which the LFP signal exhibited ripple events of large amplitude, for online ripple detection. The LFP was amplified and filtered online in the ripple band by an \textbf{8th-order Butterworth lowpass filter at 400 Hz} followed by an \textbf{8th-order Butterworth highpass filter at 100 Hz} (KrohnHite 3384 analog filters, total gain 10,000). A threshold-crossing detector (FHC Window Discriminator) was used to generate TTL pulses when the ripple amplitude exceeded a value adjusted manually by the experimenter on the first experimental day for each rat (0.1 $\pm$ 0.02 mV). These pulses triggered isolated stimulation units via a computer- controlled burst generator with a preset 1-ms delay [..] A \textbf{2-s recovery period} was forced after any stimulation burst before the next stimulation could be triggered.'' \cite{Ego-Stengel2009}
+
+
+\subsection{\authoryear{Jadhav2012}}
+
+``We disrupted awake hippocampal SWRs [..] with the use of an online feedback system similar to that used in previous studies that disrupted SWRs during post-behavior sleep \cite{Girardeau2009,Ego-Stengel2009}. SWRs in CA1 were detected by monitoring power in the ripple band simultaneously across multiple tetrodes. [..] This [detection-triggered stimulation] terminated the ripple oscillation \textbf{within 25 ms of SWR onset} and transiently inhibited CA1 spiking [..].\\
+We recorded continuous local field potentials (LFP, filtered 0.5-400 Hz and sampled at 1500 Hz) from all tetrodes (one channel was chosen from each tetrode for LFP recording). [..]\\
+\emph{Real-time detection algorithm}. Field potential signals from the 5-6 tetrodes chosen for online detection were broadly filtered in the ripple band (\textbf{20 tap band-pass IIR filter, 100-400 Hz}). In order to establish a disruption threshold, we calculated smoothed values of the mean and s.d. of the absolute value of the filtered LFP signal on each tetrode being used for detection using an iterative procedure:
+\begin{align*}
+\mu\est(n) &= \mu\est(n-1) \ \frac{N\smooth - 1}{N\smooth}
+                + \frac{\abs{x}}{N\smooth} \\
+\sigma\est(n) &= \sigma\est(n-1) \ \frac{N\smooth - 1}{N\smooth}
+                + \frac{\abs{\abs{x} - \mu\est(n-1)}}{N\smooth}
+\end{align*}
+Here $\mu\est$ and $\sigma\est$ are the estimated mean and s.d. of the absolute value of the filtered LFP $x$, and $N\smooth$ is the  number of samples for smoothing (typically 10000). We allowed these estimates to stabilize before each run session. To generate a smoothened estimate of the envelope ($v\est$) of the filtered LFP, we used the following iterative estimator:
+\[
+v\est(n) = v\est(n-1) + g_i(n-1) \ (\abs{x} - v\est(n-1))
+\]
+To allow for rapid detection of increases in power, we used a larger gain $g_i$ for periods when the envelope was increasing: when the envelope was decreasing ($\abs{x} \le v\est$), $g_i = 0.2$ when the envelope was increasing, we used a moving average of the last 19 values of $g_i$ and $1.2$. [..] \\
+The threshold for disruption was set to \textbf{4-6 s.d. above the mean}. To prevent false-positives, vHC stimulation was triggered only when the smoothed LFP envelope exceeded threshold on at least 2 tetrodes. Stimulation rate was limited to a maximum of 4 Hz by enforcing a \textbf{lock-out period of 250 ms} after each stimulation event.'' \cite{Jadhav2012}
+
+
+\subsection{\authoryear{Talakoub2016}}
+
+``Local field potentials were [..] sampled at \textbf{32 kHz}. [..] Selecting the electrode channel with the highest-amplitude ripple activity [..].  In this study, we set the threshold to \textbf{6-sd} of the band activity, a value similar to rodent interruption studies. The 6-sd threshold was estimated based on the average and variance of the ripple band from earlier recordings which were consistent over days in these experiments (9.5 $\pm$ 0.1 \uV{} mean $\pm$ SEM).\newline
+[..] the signals were bandpass filtered using a custom-designed finite impulse response (\textbf{FIR}) filter with \textbf{512 taps} (\textbf{16 ms delay}, which is about one cycle of ripple activity).\footnotemark Activities slower than 80 Hz or faster than 150 Hz are suppressed more than 20 dB (Fig. [..]). '' \cite{Talakoub2016}
+
+\footnotetext{An FIR filter has a constant group delay of $(\text{\# taps} - 1) / (2 f_s)$. A 512 tap FIR filter at $f_s = $ 32 kHz should therefore have a group delay of 8 ms (and not the reported 16 ms). Or, conversely, an FIR filter with a group delay of 16 ms should have $\approx$ 1024 taps at $f_s = $ 32 kHz (and not the reported 512 taps).}
+
+
+\subsection{\authoryear{Dutta2018}}
+
+``Like our canonical ripple detections, the realtime or online detection algorithm is comprised of single channel and multichannel modalities. The single channel case performs realtime reference subtraction from the LFP (filtered in the same way as the offline case) and \textbf{decimation from 30 kHz to 3 kHz} as in the canonical detection case. However, the difference between online and canonical detections begins from ripple band filtering. The decimated signal is \textbf{filtered to the ripple band with a 30 tap FIR filter}. In order to perform a realtime instantaneous power estimation and smoothing, the realtime algorithm computes the \textbf{absolute value of the ripple band filtered signal} and \textbf{further filters it by a 33 tap 50 Hz low-pass FIR} (instead of a Hilbert transform followed by Gaussian kernel smoothing). These filters cause an intrinsic sample delay from the offline case ($\approx$10.167 ms in our case). It is worth noting that the number of filter taps as well as filter types were determined by analyzing algorithmic delay and detection accuracy based on metrics described in the Data Analysis subsection. To normalize detection thresholds in the realtime case, the mean and standard deviation of the smoothed envelope are estimated over a 20 minute training period. In two $\approx$90 minute sleep box recording sessions, when we sampled 20 minute time intervals at random (N=1000), the resulting mean and standard deviation were within 5\% of the values for the entire sessions. This length of time and subsequent error in parameter estimation likely depends on the behavioral and/or sleep state of the animal — in our experimental recordings, animals were contained in a sleep box. realtime detections are then triggered when the envelope crosses a threshold defined as α standard deviations above the mean (threshold = $\alpha \cdot \sigma + \mu$) or $\alpha$ z-units. Following a detection, there is a \textbf{200 ms lockout period} where we ignore any further threshold crossings (i.e., to avoid stimulation artifacts). \textbf{Additionally}, we impose a hard \textbf{limit on the number of detections per second} (set to \textbf{three} during the experiments in this work).'' \cite{Dutta2018}
+
+% Group delay = 14.5 / 3 + 16 / 3 = 10.167  [check].
+%
+% What's a good sampling frequency to work at?
+%   Higher fs: filters need more delays, but one delay is < ms
+%   Does this cancel out, or is there an optimal fs?

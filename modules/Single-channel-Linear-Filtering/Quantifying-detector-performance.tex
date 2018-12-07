@@ -3,6 +3,7 @@
 
 \Cref{ch:offline} described how we annotated our dataset with `reference' SWR segments, using an offline algorithm. These reference segments can now be used to benchmark the performance of an online SWR detection algorithm. This section describes how this is done.
 
+% todo: compare with lit (notably Dutta)
 
 
 \section{Generating online detections}
@@ -72,7 +73,7 @@ F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}.
 \end{equation}
 It is the mean of recall and precision (more precisely: their harmonic mean, as precision and recall are ratio's), with recall weighted by $\beta^2$. It measures detection performance ``for a user who attaches $\beta$ times as much importance to recall as to precision.'' \cite{Rijsbergen1979}
 
-For example, the $F_1$-score weighs recall and precision equally. When we want to summarize the accuracy of a detector in a single number, we will often choose the maximum $F_1$-score of the detector (over the entire threshold range) as this number.
+For example, the $F_1$-score weighs recall and precision equally. When we want to summarize the accuracy of a detector in a single number, we will often choose the \emph{maximum} $F_1$-score of the detector (over the entire threshold range) as this number.
 
 A note on terminology: we will refer to the precision and sensitivity performance of a detector often simply as the `accuracy' of the detector. This is a shorthand, and does not refer to the technical definition of accuracy.\footnotemark{}
 
@@ -96,4 +97,4 @@ We also define a detection latency, $RL_r$, relative to the duration of the SWR 
 RL_r = \frac{AL_r}{t\eend_r - t\start_r} 
 \end{equation}
 
-Whereas an SWR detector yields only a single precision and a single recall value for a given threshold, it yields two entire sets of absolute and relative detection latencies (namely one absolute and one relative latency value for each detected reference segment). This is why we often summarize latency performance using the median of one of these sets. When not otherwise specified, the latency distribution (or its median) corresponding to the threshold with maximal $F_1$-score is reported.
+Whereas an SWR detector yields only a single precision and a single recall value for a given threshold, it yields two entire sets of absolute and relative detection latencies (namely an absolute and a relative latency value for each detected reference segment). This is why we often summarize latency performance using the median of one of these sets. When not otherwise specified, the latency distribution (or its median) corresponding to the threshold with maximal $F_1$-score is reported.
