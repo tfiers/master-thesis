@@ -19,7 +19,7 @@ The real-time constraint also means that we can no longer use the Hilbert transf
 % Although the resulting jagged signal is not as visually pleasing as the Hilbert-transform based envelope, it is effective for signal detection.
 % (In \citefull{Sethi2014}, it was shown that more advanced online envelope estimators do not yield better detection performance).
 
-Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$. They use a slightly higher weight for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ (see \cref{apx:online-SWR-detection-literature}. In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
+Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$. They use a slightly higher weight for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ (see \cref{apx:online-detection-algos}. In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
 
 Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delayed the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
 
