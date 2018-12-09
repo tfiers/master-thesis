@@ -12,14 +12,14 @@ Each online SWR detection algorithm studied in this thesis generates an output e
 
 These output envelopes $n_t$ can be converted to a discrete set of detection times by applying a threshold $T$ to the envelope.\footnotemark{} Additionally, we require a certain minimum duration between online detections (which we will call the ``lockout time'', $L$). The set $D$ of detection times $t_d$ (with $d = 0, 1, \tdots$) is then:
 \begin{equation}
-D = \{ \ t_d \mid \quad  n_{t_d} > T  \quad 
+D = \{ \ t_d \mid \  n_{t_d} > T  \quad 
                   \text{and} \quad  t_d > t_{d-1} + L  \ \}.
 \end{equation}
 
 \footnotetext{In general, this threshold can be adaptive (based on a moving average of signal statistics, for example), and we should therefore write ``$T_t$'' to be precise. In this thesis we only evaluate online detectors using constant thresholds $T$.}
 
 
-In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time of $L = $ 34 ms.
+In our analysis, we chose a lockout time $L$ based on SWR durations. Specifically, we set $L$ to the 25-th percentile of the durations of all SWR segments detected in our dataset by the offline algorithm, resulting in a lockout time $L = $ 34 ms.
 % Todo: lit review of lockout times (in Scraps already I think)
 
 The threshold $T$ is generally set by the user of the online SWR detection algorithm (see the discussion in the next section).
@@ -87,14 +87,14 @@ Note that there are two types of ``true positives'': correct detections $\in D\c
 
 Besides counting how many SWR segments were detected, we are also interested in how early they were detected. For each detected reference segment $s_r = [ t\start_r,\ t\eend_r ]$, we note the first online detection $t_d$ contained within it (reference segments may contain multiple online detections).
 
-The absolute detection latency $AL_r$ of this SWR segment is then defined as:
+The absolute detection latency of this SWR segment is then defined as:
 \begin{equation}
-AL_r = t_d - t\start_r 
+L\abso_r = t_d - t\start_r 
 \end{equation}
 
-We also define a detection latency, $RL_r$, relative to the duration of the SWR segment in question:
+We also define a detection latency relative to the duration of the SWR segment in question:
 \begin{equation}
-RL_r = \frac{AL_r}{t\eend_r - t\start_r} 
+L\rela_r = \frac{L\abso_r}{t\eend_r - t\start_r} 
 \end{equation}
 
 Whereas an SWR detector yields only a single precision and a single recall value for a given threshold, it yields two entire sets of absolute and relative detection latencies (namely an absolute and a relative latency value for each detected reference segment). This is why we often summarize latency performance using the median of one of these sets. When not otherwise specified, the latency distribution (or its median) corresponding to the threshold with maximal $F_1$-score is reported.
