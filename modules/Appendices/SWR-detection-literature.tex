@@ -100,7 +100,7 @@ In cases when multiple electrodes (typically channels on different tetrodes) are
 \section{Online detection algorithms}
 \label{apx:online-detection-algos}
 
-For each of the quoted studies, we attempt to approximate the described band-pass filter. Different studies use different passbands and sampling frequencies. For our `replication' filters, we use a standardized passband (100--200 Hz) and sampling frequency (1000 Hz). We then try to match the gain- and group delay-profiles of the original filter (rescaled to the standardized passband) when designing our replication filters.
+For each of the quoted studies, we attempt to approximate the described band-pass filter. Different studies use different passbands and sampling frequencies. For our `replication' filters, we use a standardized sampling frequency of 1000 Hz. We then try to match the gain- and group delay-profiles of the original filter when designing our replication filters.
 
 
 \subsection{\authoryear{Girardeau2009}}
@@ -118,15 +118,6 @@ No information on the online band-pass filter is given (although we might deduce
 ``We selected one tetrode in CA1, for which the LFP signal exhibited ripple events of large amplitude, for online ripple detection. The LFP was amplified and filtered online in the ripple band by an \textbf{8th-order Butterworth lowpass filter at 400 Hz} followed by an \textbf{8th-order Butterworth highpass filter at 100 Hz} (KrohnHite 3384 analog filters, total gain 10,000). A threshold-crossing detector (FHC Window Discriminator) was used to generate TTL pulses when the ripple amplitude exceeded a value adjusted manually by the experimenter on the first experimental day for each rat (0.1 $\pm$ 0.02 mV). These pulses triggered isolated stimulation units via a computer- controlled burst generator with a preset 1-ms delay [..] A \textbf{2-s recovery period} was forced after any stimulation burst before the next stimulation could be triggered.'' \cite{Ego-Stengel2009}
 \end{quotebar}
 
-We approximate the analog filter of this study by the product of two digital Butterworth filters: a 6th-order high-pass filter at 100 Hz, and a 3th-order low-pass filter at 200 Hz. See \cref{fig:ego-stengel}.
-
-\begin{figure}
-\img{ego-stengel}
-\captionn{Online BPF from \authoryear{Ego-Stengel2009}}{\newline
-Blue: continuous-time band-pass filter as described in the original research paper (product of analog low- and high-pass 8th-order Butterworth filters).\newline
-Orange: discrete-time approximation of the original filter, for a passband of 100--200 Hz and a sampling frequency of 1000 Hz.}
-\label{fig:ego-stengel}
-\end{figure}
 
 
 \subsection{\authoryear{Jadhav2012}}
@@ -145,7 +136,7 @@ Here $\mu\est$ and $\sigma\est$ are the estimated mean and s.d. of the absolute 
 \[
 n\est_t = (1 - g_{t-1}) n\est_{t-1} + g_{t-1} \abs{o_t}
 \]
-To allow for rapid detection of increases in power, we used a larger gain $g$ for periods when the envelope was increasing: when the envelope was decreasing ($\abs{o} \le n\est$), $g = 0.2$ when the envelope was increasing, we used a moving average of the last 19 [sic] values of $g$ and $1.2$:
+To allow for rapid detection of increases in power, we used a larger gain $g$ for periods when the envelope was increasing: when the envelope was decreasing ($\abs{o} \le n\est$), $g = 0.2$ when the envelope was increasing, we used a moving average of the last 19 values of $g$ and $1.2$:
 \[
 g_t = 
 \begin{cases}
@@ -156,6 +147,8 @@ g_t =
 
 The threshold for disruption was set to \textbf{4-6 s.d.\ above the mean}. To prevent false-positives, vHC stimulation was triggered only when the smoothed LFP envelope exceeded threshold on at least 2 tetrodes. Stimulation rate was limited to a maximum of 4 Hz by enforcing a \textbf{lock-out period of 250 ms} after each stimulation event.'' \cite{Jadhav2012}
 \end{quotebar}
+
+% The authors do not mention what type of IIR filter is used for filtering. Earlier in the supplemental methods section, when the recording is filtered between 600 and 6000 Hz to find spikes, they mention a ``2 pole Bessel for high and low pass''.
 
 
 \subsection{\authoryear{Talakoub2016}}
@@ -171,13 +164,25 @@ The threshold for disruption was set to \textbf{4-6 s.d.\ above the mean}. To pr
 \subsection{\authoryear{Dutta2018}}
 
 \begin{quotebar}
-``Like our canonical ripple detections, the realtime or online detection algorithm is comprised of single channel and multichannel modalities. The single channel case performs realtime reference subtraction from the LFP (filtered in the same way as the offline case) and \textbf{decimation from 30 kHz to 3 kHz} as in the canonical detection case. However, the difference between online and canonical detections begins from ripple band filtering. The decimated signal is \textbf{filtered to the ripple band with a 30 tap FIR filter}.\footnotemark{} In order to perform a realtime instantaneous power estimation and smoothing, the realtime algorithm computes the \textbf{absolute value of the ripple band filtered signal} and \textbf{further filters it by a 33 tap 50 Hz low-pass FIR} (instead of a Hilbert transform followed by Gaussian kernel smoothing). These filters cause an intrinsic sample delay from the offline case ($\approx$10.167 ms in our case). It is worth noting that the number of filter taps as well as filter types were determined by analyzing algorithmic delay and detection accuracy based on metrics described in the Data Analysis subsection. To normalize detection thresholds in the realtime case, the mean and standard deviation of the smoothed envelope are estimated over a 20 minute training period. In two $\approx$90 minute sleep box recording sessions, when we sampled 20 minute time intervals at random (N=1000), the resulting mean and standard deviation were within 5\% of the values for the entire sessions. This length of time and subsequent error in parameter estimation likely depends on the behavioral and/or sleep state of the animal — in our experimental recordings, animals were contained in a sleep box. realtime detections are then triggered when the envelope crosses a threshold defined as α standard deviations above the mean (threshold = $\alpha \cdot \sigma + \mu$) or $\alpha$ z-units. Following a detection, there is a \textbf{200 ms lockout period} where we ignore any further threshold crossings (i.e., to avoid stimulation artifacts). \textbf{Additionally}, we impose a hard \textbf{limit on the number of detections per second} (set to \textbf{three} during the experiments in this work).'' \cite{Dutta2018}
+``Like our canonical ripple detections, the realtime or online detection algorithm is comprised of single channel and multichannel modalities. The single channel case performs realtime reference subtraction from the LFP (filtered in the same way as the offline case) and \textbf{decimation from 30 kHz to 3 kHz} as in the canonical detection case. However, the difference between online and canonical detections begins from ripple band filtering. The decimated signal is \textbf{filtered to the ripple band with a 30 tap FIR filter}. In order to perform a realtime instantaneous power estimation and smoothing, the realtime algorithm computes the \textbf{absolute value of the ripple band filtered signal} and \textbf{further filters it by a 33 tap 50 Hz low-pass FIR} (instead of a Hilbert transform followed by Gaussian kernel smoothing). These filters cause an intrinsic sample delay from the offline case ($\approx$10.167 ms in our case). It is worth noting that the number of filter taps as well as filter types were determined by analyzing algorithmic delay and detection accuracy based on metrics described in the Data Analysis subsection. To normalize detection thresholds in the realtime case, the mean and standard deviation of the smoothed envelope are estimated over a 20 minute training period. In two $\approx$90 minute sleep box recording sessions, when we sampled 20 minute time intervals at random (N=1000), the resulting mean and standard deviation were within 5\% of the values for the entire sessions. This length of time and subsequent error in parameter estimation likely depends on the behavioral and/or sleep state of the animal — in our experimental recordings, animals were contained in a sleep box. realtime detections are then triggered when the envelope crosses a threshold defined as α standard deviations above the mean (threshold = $\alpha \cdot \sigma + \mu$) or $\alpha$ z-units. Following a detection, there is a \textbf{200 ms lockout period} where we ignore any further threshold crossings (i.e., to avoid stimulation artifacts). \textbf{Additionally}, we impose a hard \textbf{limit on the number of detections per second} (set to \textbf{three} during the experiments in this work).'' \cite{Dutta2018}
 \end{quotebar}
-
-\footnotetext{By reading the open source code from this paper (\url{https://github.com/shayokdutta/RippleDetectionAnalysis/blob/master/DataAnalysisScripts/ripple_filtering.py}), this 30-tap FIR filter was determined to be designed using the windowed-sinc method, with a Hamming window.}
-
 % Group delay = 14.5 / 3 + 16 / 3 = 10.167  [check].
-%
-% What's a good sampling frequency to work at?
-%   Higher fs: filters need more delays, but one delay is < ms
-%   Does this cancel out, or is there an optimal fs?
+
+From the open source code of this study\footnote{\url{https://github.com/shayokdutta/RippleDetectionAnalysis/blob/master/DataAnalysisScripts/ripple_filtering.py}}, we find that the described 30-tap FIR filter (at $f_s = 3000$ Hz) is designed using the windowed-sinc method, with a Hamming window. We approximate this filter at a sampling frequency of 1000 Hz with a 11-tap FIR filter, designed with the same method, window type, and passband. The correspondence is good (see \cref{fig:dutta}).
+
+\begin{figure}
+\img{Dutta}
+\captionn{Online band-pass filter from \authoryear{Dutta2018}}{}
+\label{fig:dutta}
+\end{figure}
+
+
+\subsection{Falcon}
+
+\citefull{Ciliberti2017}
+
+\begin{figure}
+\img{Falcon}
+\captionn{Default online ripple filter in Falcon}{}
+\label{fig:falcon}
+\end{figure}

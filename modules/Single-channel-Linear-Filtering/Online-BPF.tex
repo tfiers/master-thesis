@@ -1,15 +1,41 @@
 \chapterp{3p}{Current online SWR detection}\label{ch:BPF}
 
-This chapter discusses the current state-of-the-art method in online SWR detection. This method is very similar to the procedure for offline ripple detection described in \cref{ch:offline}: we also select a single recording channel containing ripples, band-pass filter its data through the ripple band, and apply a detection threshold to the envelope of the filter output.
+This chapter discusses the current state-of-the-art method in online SWR detection. This method is very similar to the procedure for offline ripple detection described in \cref{ch:offline}: a single recording channel that contains ripples is selected; it is band-pass filtered through the ripple band; and apply a detection threshold is applied to the envelope of the filter output.
 % todo: multi-channel (Dutta, Ciliberti)
 
 The difference is that the SWR detection must now happen under real-time constraints. No future samples can be used when deciding whether the current recording sample belongs to an SWR event. This means that the used band-pass filter (and in some studies, also the envelope estimation method) must necessarily introduce latency.
 
+We first discuss the performance of the online band-pass filters used in the literature, and then shortly discuss online estimation of the filter output envelope.
 
 
-\section{Online band-pass filters}
+% \section{Online band-pass filters}
+\section{Replicating existing filters}
 
-% continue: summary of lit quotes on filter types.
+We selected three existing online ripple filters and analyzed their performance. The first two filters are described in the literature. (We gathered a representative sample of original research papers that use online ripple detection -- see \cref{apx:online-detection-algos}. Most of these papers do not provide sufficient information to replicate the used filter. The two selected filters are from the two papers that did provide sufficient information.)
+The third analyzed filter is the default online ripple filter in \emph{Falcon}. (\emph{`Falcon'} is the open-source software package for closed-loop neuroscience, developed and used in the Kloosterman lab, and described in \citefull{Ciliberti2017}).
+
+The existing filters use different passbands and sampling frequencies. When we `replicate' the original filters to apply them to our data, we use a standardized sampling frequency of 1000 Hz. When designing the replica filters, we try to match the gain- and group delay-profiles of the original filters.
+
+In \citefull{Ego-Stengel2009} (one of the first ripple disruption studies), an analog band-pass filter is used. An 8th-order Butterworth high-pass filter at 100 Hz is combined with an 8th-order Butterworth low-pass filter at 400 Hz.
+
+
+
+We approximate the analog filter of this study by the product of two digital Butterworth filters: an 8th-order high-pass filter at 100 Hz, and a 2nd-order low-pass filter at 400 Hz. See \cref{fig:ego-stengel}.
+
+
+\begin{figure}
+\img{EgoStengel}
+\captionn{Online band-pass filter from \authoryear{Ego-Stengel2009}}{}
+\label{fig:ego-stengel}
+\end{figure}
+
+% continue: cut-paste in filter replications here.
+
+% continue: output envelope (small & wider t-range?)
+
+% continue: PR-curves of all four (Ego-Stengel, Dutta, Falcon, best-BPF)
+
+% continue: paste-in and reference online BPF searcharrays.
 
 
 
@@ -23,7 +49,7 @@ Extensions of simple rectification have also been used. In \citefull{Jadhav2012}
 
 Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delayed the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
 
-Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Because smoothing adds latency, we do not smooth our online envelope $n_t = \abs{o_t}$.
+Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
 
 
 
