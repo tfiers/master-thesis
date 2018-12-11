@@ -62,11 +62,15 @@ The default ripple filter in \emph{Falcon} is a Type II Chebyshev filter, with a
 
 \section{SWR detection performance}
 
+Applying these ripple filters at $f_s = $ 1000 Hz to our recording yields online envelopes as in \cref{fig:BPF-outputs}. Quantifying detection performance using the entire evaluation data set, and for a range of different thresholds, results in the $PR$- and latency curves of \cref{fig:BPF-performance}.
+
 \begin{figure}
 \img{107_2--107_8}
 \img{107_7--107_8}
 % continue: cut-paste caption from multilin chapter
 \captionn{Rectified outputs of online ripple filters}{
+    Black signal: Selected channel from LFP recording $\z_t$. Light-blue vertical bands: reference SWR segments.
+    Colored signals: output envelopes $n_t$ of the different online ripple filters. Dashed horizontal lines: detection thresholds. (For each filter, the $\max{F_1}$ threshold was chosen). Green triangles: correct detections. Red triangles: incorrect detections.
     \Left: 600 ms of input and output data.
     \Right: zoom in on the last ripple of the left panel.
 }
@@ -76,40 +80,43 @@ The default ripple filter in \emph{Falcon} is a Type II Chebyshev filter, with a
 % This means: single time range becomes argument (no longer in config, but in task instantiation).
 
 \begin{figure}
-\img{PR-and-latency--0_65}
-\captionn{}{}
+\img{PR-and-latency--0_7}
+\captionn{Detection performance of different online ripple filters}{Sensitivity, precision \& latency trade-offs for a range of thresholds.\newline
+Each threshold setting for a ripple filter corresponds to a point on the precision-recall curve in the bottom-left panel, and to a distribution of relative detection latencies. The median and interquartile range of this distribution are plotted in the top-left or bottom-right panel (as a point of the bold curve, and a slice of the shaded band, respectively).\newline
+These latency distribution plots are divided over two panels so that their entire range can be clearly visualized, both for the low recall -- high precision regime as for the high recall -- low precision regime. The cutoff is made at the $\max{F_1}$ point, marked with shaded black circles.}
 \label{fig:BPF-performance}
 \end{figure}
 
+We notice the relatively low recall and precision of the default ripple filter in \emph{Falcon}. This is due to the presence of sharp wave-ripple events with ripple frequency < 130 Hz in our dataset (as described earlier and as confirmed by the manual labelling effort by neuroscientists). The default \emph{Falcon} online ripple filter has a left passband edge of $\pm$ 130 Hz, and therefore does not detect these ripples.\footnote{When we design a new band-pass filter based on the default \emph{Falcon} filter (same design characteristics) but with a passband $\approx$ 100--200 Hz, we obtain a marked improvement in detection accuracy. The $PR$-curve (not shown) then resembles that of the Dutta et al filter. Detection latency increases even further though.}
 
-% continue: add best online BPF to envelope makers (optional)
+We design an online ripple filter (at $f_s = $ 1000 Hz) with equal or better detection performance than the analyzed ripple filters. This filter is labelled ``Proposed online BPF'' in \cref{fig:BPF-outputs,fig:BPF-performance}, and is based on our replica of the Ego-Stengel et al filter. It is the product of a 6th-order high-pass Butterworth filter at 100 Hz, and a 1st-order low-pass Butterworth filter at 200 Hz. This filter will be used as the baseline SWR detection algorithm in the following chapter.
+% todo: chapters?
 
 
+% \section{The best linear ripple filter}
 
-\section{The best linear ripple filter}
+% % continue: paste-in and reference online BPF searcharrays.
 
-% continue: paste-in and reference online BPF searcharrays.
+% \clearpage
+% \begin{figure}
+% \img{searcharray-cheby2}
+% \captionn[, ]{Performance of Chebyshev type 2 IIR-filters}{for different filter orders. The minimum stop-band attenuation was set to 40 dB.}
+% \end{figure}
 
-\clearpage
-\begin{figure}
-\img{searcharray-cheby2}
-\captionn[, ]{Performance of Chebyshev type 2 IIR-filters}{for different filter orders. The minimum stop-band attenuation was set to 40 dB.}
-\end{figure}
-
-\begin{figure}
-\img{searcharray-butter}
-\captionn[, ]{Performance of Butterworth IIR-filters}{for different filter orders.}
-\end{figure}
+% \begin{figure}
+% \img{searcharray-butter}
+% \captionn[, ]{Performance of Butterworth IIR-filters}{for different filter orders.}
+% \end{figure}
 
 
 \section{Online envelope estimation}
 
-The real-time constraint also means that we can no longer use the Hilbert transform to calculate the envelope $n_t$ of the band-pass filter output $o_t$. In practice, the band-pass filter output is often simply rectified (i.e. $n_t = \abs{o_t}$).
+Besides requiring causal band-pass filters, the real-time constraint of online SWR detection also means that we can no longer use the Hilbert transform to calculate the envelope $n_t$ of the band-pass filter output $o_t$. In practice, the band-pass filter output is often simply rectified (i.e. $n_t = \abs{o_t}$).
 % Although the resulting jagged signal is not as visually pleasing as the Hilbert-transform based envelope, it is effective for signal detection.
 % (In \citefull{Sethi2014}, it was shown that more advanced online envelope estimators do not yield better detection performance).
 
-Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$, with a variable gain. In their update equation, a slightly higher weight is used for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ (see \cref{apx:online-detection-algos}). In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
+Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$, with a variable gain. (In the update equation, a slightly higher weight is used for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ -- see \cref{apx:online-detection-algos}). In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
 
 Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delayed the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
 
-Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Smoothing may also prevent spurious detections whenever the unsmoothed signal contains outliers (strong peaks in magnitude that do not correspond to a peak in the underlying `real' signal). Our recording (and the band-pass filtered version of it) do not seem to contain such outliers however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
+Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Smoothing may also prevent spurious detections whenever the unsmoothed signal contains outliers (strong peaks in magnitude that do not correspond to a peak in the underlying `real' signal). Our recording (and the band-pass filtered version of it) does not seem to contain such outliers however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
