@@ -27,7 +27,9 @@ The main steps of the offline SWR detection algorithm that most studies use -- s
 \item Define the start and end time of each such ripple as the closest times where the envelope falls back below the lower threshold (i.e. $n_t < T\low$).
 \end{enumerate}
 
-\Cref{fig:offline-steps} visualizes each step, as applied to a fragment of our dataset. Note that this procedure only detects ripples, and not sharp waves.\footnote{Although interestingly, the sharp wave part of sharp wave-ripples was discovered before the ripple part \cite[p. 1]{Buzsaki2015}.}
+\Cref{fig:offline-steps} visualizes each step, as applied to a fragment of our dataset.
+
+Note that this procedure only detects ripples, and not sharp waves.\footnote{Although interestingly, the sharp wave part of sharp wave-ripples was discovered before the ripple part \cite[p. 1]{Buzsaki2015}.}
 
 
 
@@ -48,8 +50,8 @@ The following subsections describe the detection steps in more detail, and compa
 \begin{figure}
 \img[1.1]{labelface-UI}
 \captionn{User interface for SWR labelling}{Each event in the list at the top is represented by two voltage traces: one from an electrode in the pyramidal cell layer (the top trace), and one from an electrode in the stratum radiatum.
-The large plot at the bottom gives more comprehensive view of the current event: all 16 channels are plotted (instead of only two), and the plot ranges from 1000 ms before to 1000 ms after the event.
-In this large plot, the blue vertical line marks the currently active event. The grey vertical lines correspond to other detected events. The scalebar at the beginning of this plot represents 1 mV. Users decide whether the currently active event is an SWR by clicking the buttons in the top-right corner or by using keyboard shortcuts. The source code for this labelling web app is available at \url{https://github.com/tfiers/labelface}.}
+The large plot at the bottom gives more comprehensive view of the currently active event: all 16 channels are plotted (instead of only two), and the plot ranges from 1000 ms before to 1000 ms after the event.
+In this large plot, the blue vertical line marks the currently active event. The grey vertical lines correspond to other detected events. (The scalebar at the beginning of this plot represents 1 mV). Users decide whether the currently active event is an SWR by clicking the buttons in the top-right corner or by using keyboard shortcuts. The source code for this labelling web app is available at \url{https://github.com/tfiers/labelface}.}
 \label{fig:labelface-UI}
 \end{figure}
 

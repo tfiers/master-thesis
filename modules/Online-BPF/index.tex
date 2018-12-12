@@ -117,6 +117,6 @@ Besides requiring causal band-pass filters, the real-time constraint of online S
 
 Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$, with a variable gain. (In the update equation, a slightly higher weight is used for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ -- see \cref{apx:online-detection-algos}). In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
 
-Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delayed the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
+Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delays the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
 
 Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Smoothing may also prevent spurious detections whenever the unsmoothed signal contains outliers (strong peaks in magnitude that do not correspond to a peak in the underlying `real' signal). Our recording (and the band-pass filtered version of it) does not seem to contain such outliers however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
