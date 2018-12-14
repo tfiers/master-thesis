@@ -62,7 +62,7 @@ The default ripple filter in \emph{Falcon} is a Type II Chebyshev filter, with a
 
 \section{SWR detection performance}
 
-Applying these ripple filters at $f_s = $ 1000 Hz to our recording yields online envelopes as in \cref{fig:BPF-outputs}. Quantifying detection performance using the entire evaluation data set, and for a range of different thresholds, results in the $PR$- and latency curves of \cref{fig:BPF-performance}.
+Applying these ripple filters at $f_s = $ 1000 Hz to our recording yields online envelopes as in \cref{fig:BPF-outputs}. Quantifying detection performance as described in \cref{ch:eval}, and using the entire evaluation data set and for a range of different thresholds, results in the $PR$- and latency curves of \cref{fig:BPF-performance}.
 
 \begin{figure}
 \img{107_2--107_8}
@@ -78,6 +78,7 @@ Applying these ripple filters at $f_s = $ 1000 Hz to our recording yields online
 \end{figure}
 % nice-to-have: no titles for zoom-in plot.
 % This means: single time range becomes argument (no longer in config, but in task instantiation).
+% todo: zoom in on the first ripple :)
 
 \begin{figure}
 \img{PR-and-latency--0_7}
@@ -111,12 +112,12 @@ We design an online ripple filter (at $f_s = $ 1000 Hz) with equal or better det
 
 \section{Online envelope estimation}
 
-Besides requiring causal band-pass filters, the real-time constraint of online SWR detection also means that we can no longer use the Hilbert transform to calculate the envelope $n_t$ of the band-pass filter output $o_t$. In practice, the band-pass filter output is often simply rectified (i.e. $n_t = \abs{o_t}$).
+Besides requiring causal band-pass filters, the real-time constraint of online SWR detection also means that we can no longer use the Hilbert transform to calculate the envelope $n_t$ of the band-pass filter output $o_t$. In practice, the band-pass filter output is instead often simply rectified (i.e. $n_t = \abs{o_t}$).
 % Although the resulting jagged signal is not as visually pleasing as the Hilbert-transform based envelope, it is effective for signal detection.
 % (In \citefull{Sethi2014}, it was shown that more advanced online envelope estimators do not yield better detection performance).
 
-Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$, with a variable gain. (In the update equation, a slightly higher weight is used for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ -- see \cref{apx:online-detection-algos}). In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
+Extensions of simple rectification have also been used. In \citefull{Jadhav2012}, the online envelope $n_t$ is an exponentially weighted moving average (EWMA) of $\abs{o_t}$, with a variable gain. (In their EWMA update equation, a slightly higher weight is used for $\abs{o_t}$  whenever $n_t < \abs{o_t}$ -- see \cref{apx:online-detection-algos}). In \citefull{Dutta2018}, $\abs{o_t}$ is smoothed with a 50 Hz low-pass FIR filter.
 
 Both methods add latency. The EWMA method of \citeauthor*{Jadhav2012} delays the envelope by about 2 milliseconds when applied to our recording. The FIR low-pass filter of \citeauthor*{Dutta2018} has a constant group delay of about 5 milliseconds.
 
-Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Smoothing may also prevent spurious detections whenever the unsmoothed signal contains outliers (strong peaks in magnitude that do not correspond to a peak in the underlying `real' signal). Our recording (and the band-pass filtered version of it) does not seem to contain such outliers however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
+Smoothing $\abs{o_t}$ yields a visually more pleasing envelope. This is not a requirement for online SWR detectors however. Smoothing may prevent spurious detections whenever the unsmoothed signal contains outliers (strong peaks in magnitude that do not correspond to a peak in the underlying `real' signal). Our recording (and the band-pass filtered version of it) does not seem to contain such outliers however. Because smoothing adds latency, we do not smooth our online envelopes; all online envelopes in this thesis are calculated as $n_t = \abs{o_t}$.
