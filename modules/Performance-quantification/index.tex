@@ -67,6 +67,12 @@ Each detection threshold yields a different $(P, R)$-combination. This is often 
 
 This is why the performance of a detection algorithm is often given for a \emph{range} of thresholds, instead of for just a single threshold: different users of the SWR detection algorithm may prefer different trade-offs between latency and precision. (One user might require a minimal amount of false detections, for example, while another may want to detect as many SWR events as possible, without minding false detections). When precision and recall are plotted against each other for a range of different thresholds, the result is a so called ``$PR$-curve'' (see the lower-left panel of \cref{fig:LSM-PR-and-latency} for an example). Generally, higher quality detectors have $PR$-curves that draw nearer to the top-right $(1, 1)$-corner.
 
+\begin{figure}
+\img{iso-F-lines}
+\captionn{Iso-$F_\beta$-lines}{}
+\label{fig:iso-F-lines}
+\end{figure}
+
 The precision $P$ and recall $R$ for a given threshold can be summarized in a single number: the so called $F$-score. It is defined as:
 \begin{equation}
 F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}.
@@ -74,6 +80,8 @@ F_\beta = \frac{(1+\beta^2) P R}{\beta^2 P + R}.
 It is the mean of recall and precision (more precisely: their harmonic mean, as precision and recall are ratio's), with recall weighted by $\beta^2$. It measures detection performance ``for a user who attaches $\beta$ times as much importance to recall as to precision.'' \cite{Rijsbergen1979}
 
 For example, the $F_1$-score weighs recall and precision equally. When we want to summarize the accuracy of a detector in a single number, we will often choose the \emph{maximum} $F_1$-score of the detector (over the entire threshold range) as this number.
+
+For an idea of the relationship between $P$, $R$, and $F$-scores, see \cref{fig:iso-F-lines}.
 
 A note on terminology: we will refer to the precision and sensitivity performance of a detector often simply as the `accuracy' of the detector. This is a shorthand, and does not refer to the technical definition of accuracy.\footnotemark{}
 
