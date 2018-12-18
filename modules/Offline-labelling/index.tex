@@ -62,6 +62,7 @@ The wideband voltage signal $x_t$ was band-pass filtered between 100 and 200 Hz,
 % todo: mention downsampling
 
 Many other studies use a higher left bound, of about 140--150 Hz (see \cref{tab:bands}). Using such a high bound in our dataset however resulted in ripples that went undetected (even at low detection thresholds), although they were convicingly marked as SWR's by the neuroscientists.
+% todo: plot peak-f distribution of marked SWR's
 
 The band-pass filter was designed using the windowed-sinc method, with a Kaiser window (using SciPy's \texttt{firwin} and \texttt{kaiserord} functions) \cite{Roelandts2016,Jones2018a}. The transition width was chosen to be 10\% of the bandwidth (i.e. 10 Hz), and the attenuation to be 40 dB, resulting in an FIR filter of order 150 (at a 1000 Hz sampling frequency).
 
