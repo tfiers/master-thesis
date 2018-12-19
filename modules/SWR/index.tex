@@ -1,48 +1,11 @@
-\chapterp{7p}{Sharp wave-ripples}
+\chapter{Sharp wave-ripples}
 \label{ch:SWR}
 
-Sharp wave-ripples (SWR's) are a spatiotemporal pattern of the extracellular electric field potential in the \emph{mammalian hippocampus}. SWR's have so far been observed in all investigated mammalian species, including humans \cite{Buzsaki2015}. \Cref{fig:brain-anatomy} (left) shows the location of the hippocampus in the human and the rat brain. (The data analyzed in this thesis was recorded from a rat, which is why we focus on this animal).
+The sharp wave-ripple (SWR) is a well-known motif in intracranial voltage recordings. \Cref{sec:LFP} describes the nature of such voltage signals. \Cref{sec:anatomy} shows where SWR's are found in the brain and what they look like, whereas \cref{sec:recording} shows how they can be recorded. \Cref{sec:physiology} briefly describes the physiology of SWR's and how they are generated. Finally, \cref{sec:science} explains why SWR's are worth investigating in the first place.
 
-\begin{figure}
-\img[0.6]{human-nissl}
-\img[0.6]{human-HC-labelled}\\[4em]
-\img[0.6]{rat-nissl}
-\img[0.6]{rat-HC-labelled}\\[1em]
-\captionn{Location of relevant brain structures in the human and the rat brain}{Coronal section of a human brain (top) and sagittal section of a rat brain (bottom). Both slices are Nissl-stained, which means that each purple dot represents a cell body. (This can be more clearly seen in \cref{fig:human-cells-comp}, which is a further zoom-in of the top-right panel). Lighter areas indicate regions that consist mostly of axons and dendrites. Black boxes mark location of the zoomed-in micrographs at the right hand side. Note the correspondence in shape and constituents between the human and the rat hippocampus. Note also the grossly enlarged neocortex in the human brain relative to the size of other brain structures, when compared with the rat brain. DG: dentate gyrus. CA1/2/3: Cornu Amonis region 1/2/3. Or: stratum oriens. Pyr: pyramidal cell layer. Rad: stratum radiatum. LM: stratum lacunosum-moleculare. Mol: molecular layer of the dentate gyrus. Human slice from \cite{Mai2008} (30 mm posterior to the anterior commisure), with \cite{Mai2015} as a guide for labelling. Rat slice from \cite{Paxinos2007} (plate 175 -- 3.4 mm lateral).}
-\label{fig:brain-anatomy}
-\end{figure}
-
-More specifically, SWR's are observed in \emph{area CA1} of the hippocampus (see the right-hand side of \cref{fig:brain-anatomy}). This brain area is highly organized: most neuron cell bodies are concentrated in a thin layer (the \emph{pyramidal cell layer} -- the darkly colored C-shape in the stained brain slices). The dendrites of these neurons are located in the layers above and below this pyramidal cell layer (more specifically in the \emph{stratum oriens} above, and the \emph{stratum radiatum} and \emph{stratum lacunosum-moleculare} below. These layers have a lighter color in the stained brain slices).
-
-The ``ripple'' part of a sharp wave-ripple is observed in and around the pyramidal cell layer of CA1, and consists of a $\pm$ 40 ms long oscillation of the extracellular electric field potential, at a frequency of 100 -- 200 Hz (period of 5 -- 10 ms). See the time series in \cref{fig:recording-location} for two examples. The ``sharp wave'' part is observed simultaneously in all layers of CA1, but most markedly in the stratum radiatum. In the stratum radiatum and the stratum lacunosum-moleculare, the sharp wave consists of a strong potential drop, followed by a return to the baseline potential. Together these form a downwards peak of $\pm$ 40 ms wide. Throughout the pyramidal cell layer, the polarity of this peak gradually reverses. The sharp wave has near zero power in the middle of the pyramidal cell layer, and consists of an upwards peak near the top of the pyramidal cell layer and in the stratum oriens above.
-
-
-\begin{figure}
-\img[1.3]{recording-location}\\[0.5em]
-\captionn{Recording location}{Composite image showing estimated location of the probe tip in area CA1 of the rat hippocampus. Hippocampal regions (black text) and layers of region CA1 (grey text) are indicated to the left. Overlaid on the micrograph of a slice of rat hippocampus are a cartoon of a possible CA1 pyramidal neuron (purple), and an axon (orange) leaving a neuron in CA3 to synapse onto the apical dendrites of the CA1 neuron. Also overlaid is a photograph of the ``L-style'' probe from \cite{Michon2016}. Gold squares are its 16 electrodes. Time series (right) show example voltage recordings from five of these electrodes (which are marked with a white dot). The displayed data shows two sharp wave-ripple events. Note the ripples in and around the pyramidal cell layer (``stratum pyramidale''). Note also the phase reversal of the sharp wave: from strongly negative in the stratum radiatum, to near zero power in the middle of the pyramidal cell layer, to positive in the stratum oriens. (Coronal slice of rat hippocampus from \cite{Kjonigsen2011}. Location: 2.98 mm posterior to bregma. Slice stained for parvalbumin, which highlights interneuron somata and neurites. Anterior-posterior and medial-lateral location of the probe were estimated based on the location of probe ``L2'' given in \cite{Michon2016}. Depth of probe estimated from the characteristics of the time-series recorded from each electrode. CA1 pyramidal cell morphology from \cite{Amaral2007}).}
-\label{fig:recording-location}
-\end{figure}
-
-
-\sectionp{1p}{Recording}
-
-These sharp wave-ripples can be recorded by making a small opening in the skull and inserting an electrode in the brain, ending in area CA1. All analyses in this thesis were carried out on such a recording, made in 2014 by \citeauthor*{Michon2016}, and described in \citefull{Michon2016}.
-
-The data consists of a 34-minute long, multi-channel time-series of the extracellular electric field potential in area CA1 of a rat, made with a flexible, silicon-based, multi-electrode probe. (See \cref{fig:implant-photos} for photos of the full probe and the implant). Specifically, we used data from the probe labelled ``L2'' in \cite{Michon2016}. \Cref{fig:recording-location} shows the layout of the electrodes on this probe, and the approximate location of the probe with respect to the different structures in the hippocampus. The probe has 16 electrodes, 8 of which are placed in a linear array (spaced 50 \um{} apart), and 8 placed in a cluster (of 100 \um{} $\cross$ 40 \um{}, with an inter-electrode distance of $\pm$ 25 \um{}). The electrodes cover a total depth of 500 \um{} and span all layers of area CA1.
-The recording was made while the rat was at rest. This makes it likely that  sharp wave-ripples are observed \cite{Buzsaki2015}. 
-% Reference electrode where?
-
-
-
-\sectionp{1p}{Physiology}
-
-Sharp wave-ripples are observed during deep sleep (so called \emph{slow-wave sleep}) and during certain awake states, such as drinking, eating, grooming, and staying still. They then occur at a rate of between one every ten seconds and twice per second \cite{Girardeau2011}. In contrast, SWR's almost never occur during exploratory behaviours such as walking or running, rearing\footnote{standing up on the hind legs}, or sniffing. (During these behaviours, the hippocampal LFP is dominated by a $\pm$ 4 Hz oscillation -- the so called $\theta$-state) \cite{Buzsaki2015}.
-
-% SWR's are generated as follows. 
-
-
-\sectionp{2p}{Scientific importance}
-\label{sec:science}
-
-
-\sectionp{1p}{Closed-loop technology}
+\include{LFP}
+\include{Anatomy}
+\include{Recording}
+\include{Physiology}
+\include{Science}
+% \sectionp{1p}{Closed-loop technology}
