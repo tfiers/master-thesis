@@ -10,7 +10,7 @@ Given the locations of mobile charges, the electric field (and thus the LFP) is 
 \curl{\E}        &= \vb{0},                     \label{eq:irrot}
 \end{align}
 %
-with $\E$ the total electric field, $\rho_\free$ the mobile charge density, and $\eps_r$ the relative permittivity (a tissue property also known as the dielectric constant; sometimes denoted by $\kappa$). The vector $\E$, the scalar $\rho_\free$, and the 3 $\cross$ 3 matrix $\eps_r$ are all time-dependent fields, i.e. defined for each time and location in the tissue. $\eps_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance of free space. Finally, the LFP $\phi$ is a scalar field such that
+with $\E$ the total electric field, $\rho_\free$ the mobile charge density, and $\eps_r$ the relative permittivity (a tissue property also known as the dielectric constant; sometimes denoted by $\kappa$). The vector $\E$, the scalar $\rho_\free$, and the 3 $\cross$ 3 matrix $\eps_r$ are all time-dependent fields, i.e. defined for each time and location in the tissue. $\eps_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance of free space. Finally, the LFP is a scalar field $\phi$ such that
 %
 \begin{equation}
 \label{eq:potential}
@@ -23,7 +23,8 @@ i.e. such that the electric field points from locations of high potential to loc
 
 Although \cref{eq:gauss,eq:irrot} are quite correct theoretically, they are generally not useful to calculate or to think about the LFP. First, they require knowledge of the mobile charge distribution, which is highly complex.\footnotemark{} Second, because $\eps_r$ is location dependent, \cref{eq:gauss} has no closed form analytical solution, and needs instead to be simulated numerically.
 
-\footnotetext{Charge distributions are already quite complex in even the simplest of electrical circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of neuropil, obtaining charge distributions is intractable.}
+\footnotetext{Charge distributions are already quite complex in even the simplest of electrical circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of neuropil (see \cref{fig:neuropil}), obtaining charge distributions is intractable.}
 
 
+Electrophysiologists have 
 
