@@ -1,6 +1,29 @@
 \section{The local field potential}
 \label{sec:LFP}
 
-Brain tissue % continue
+Biological tissue contains a high number of mobile charges (mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}). All these charges are electric monopoles, emitting electric fields that summate linearly. The potential of the resulting total electric field, measured extracellularly, is called the \emph{local field potential} (LFP) by neuroscientists -- especially when only frequencies below about 500 Hz are considered. The following paragraphs briefly discuss the relation between the original mobile charges and the LFP.
 
-% Extracellular electric field potential
+Given the locations of mobile charges, the electric field (and thus the LFP) is entirely described by the following two equations:\footnotemark{}
+%
+\begin{align}
+\div{\eps_r \E}  &= \frac{\rho_\free}{\eps_0}   \label{eq:gauss} \\
+\curl{\E}        &= \vb{0},                     \label{eq:irrot}
+\end{align}
+%
+with $\E$ the total electric field, $\rho_\free$ the mobile charge density, and $\eps_r$ the relative permittivity (a tissue property also known as the dielectric constant; sometimes denoted by $\kappa$). The vector $\E$, the scalar $\rho_\free$, and the 3 $\cross$ 3 matrix $\eps_r$ are all time-dependent fields, i.e. defined for each time and location in the tissue. $\eps_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance of free space. Finally, the LFP $\phi$ is a scalar field such that
+%
+\begin{equation}
+\label{eq:potential}
+\E = -\grad{\phi},
+\end{equation}
+%
+i.e. such that the electric field points from locations of high potential to locations of lower potential.
+
+\footnotetext{These equations follow from Maxwell's equations, using the following two simplifications \cite{Feynman2013}. First, we assume that the electric and magnetic fields do not vary too quickly over time, so that both fields become decoupled. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}. Second, we assume that tissue polarisation is proportional to electric field strength -- a common assumption in physics, that is largely valid for brain tissue in normal conditions \cite{Nunez2006}. As a result, we only need to know the charge density $\rho_\free$ of mobile charges (mostly ions), and not of bound charges in the tissue.}
+
+Although \cref{eq:gauss,eq:irrot} are quite correct theoretically, they are generally not useful to calculate or to think about the LFP. First, they require knowledge of the mobile charge distribution, which is highly complex.\footnotemark{} Second, because $\eps_r$ is location dependent, \cref{eq:gauss} has no closed form analytical solution, and needs instead to be simulated numerically.
+
+\footnotetext{Charge distributions are already quite complex in even the simplest of electrical circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of neuropil, obtaining charge distributions is intractable.}
+
+
+
