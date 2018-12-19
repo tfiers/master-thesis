@@ -1,7 +1,7 @@
 \section{The local field potential}
 \label{sec:LFP}
 
-Biological tissue contains a high number of mobile charges (mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}). All these charges are electric monopoles, emitting electric fields that summate linearly. The potential of the resulting total electric field, measured extracellularly, is called the \emph{local field potential} (LFP) by neuroscientists -- especially when only frequencies below about 500 Hz are considered. The following paragraphs briefly discuss the relation between mobile charges and the LFP.
+Biological tissue contains a high number of mobile charges (mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}). All these charges are electric monopoles, emitting electric fields that summate linearly. The potential of the resulting total electric field, measured extracellularly, is called the \emph{local field potential} (LFP) by neuroscientists -- especially when only frequencies below about 500 Hz are considered. The following paragraphs derive a few rules of thumb for estimating the LFP from charges and currents in the brain.
 
 Given the locations of mobile charges, the electric field (and thus the LFP) is entirely described by the following two equations:\footnotemark{}
 %
@@ -19,15 +19,15 @@ with $\E$ the total electric field, $\rho_\free$ the mobile charge density, and 
 %
 i.e. such that the electric field points from locations of high potential to locations of lower potential.
 
-\footnotetext{These equations follow from Maxwell's equations, using the following two simplifications \cite{Feynman2013}. First, we assume that the electric and magnetic fields do not vary too quickly over time, so that both fields become decoupled. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}. Second, we assume that tissue polarisation is proportional to electric field strength -- a common assumption in physics, that is largely valid for brain tissue in normal conditions \cite{Nunez2006}. As a result, we only need to know the charge density $\rho_\free$ of mobile charges (mostly ions), and not of bound charges in the tissue.}
+\footnotetext{These equations follow from Maxwell's equations, using the following two simplifications \cite{Feynman2013}. First, we assume that the electric and magnetic fields do not vary too quickly over time, so that both fields become decoupled. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}. Second, we assume that tissue polarisation is proportional to electric field strength \cite{Feynman2013} -- a common assumption in physics, that is largely valid for brain tissue in normal conditions \cite{Nunez2006}. As a result, we only directly need to know the distribution $\rho_\free$ of mobile charges (mostly ions), and not of bound charges in the tissue.}
 
 Although \cref{eq:gauss,eq:irrot} are quite truthful, they are generally not useful to calculate or to think about the LFP. First, they require knowledge of the mobile charge distribution, which is highly complex.\footnotemark{} Second, because $\eps_r$ is location dependent, \cref{eq:gauss} has no closed form analytical solution, and needs instead to be simulated numerically.
 
 \footnotetext{Charge distributions are already quite complex in even the simplest of electrical circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of neuropil (see \cref{fig:neuropil}), obtaining charge distributions is intractable.}
 
-A first major simplification assumes the tissue permittivity $\eps = \eps_r \eps_0$ to be uniform and isotropic. This is not the case: the seawater-like fluid inside and in between cells has a permittivity about 15 times larger than the lipid bilayer membranes around cells, organelles, and vesicles \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly organized anatomy of some brain regions challenges the isotropy assumption.
+A first major simplification assumes the tissue permittivity $\eps = \eps_r \eps_0$ to be uniform and isotropic. This is not the case: the seawater-like fluid inside and in between cells has a permittivity about 15 times larger than the lipid bilayer membranes around cells, organelles, and vesicles \cite{Marszalek1991,Weaver2003,Martinsen2015}. Neural tissue consists of a dense alternation of roughly these two tissue types (see \cref{fig:neuropil}). Additionally, the strongly organized anatomy of some brain regions may challenge the isotropy assumption.
 
-Nevertheless, this uniform $\eps$ assumption is very often made (\cite{Nunez2006,Plonsey2007}). It allows a closed form solution to \cref{eq:gauss} \cite{Feynman2013}, expressing the LFP in terms of mobile charges:
+Nevertheless, this uniform $\eps$ assumption is often made (\cite{Nunez2006,Plonsey2007}). It allows a closed form solution to \cref{eq:gauss} \cite{Feynman2013}, expressing the LFP in terms of mobile charges:
 %
 \begin{equation}
 \phi = \frac{1}{4 \pi \eps} \int_V \frac{\rho_\free}{r} \dd{V},
@@ -35,4 +35,11 @@ Nevertheless, this uniform $\eps$ assumption is very often made (\cite{Nunez2006
 %
 i.e. the LFP $\phi$ at some location is proportional to the sum of mobile charges in surrounding small tissue volumes $\dd{V}$, weighted inversely proportional by distance $r$. (This already explains the fact that the electric field potential inside neurons is lower than outside the cell: neurons at rest contain an excess of negative charges \cite{Dayan2001b}).
 
+\begin{align*}
+\div{\J} &= - \dv{\rho}{t} = I  \\
+\J &= \sigma \E \\
+\div{\E} &= \frac{-1}{\sigma} \dv{\rho}{t} = \frac{\rho}{\eps} \\
+\dv{\rho}{t} &= - \frac{\sigma}{\eps} \rho
+\end{align*}
 
+Destexhe paradox \& conclusie
