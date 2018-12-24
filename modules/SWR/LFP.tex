@@ -1,45 +1,88 @@
 \section{The local field potential}
 \label{sec:LFP}
 
-Biological tissue contains a high number of mobile charges (mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}). All these charges are electric monopoles, emitting electric fields that summate linearly. The potential of the resulting total electric field, measured extracellularly, is called the \emph{local field potential} (LFP) by neuroscientists -- especially when only frequencies below about 500 Hz are considered. The following paragraphs derive a few rules of thumb for estimating the LFP from charges and currents in the brain.
-
-Given the locations of mobile charges, the electric field (and thus the LFP) is entirely described by the following two equations:\footnotemark{}
-%
-\begin{align}
-\div{\eps_r \E}  &= \frac{\rho_\free}{\eps_0}   \label{eq:gauss} \\
-\curl{\E}        &= \vb{0},                     \label{eq:irrot}
-\end{align}
-%
-with $\E$ the total electric field, $\rho_\free$ the mobile charge density, and $\eps_r$ the relative permittivity (a tissue property also known as the dielectric constant; sometimes denoted by $\kappa$). The vector $\E$, the scalar $\rho_\free$, and the 3 $\cross$ 3 matrix $\eps_r$ are all time-dependent fields, i.e. defined for each time and location in the tissue. $\eps_0 \approx \SI{10}{\pF\per\m}$ is the distributed capacitance of free space. Finally, the LFP is a scalar field $\phi$ such that
+At every location in the brain, the electric field vector $\E$ (in units of N/C or V/m) points in the direction that a positive charge would be pushed towards, if it was placed at that location. The electric potential $\phi$ (a scalar field, in units of V) is defined such that:
 %
 \begin{equation}
 \label{eq:potential}
 \E = -\grad{\phi},
 \end{equation}
 %
-i.e. such that the electric field points from locations of high potential to locations of lower potential.
+i.e. such that the electric field points from locations of high potential to locations of lower potential.\footnotemark{} When the electric field potential $\phi$ is measured extracellularly, neuroscientists refer to it as the \emph{local field potential} (LFP) -- especially when only frequencies below about 500 Hz are considered.
 
-\footnotetext{These equations follow from Maxwell's equations, using the following two simplifications \cite{Feynman2013}. First, we assume that the electric and magnetic fields do not vary too quickly over time, so that both fields become decoupled. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}. Second, we assume that tissue polarisation is proportional to electric field strength \cite{Feynman2013} -- a common assumption in physics, that is largely valid for brain tissue in normal conditions \cite{Nunez2006}. As a result, we only directly need to know the distribution $\rho_\free$ of mobile charges (mostly ions), and not of bound charges in the tissue.}
+\footnotetext{The electric field potential $\phi$ is only defined when the electric and magnetic fields do not vary too quickly over time, i.e. when $\dv*{\E}{t} \approx 0$ and $\dv*{\B}{t} \approx 0$. It then directly follows from Maxwell's equations that both fields become decoupled, and that the electric field becomes irrotational ($\curl{\E} = 0$), so that an electric potential $\phi$ may be defined as in \cref{eq:potential}. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}.}
 
-Although \cref{eq:gauss,eq:irrot} are quite truthful, they are generally not useful to calculate or to think about the LFP. First, they require knowledge of the mobile charge distribution, which is highly complex.\footnotemark{} Second, because $\eps_r$ is location dependent, \cref{eq:gauss} has no closed form analytical solution, and needs instead to be simulated numerically.
+We now discuss two models used to estimate the LFP $\phi$. Both models calculate $\phi$ based on the mobile charge density $\rho$ at each location in the brain and point in time. ($\rho$ is the net positive surplus of mobile charges, in units of C/\si{\metre^3}). Biological tissue contains a high number of such mobile charges. These are mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}.
 
-\footnotetext{Charge distributions are already quite complex in even the simplest of electrical circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of neuropil (see \cref{fig:neuropil}), obtaining charge distributions is intractable.}
+Both models consist of a single divergence equation (namely \cref{eq:div-charge,eq:div-current}), which, together with \cref{eq:potential} and an assumption of uniform and isotropic brain tissue, leads in both cases to a simple closed form equation to calculate the LFP $\phi$ (namely \cref{eq:phi-charge,eq:phi-current}).
 
-A first major simplification assumes the tissue permittivity $\eps = \eps_r \eps_0$ to be uniform and isotropic. This is not the case: the seawater-like fluid inside and in between cells has a permittivity about 15 times larger than the lipid bilayer membranes around cells, organelles, and vesicles \cite{Marszalek1991,Weaver2003,Martinsen2015}. Neural tissue consists of a dense alternation of roughly these two tissue types (see \cref{fig:neuropil}). Additionally, the strongly organized anatomy of some brain regions may challenge the isotropy assumption.
 
-Nevertheless, this uniform $\eps$ assumption is often made (\cite{Nunez2006,Plonsey2007}). It allows a closed form solution to \cref{eq:gauss} \cite{Feynman2013}, expressing the LFP in terms of mobile charges:
+
+\subsection{Model 1: Charges}
+
+The first model is a direct translation of Gauss's law (the first of Maxwell's equations) at macroscopic scale:\footnote{Gauss's law in its pure form ($\div{\E} = \rho_\total / \eps_0$) considers both mobile and ``bound'' charges: $\rho_\total = \rho_\free + \rho_\bound$. In \cref{eq:div-charge}, we can ignore the bound charges and only consider mobile charges $\rho = \rho_\free$ if we assume that ``tissue polarisation is proportional to electric field strength'' \cite{Feynman2013}. This is a common assumption in physics, and is largely valid for brain tissue in normal conditions \cite{Nunez2006}.}
 %
 \begin{equation}
-\phi = \frac{1}{4 \pi \eps} \int_V \frac{\rho_\free}{r} \dd{V},
+\label{eq:div-charge}
+\div{\eps \E} = \rho,
 \end{equation}
 %
-i.e. the LFP $\phi$ at some location is proportional to the sum of mobile charges in surrounding small tissue volumes $\dd{V}$, weighted inversely proportional by distance $r$. (This already explains the fact that the electric field potential inside neurons is lower than outside the cell: neurons at rest contain an excess of negative charges \cite{Dayan2001b}).
+where $\eps$ is the local tissue permittivity, in units of F/m and generally a 3 $\cross$ 3 matrix. When we assume the permittivity $\eps$ to be uniform and isotropic throughout the tissue\footnotemark{}, \cref{eq:div-charge} has the following solution for the LFP $\phi$ \cite{Feynman2013}:
+%
+\begin{equation}
+\label{eq:phi-charge}
+\phi = \frac{1}{4 \pi \eps} \int_V \frac{\rho \dd{V}}{r},
+\end{equation}
+%
+where we summate over the entire brain volume $V$, with $\rho \dd{V}$ the surplus mobile charge in a small volume $\dd{V}$ of tissue, and $r$ the distance of this small volume to the point where $\phi$ is calculated.
 
-\begin{align*}
-\div{\J} &= - \dv{\rho}{t} = I  \\
-\J &= \sigma \E \\
-\div{\E} &= \frac{-1}{\sigma} \dv{\rho}{t} = \frac{\rho}{\eps} \\
-\dv{\rho}{t} &= - \frac{\sigma}{\eps} \rho
-\end{align*}
+\footnotetext{The uniform and isotropic permitivitty assumption is questionable. Roughly, brain tissue consists of a dense alternation of two types of tissue (see \cref{fig:neuropil}): the seawater-like fluid inside and in between cells, and the fatty membranes around cells, organelles, and vesicles. The former has a permittivity $\eps$ of about 15 times larger than the latter \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly organized anatomy of some brain regions may challenge the isotropy assumption. Nevertheless, this uniform and isotropic $\eps$ assumption is often made \cite{Nunez2006,Plonsey2007}.}
 
-Destexhe paradox \& conclusie
+In other words, positive charge surplusses increase the nearby LFP, negative charge surplusses decrease it, and their effects summate linearly, weighted inverse-proportionally by distance. This model explains for example the resting ``membrane potential'' of neurons, where $\phi$ is lower inside the cell than outside: neurons at rest contain an excess of negative charges \cite{Dayan2001b}.
+
+Although this model is arguably the most physically correct, it is often difficult to apply in practice: charge distributions $\rho$ are already quite complex in even the simplest of electronic circuits \cite[chapter 8]{Chabay2015}. For the highly entangled topologies of brain tissue (see \cref{fig:neuropil}), estimating charge distributions is intractable.
+
+The next model is more useful in practice, as it calculates the LFP based not on charges, but on currents. Currents (and specifically transmembrane currents) are the bread and butter of electrophysiology \cite{Kandel2013a}.
+
+
+
+\subsection{Model 2: Currents}
+
+This is the ``standard model of electric potentials in biological tissue'' \cite{Bedard2011}, known as current source density (CSD) analysis. Unlike the previous model, it is mostly empirical. In fact, the assumptions on which it rests are strictly incompatible with \cref{eq:div-charge,eq:phi-charge}, and lead to a paradox when considered jointly. \citefulls{Bedard2011} explore this paradox, and propose a more general formulation of CSD analysis that `solves' the paradox. In the following however, we will present the `classic' CSD model.
+
+
+%
+\begin{equation}
+\label{eq:div-current}
+\div{\sigma \E} = - \dv{\rho}{t}
+\end{equation}
+%
+%
+\begin{equation}
+\label{eq:CSD}
+I := - \dv{\rho}{t}
+\end{equation}
+%
+%
+\begin{equation}
+\label{eq:phi-current}
+\phi = \frac{1}{4 \pi \sigma} \int_V \frac{I \dd{V}}{r},
+\end{equation}
+%
+Note the strong similarity with \cref{eq:phi-charge}.
+
+
+
+
+
+% % \begin{align*}
+% % \div{\J} &= - \dv{\rho}{t} = I  \\
+% % \J &= \sigma \E \\
+% % \div{\E} &= \frac{-1}{\sigma} \dv{\rho}{t} = \frac{\rho}{\eps} \\
+% % \dv{\rho}{t} &= - \frac{\sigma}{\eps} \rho \\
+% % \\
+% % \div{\grad{\phi}} &= \frac{1}{\sigma} \dv{\rho}{t} \\
+% % \laplacian{\phi} &= \frac{I}{\sigma} \\
+% % \end{align*}
+
+% % Destexhe paradox \& conclusie
