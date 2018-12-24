@@ -1,26 +1,28 @@
-\section{The local field potential}
-\label{sec:LFP}
+\chapter{The local field potential}
+\label{ch:LFP}
 
-At every location in the brain, the electric field vector $\E$ (in units of N/C or V/m) points in the direction that a positive charge would be pushed towards, if it was placed at that location. The electric potential $\phi$ (a scalar field, in units of V) is defined such that:
+This thesis discusses software for processing intracranial voltage recordings. This chapter describes the nature of such voltage signals.
+
+At every location in the brain, the electric field vector $\E$ (in units of N/C or V/m) points in the direction that a positive charge would be pushed towards, if it was placed at that location. The electric potential $\phi$ is defined\footnotemark{} such that:
 %
 \begin{equation}
 \label{eq:potential}
 \E = -\grad{\phi},
 \end{equation}
 %
-i.e. such that the electric field points from locations of high potential to locations of lower potential.\footnotemark{} When the electric field potential $\phi$ is measured extracellularly, neuroscientists refer to it as the \emph{local field potential} (LFP) -- especially when only frequencies below about 500 Hz are considered.
+i.e. such that the electric field points from locations of high potential to locations of lower potential. The electric field potential $\phi$ is a scalar field, in units of V. When it is measured extracellularly, neuroscientists refer to it as the \emph{local field potential} (LFP) -- especially when only frequencies below about 500 Hz are considered.
 
-\footnotetext{The electric field potential $\phi$ is only defined when the electric and magnetic fields do not vary too quickly over time, i.e. when $\dv*{\E}{t} \approx 0$ and $\dv*{\B}{t} \approx 0$. It then directly follows from Maxwell's equations that both fields become decoupled, and that the electric field becomes irrotational ($\curl{\E} = 0$), so that an electric potential $\phi$ may be defined as in \cref{eq:potential}. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}.}
+\footnotetext{The electric field potential $\phi$ is only defined when the electric and magnetic fields do not vary too quickly over time, i.e. when $\pdv*{\E}{t} \approx 0$ and $\pdv*{\B}{t} \approx 0$. It then directly follows from Maxwell's equations that both fields become decoupled, and that the electric field becomes irrotational ($\curl{\E} = 0$), so that an electric potential may be defined as in \cref{eq:potential}. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}.}
 
-We now discuss two models used to estimate the LFP $\phi$. Both models calculate $\phi$ based on the mobile charge density $\rho$ at each location in the brain and point in time. ($\rho$ is the net positive surplus of mobile charges, in units of C/\si{\metre^3}). Biological tissue contains a high number of such mobile charges. These are mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}.
+We now discuss two models used to estimate the LFP $\phi$. Both models calculate $\phi$ based on the mobile charge density $\rho$ at each location in the brain and at each point in time. ($\rho$ is the net positive surplus of mobile charges, in units of C/\si{\metre^3}. Biological tissue contains a high number of such mobile charges. These are mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}).
 
 Both models consist of a single divergence equation (namely \cref{eq:div-charge,eq:div-current}), which, together with \cref{eq:potential} and an assumption of uniform and isotropic brain tissue, leads in both cases to a simple closed form equation to calculate the LFP $\phi$ (namely \cref{eq:phi-charge,eq:phi-current}).
 
 
 
-\subsection{Model 1: Charges}
+\section{Model 1 (Gauss's law)}
 
-The first model is a direct translation of Gauss's law (the first of Maxwell's equations) at macroscopic scale:\footnote{Gauss's law in its pure form ($\div{\E} = \rho_\total / \eps_0$) considers both mobile and ``bound'' charges: $\rho_\total = \rho_\free + \rho_\bound$. In \cref{eq:div-charge}, we can ignore the bound charges and only consider mobile charges $\rho = \rho_\free$ if we assume that ``tissue polarisation is proportional to electric field strength'' \cite{Feynman2013}. This is a common assumption in physics, and is largely valid for brain tissue in normal conditions \cite{Nunez2006}.}
+The first model is a direct translation of the first of Maxwell's equations of electrogmagnetism (Gauss's law), at macroscopic scale:\footnote{Gauss's law in its pure form ($\div{\E} = \rho_\total / \eps_0$) considers both mobile and ``bound'' charges: $\rho_\total = \rho_\free + \rho_\bound$. In \cref{eq:div-charge}, we only explicitly consider mobile charges $\rho = \rho_\free$, while bound charges are subsumed in the tissue permittivity $\eps$. This simplification is allowed if we assume that ``tissue polarisation is proportional to electric field strength'' \cite{Feynman2013}. This is a common assumption in physics, and is largely valid for brain tissue in normal conditions \cite{Nunez2006}.}
 %
 \begin{equation}
 \label{eq:div-charge}
@@ -46,7 +48,8 @@ The next model is more useful in practice, as it calculates the LFP based not on
 
 
 
-\subsection{Model 2: Currents}
+\section{Model 2 (Current source density analysis)}
+\label{sec:CSD}
 
 This is the ``standard model of electric potentials in biological tissue'' \cite{Bedard2011}, known as current source density (CSD) analysis. Unlike the previous model, it is mostly empirical. In fact, the assumptions on which it rests are strictly incompatible with \cref{eq:div-charge,eq:phi-charge}, and lead to a paradox when considered jointly. \citefulls{Bedard2011} explore this paradox, and propose a more general formulation of CSD analysis that `solves' the paradox. In the following however, we will present the `classic' CSD model.
 
@@ -54,13 +57,13 @@ This is the ``standard model of electric potentials in biological tissue'' \cite
 %
 \begin{equation}
 \label{eq:div-current}
-\div{\sigma \E} = - \dv{\rho}{t}
+\div{\sigma \E} = - \pdv{\rho}{t}
 \end{equation}
 %
 %
 \begin{equation}
 \label{eq:CSD}
-I := - \dv{\rho}{t}
+I := - \pdv{\rho}{t}
 \end{equation}
 %
 %
@@ -76,12 +79,12 @@ Note the strong similarity with \cref{eq:phi-charge}.
 
 
 % % \begin{align*}
-% % \div{\J} &= - \dv{\rho}{t} = I  \\
+% % \div{\J} &= - \pdv{\rho}{t} = I  \\
 % % \J &= \sigma \E \\
-% % \div{\E} &= \frac{-1}{\sigma} \dv{\rho}{t} = \frac{\rho}{\eps} \\
-% % \dv{\rho}{t} &= - \frac{\sigma}{\eps} \rho \\
+% % \div{\E} &= \frac{-1}{\sigma} \pdv{\rho}{t} = \frac{\rho}{\eps} \\
+% % \pdv{\rho}{t} &= - \frac{\sigma}{\eps} \rho \\
 % % \\
-% % \div{\grad{\phi}} &= \frac{1}{\sigma} \dv{\rho}{t} \\
+% % \div{\grad{\phi}} &= \frac{1}{\sigma} \pdv{\rho}{t} \\
 % % \laplacian{\phi} &= \frac{I}{\sigma} \\
 % % \end{align*}
 
