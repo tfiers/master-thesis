@@ -14,7 +14,7 @@ i.e. such that the electric field points from locations of high potential to loc
 
 \footnotetext{The electric field potential $\phi$ is only defined when the electric and magnetic fields do not vary too quickly over time, i.e. when $\pdv*{\E}{t} \approx 0$ and $\pdv*{\B}{t} \approx 0$. It then directly follows from Maxwell's equations that both fields become decoupled, and that the electric field becomes irrotational ($\curl{\E} = 0$), so that an electric potential may be defined as in \cref{eq:potential}. This so called \emph{quasi-static} assumption is met in electrophysiological conditions \cite{Nunez2006,Plonsey2007}.}
 
-We now discuss two models used to estimate the LFP $\phi$. Both models calculate $\phi$ based on the mobile charge density $\rho$ at each location in the brain and at each point in time. ($\rho$ is the net positive surplus of mobile charges, in units of C/\si{\metre^3}. Biological tissue contains a high number of such mobile charges. These are mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}).
+We now discuss two models used to estimate the LFP $\phi$. Both models calculate $\phi$ based on the mobile charge density $\rho$ at each location in the brain and throughout time. ($\rho$ is the net positive surplus of mobile charges, in units of C/\si{\metre^3}. Biological tissue contains a high number of such mobile charges. These are mostly ions, with \ce{Na+}, \ce{Cl-}, and \ce{K+} the most abundant ones \cite{Martinsen2015a}).
 
 Both models consist of a single divergence equation (namely \cref{eq:div-charge,eq:div-current}), which, together with \cref{eq:potential} and an assumption of uniform and isotropic brain tissue, leads in both cases to a simple closed form equation to calculate the LFP $\phi$ (namely \cref{eq:phi-charge,eq:phi-current}).
 
@@ -42,7 +42,7 @@ When we assume the permittivity $\eps$ to be uniform and isotropic throughout th
 %
 where we summate over the entire brain volume $V$, with $\rho \dd{V}$ the surplus mobile charge in a small volume $\dd{V}$ of tissue (in Coulomb), and $r$ the distance of this small volume to the point where $\phi$ is calculated.
 
-\footnotetext{The uniform and isotropic permitivitty assumption is questionable. Roughly, brain tissue consists of a dense alternation of two types of tissue (see \cref{fig:neuropil}): the seawater-like fluid inside and in between cells, and the fatty membranes around cells, organelles, and vesicles. The former has a permittivity $\eps$ of about 15 times larger than the latter \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly non-random organization of some brain regions may challenge the isotropy assumption. Nevertheless, this uniform and isotropic $\eps$ assumption is often made \cite{Nunez2006,Plonsey2007}.}
+\footnotetext{The uniform and isotropic permitivitty assumption is questionable. Roughly, brain tissue consists of a dense alternation of two types of tissue (see \cref{fig:neuropil}): the seawater-like fluid inside and in between cells, and the fatty membranes around cells, organelles, and vesicles. The former has a permittivity $\eps$ of about 15 times larger than the latter \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly non-random organization of some brain regions may challenge the isotropy assumption. Nevertheless, this uniform and isotropic permittivity assumption is often made \cite{Nunez2006,Plonsey2007}.}
 
 In other words, positive charge surplusses increase the nearby LFP, negative charge surplusses decrease it, and their effects summate linearly, weighted inverse-proportionally by distance. This model explains for example the resting ``membrane potential'' of neurons, where $\phi$ is lower inside the cell than outside: neurons at rest contain an excess of negative charges \cite{Dayan2001b}.
 
@@ -52,12 +52,13 @@ The next model is more useful in practice, as it calculates the LFP based not on
 
 
 
+
 \section{Model 2 (Current source density analysis)}
 \label{sec:CSD}
 
 This is the ``standard model of electric potentials in biological tissue'' \cite{Bedard2011}. Unlike the previous model, it is mostly empirical. In fact, the assumptions on which it rests are strictly incompatible with \cref{eq:div-charge,eq:phi-charge}, and lead to a paradox when considered jointly. \Citeauthor{Bedard2011} explore this paradox \cite{Bedard2011}, and propose a more general formulation of CSD analysis that `solves' the paradox. In the following however, we will present the `classic' CSD model, as it is presented in most electrophysiology texts \cite{Plonsey2007,Nunez2006,Mitzdorf1985,Nicholson1975,Linden2014,Buzsaki2012a}.
 
-We first define the so called \emph{current source density} $I$, as the rate at which the net charge surplus inside a small volume decreases (units A/\si{m^3}:
+We first define the so called \emph{current source density}, $I$, as the rate at which the net charge surplus inside a small volume decreases (units A/\si{m^3}):
 %
 \begin{equation}
 \label{eq:CSD}
@@ -80,7 +81,7 @@ Next (and this is the assumption challenged in \cite{Bedard2011}), we assume tha
 \J = \sigma \E,
 \end{equation}
 %
-where $\sigma$ is the local tissue conductivity, in units of S/m and generally a 3 $\cross$ 3 matrix. In other words, current is assumed to be linearly related to the electric field (which in reality need not be the case: the electric field dictates the acceleration of mobile charges, while the current density describes their velocity).
+where $\sigma$ is the local tissue conductivity, in units of S/m and generally a 3 $\cross$ 3 matrix. In other words, current is assumed to be linearly related to the electric field. This needn't be the case in reality: the electric field dictates the acceleration of mobile charges, while the current density describes their velocity. These are instantaneously indepedent.
 
 Combining charge conservation and the ohmic assumption leads to the governing equation for CSD analysis:
 %
@@ -96,20 +97,30 @@ Note the similarity with \cref{eq:div-charge}. And analogously as in \cref{eq:di
 \phi = \frac{1}{4 \pi \sigma} \int_V \frac{I \dd{V}}{r}.
 \end{equation}
 %
-In other words, so called ``current sources'' ($I > 0$) increase the nearby LFP, ``current sinks'' ($I < 0$) decrease it, and their effects again summate linearly, weighted inverse-proportionally by distance.
+In other words, so called ``current sources'' ($I > 0$) increase the nearby LFP, current sinks ($I < 0$) decrease it, and their effects again summate linearly, weighted inverse-proportionally by distance.
 
 \footnotetext{Again, a questionable assumption: (extra)cellular plasma has a conductivity $\sigma$ of about $10^6$ times higher than the lipid bilayer membranes in between \cite{Michel2017,Martinsen2015,Marszalek1991,Nunez2006,Weaver2003}.}
 
-Active transmembrane currents are the main physical mechanism of signal propagation in the nervous system.\footnotemark{} At synapses, an excitatory neuron causes a brief inward current in its target neuron, while an inhibitory neuron causes a brief outward current. Along axons, action potentials (``spikes'') propagate by a cascade of inward currents.
 
-\footnotetext{With 'active', we mean here that the current is directly caused by the opening of ion channels at the same membrane location as the current.}
+
+\section{Transmembrane currents}
+\label{sec:transmembrane-currents}
+
+Active transmembrane currents are the main physical mechanism of signal propagation in the nervous system.\footnotemark{} At synapses, excitatory neurons cause a brief inward current in their target neuron, while inhibitory neurons cause a brief outward current. Along axons, action potentials (``spikes'') propagate by a cascade of inward currents.
+
+\footnotetext{With 'active', we mean here that the current is directly caused by the opening of ion channels, located at the same position in the membrane as the current.}
 
 Each of these active currents leads to corresponding passive currents in other parts of the membrane, forming closed current loops. An excitatory, inward current at a synapse corresponds to outward currents at distal parts of the neuron (most notably at the cell body). The inward, active currents of a spike are surrounded by outward, passive currents.
 
+
+
+\section{Forward CSD model of the LFP}
+\label{forward-CSD}
+
 In CSD analysis, both active and passive transmembrane currents are used to estimate the LFP, by making use of the following `trick': the existence of the inside of the neuron is ignored. An inward current for example is then modelled as a current sink $I_m < 0$ in the extracellular space, i.e. an accumulation of mobile charges. In reality, charges do not quite accumulate, but rather dissipate in the neuron. Or, equivalently, a proportional current \emph{source} $I'_m = -I_m$ exists inside the neuron, at virtually the same location as $I_m$, cancelling it out. In CSD analysis however, only the current sink $I_m$ (and not the current source $I'_m$) would be used for calculating the LFP $\phi$.
 
-In CSD analysis (and more specifically, the `forward' modelling problem), \cref{eq:phi-current} is then used to calculate the LFP based on such transmembrane current source densities $I_m$. An inward current thus corresponds to a drop in the nearby LFP, and an outward current to an increase. This technique is applied in \cref{sec:physiology} to explain the physical basis of the sharp wave-ripple motif. Another application of this technique is e.g. \texttt{LFPy}, a software package used to numerically simulate the LFP \cite{Linden2014}.
+In the so called `forward' CSD model (estimating the LFP from transmembrane currents), \cref{eq:phi-current} is used to calculate the LFP based on such `unpaired' transmembrane current source densities $I_m$. From \cref{eq:phi-current}, an inward current then corresponds to a drop in the nearby LFP, and an outward current to an increase. This technique is applied in \cref{sec:physiology} to explain the physical basis of the sharp wave-ripple motif. Another application of this technique is e.g. \texttt{LFPy}, a software package used to numerically simulate the LFP \cite{Linden2014}.
 
-The justification for ignoring the inside of the neuron is often as follows (paraphrasing from \cite{Mitzdorf1985}, a foundational CSD theory paper): ``The extracellular space is independent of the intracellular space, because its boundaries (the cell membranes) have a very high resistance compared to the extracellular space.'' However, electric insulators (cell membranes) do not shield the electric field, nor the electric field potential $\phi$.
+The justification for ignoring the inside of the neuron is often as follows (paraphrasing from \cite{Mitzdorf1985}, a foundational CSD theory paper): ``The extracellular space is independent of the intracellular space, because its boundaries (the cell membranes) have a very high resistance compared to the extracellular space.'' However, electric insulators (high resistance areas) do not shield the electric field, nor the electric field potential $\phi$.
 
 Nonetheless, CSD analysis seems to provide relatively accurate results in practice \cite{Bedard2011}.
