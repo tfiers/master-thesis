@@ -22,23 +22,27 @@ Both models consist of a single divergence equation (namely \cref{eq:div-charge,
 
 \section{Model 1 (Gauss's law)}
 
-The first model is a direct translation of the first of Maxwell's equations of electrogmagnetism (Gauss's law), at macroscopic scale:\footnote{Gauss's law in its pure form ($\div{\E} = \rho_\total / \eps_0$) considers both mobile and ``bound'' charges: $\rho_\total = \rho_\free + \rho_\bound$. In \cref{eq:div-charge}, we only explicitly consider mobile charges $\rho = \rho_\free$, while bound charges are subsumed in the tissue permittivity $\eps$. This simplification is allowed if we assume that ``tissue polarisation is proportional to electric field strength'' \cite{Feynman2013}. This is a common assumption in physics, and is largely valid for brain tissue in normal conditions \cite{Nunez2006}.}
+The first model is a direct translation of the first of Maxwell's equations (Gauss's law), at macroscopic scale:\footnotemark{}
 %
 \begin{equation}
 \label{eq:div-charge}
 \div{\eps \E} = \rho,
 \end{equation}
 %
-where $\eps$ is the local tissue permittivity, in units of F/m and generally a 3 $\cross$ 3 matrix. When we assume the permittivity $\eps$ to be uniform and isotropic throughout the tissue\footnotemark{}, \cref{eq:div-charge} has the following solution for the LFP $\phi$ \cite{Feynman2013}:
+where $\eps$ is the local tissue permittivity, in units of F/m and generally a 3 $\cross$ 3 matrix.
+
+\footnotetext{Gauss's law in its pure form ($\div{\E} = \rho_\total / \eps_0$) considers both mobile and ``bound'' charges: $\rho_\total = \rho_\free + \rho_\bound$. In \cref{eq:div-charge}, we only explicitly consider mobile charges $\rho = \rho_\free$, while bound charges are subsumed in the tissue permittivity $\eps$. This simplification is allowed if we assume that ``tissue polarisation is proportional to electric field strength'' \cite{Feynman2013}. This is a common assumption in physics, and is largely valid for brain tissue in normal conditions \cite{Nunez2006}.}
+
+When we assume the permittivity $\eps$ to be uniform and isotropic throughout the tissue (i.e. $\eps$ is a constant scalar)\footnotemark{}, \cref{eq:div-charge} has the following solution for the LFP $\phi$ \cite{Feynman2013}:
 %
 \begin{equation}
 \label{eq:phi-charge}
 \phi = \frac{1}{4 \pi \eps} \int_V \frac{\rho \dd{V}}{r},
 \end{equation}
 %
-where we summate over the entire brain volume $V$, with $\rho \dd{V}$ the surplus mobile charge in a small volume $\dd{V}$ of tissue, and $r$ the distance of this small volume to the point where $\phi$ is calculated.
+where we summate over the entire brain volume $V$, with $\rho \dd{V}$ the surplus mobile charge in a small volume $\dd{V}$ of tissue (in Coulomb), and $r$ the distance of this small volume to the point where $\phi$ is calculated.
 
-\footnotetext{The uniform and isotropic permitivitty assumption is questionable. Roughly, brain tissue consists of a dense alternation of two types of tissue (see \cref{fig:neuropil}): the seawater-like fluid inside and in between cells, and the fatty membranes around cells, organelles, and vesicles. The former has a permittivity $\eps$ of about 15 times larger than the latter \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly organized anatomy of some brain regions may challenge the isotropy assumption. Nevertheless, this uniform and isotropic $\eps$ assumption is often made \cite{Nunez2006,Plonsey2007}.}
+\footnotetext{The uniform and isotropic permitivitty assumption is questionable. Roughly, brain tissue consists of a dense alternation of two types of tissue (see \cref{fig:neuropil}): the seawater-like fluid inside and in between cells, and the fatty membranes around cells, organelles, and vesicles. The former has a permittivity $\eps$ of about 15 times larger than the latter \cite{Marszalek1991,Weaver2003,Martinsen2015}. Additionally, the strongly non-random organization of some brain regions may challenge the isotropy assumption. Nevertheless, this uniform and isotropic $\eps$ assumption is often made \cite{Nunez2006,Plonsey2007}.}
 
 In other words, positive charge surplusses increase the nearby LFP, negative charge surplusses decrease it, and their effects summate linearly, weighted inverse-proportionally by distance. This model explains for example the resting ``membrane potential'' of neurons, where $\phi$ is lower inside the cell than outside: neurons at rest contain an excess of negative charges \cite{Dayan2001b}.
 
@@ -51,41 +55,61 @@ The next model is more useful in practice, as it calculates the LFP based not on
 \section{Model 2 (Current source density analysis)}
 \label{sec:CSD}
 
-This is the ``standard model of electric potentials in biological tissue'' \cite{Bedard2011}, known as current source density (CSD) analysis. Unlike the previous model, it is mostly empirical. In fact, the assumptions on which it rests are strictly incompatible with \cref{eq:div-charge,eq:phi-charge}, and lead to a paradox when considered jointly. \citefulls{Bedard2011} explore this paradox, and propose a more general formulation of CSD analysis that `solves' the paradox. In the following however, we will present the `classic' CSD model.
+This is the ``standard model of electric potentials in biological tissue'' \cite{Bedard2011}. Unlike the previous model, it is mostly empirical. In fact, the assumptions on which it rests are strictly incompatible with \cref{eq:div-charge,eq:phi-charge}, and lead to a paradox when considered jointly. \Citeauthor{Bedard2011} explore this paradox \cite{Bedard2011}, and propose a more general formulation of CSD analysis that `solves' the paradox. In the following however, we will present the `classic' CSD model, as it is presented in most electrophysiology texts \cite{Plonsey2007,Nunez2006,Mitzdorf1985,Nicholson1975,Linden2014,Buzsaki2012a}.
 
-
-%
-\begin{equation}
-\label{eq:div-current}
-\div{\sigma \E} = - \pdv{\rho}{t}
-\end{equation}
-%
+We first define the so called \emph{current source density} $I$, as the rate at which the net charge surplus inside a small volume decreases (units A/\si{m^3}:
 %
 \begin{equation}
 \label{eq:CSD}
-I := - \pdv{\rho}{t}
+I = - \pdv{\rho}{t}
 \end{equation}
 %
+Charge conservation (which is a direct consequence of Maxwell's equations) dictates that
+%
+\begin{equation}
+\label{eq:charge-conservation}
+\div{\J} = I,
+\end{equation}
+%
+where $\J$ is the current density (units of A/\si{\metre^2}, and $\J = \rho \vb{v}$ with $\vb{v}$ the local velocity of mobile charges). In other words, the decrease in net positive charges in a small volume ($I$) equals the net rate at which positive charges flow out of this volume ($\div{\J}$).
+
+Next (and this is the assumption challenged in \cite{Bedard2011}), we assume that the extracellular medium is \emph{resistive} or \emph{ohmic}:
+%
+\begin{equation}
+\label{eq:ohmic-medium}
+\J = \sigma \E,
+\end{equation}
+%
+where $\sigma$ is the local tissue conductivity, in units of S/m and generally a 3 $\cross$ 3 matrix. In other words, current is assumed to be linearly related to the electric field (which in reality need not be the case: the electric field dictates the acceleration of mobile charges, while the current density describes their velocity).
+
+Combining charge conservation and the ohmic assumption leads to the governing equation for CSD analysis:
+%
+\begin{equation}
+\label{eq:div-current}
+\div{\sigma \E} = I.
+\end{equation}
+%
+Note the similarity with \cref{eq:div-charge}. And analogously as in \cref{eq:div-charge,eq:phi-charge}, when we assume the conductivity $\sigma$ to be uniform and isotropic throughout the tissue (i.e. $\sigma$ is a constant scalar)\footnotemark{}, \cref{eq:div-current} has the following solution for the LFP $\phi$ \cite{Plonsey2007}:
 %
 \begin{equation}
 \label{eq:phi-current}
-\phi = \frac{1}{4 \pi \sigma} \int_V \frac{I \dd{V}}{r},
+\phi = \frac{1}{4 \pi \sigma} \int_V \frac{I \dd{V}}{r}.
 \end{equation}
 %
-Note the strong similarity with \cref{eq:phi-charge}.
+In other words, so called ``current sources'' ($I > 0$) increase the nearby LFP, ``current sinks'' ($I < 0$) decrease it, and their effects again summate linearly, weighted inverse-proportionally by distance.
 
+\footnotetext{Again, a questionable assumption: (extra)cellular plasma has a conductivity $\sigma$ of about $10^6$ times higher than the lipid bilayer membranes in between \cite{Michel2017,Martinsen2015,Marszalek1991,Nunez2006,Weaver2003}.}
 
+Active transmembrane currents are the main physical mechanism of signal propagation in the nervous system.\footnotemark{} At synapses, an excitatory neuron causes a brief inward current in its target neuron, while an inhibitory neuron causes a brief outward current. Along axons, action potentials (``spikes'') propagate by a cascade of inward currents.
 
+\footnotetext{With 'active', we mean here that the current is directly caused by the opening of ion channels at the same membrane location as the current.}
 
+Each of these active currents leads to corresponding passive currents in other parts of the membrane, forming closed current loops. An excitatory, inward current at a synapse corresponds to outward currents at distal parts of the neuron (most notably at the cell body). The inward, active currents of a spike are surrounded by outward, passive currents.
 
-% % \begin{align*}
-% % \div{\J} &= - \pdv{\rho}{t} = I  \\
-% % \J &= \sigma \E \\
-% % \div{\E} &= \frac{-1}{\sigma} \pdv{\rho}{t} = \frac{\rho}{\eps} \\
-% % \pdv{\rho}{t} &= - \frac{\sigma}{\eps} \rho \\
-% % \\
-% % \div{\grad{\phi}} &= \frac{1}{\sigma} \pdv{\rho}{t} \\
-% % \laplacian{\phi} &= \frac{I}{\sigma} \\
-% % \end{align*}
+In CSD analysis, both active and passive transmembrane currents are used to estimate the LFP, by making use of the following `trick': the existence of the inside of the neuron is ignored. An inward current for example is then modelled as a current sink $I_m < 0$ in the extracellular space, i.e. an accumulation of mobile charges. In reality, charges do not quite accumulate, but rather dissipate in the neuron. Or, equivalently, a proportional current \emph{source} $I'_m = -I_m$ exists inside the neuron, at virtually the same location as $I_m$, cancelling it out. In CSD analysis however, only the current sink $I_m$ (and not the current source $I'_m$) would be used for calculating the LFP $\phi$.
 
-% % Destexhe paradox \& conclusie
+In CSD analysis (and more specifically, the `forward' modelling problem), \cref{eq:phi-current} is then used to calculate the LFP based on such transmembrane current source densities $I_m$. An inward current thus corresponds to a drop in the nearby LFP, and an outward current to an increase. This technique is applied in \cref{sec:physiology} to explain the physical basis of the sharp wave-ripple motif. Another application of this technique is e.g. \texttt{LFPy}, a software package used to numerically simulate the LFP \cite{Linden2014}.
+
+The justification for ignoring the inside of the neuron is often as follows (paraphrasing from \cite{Mitzdorf1985}, a foundational CSD theory paper): ``The extracellular space is independent of the intracellular space, because its boundaries (the cell membranes) have a very high resistance compared to the extracellular space.'' However, electric insulators (cell membranes) do not shield the electric field, nor the electric field potential $\phi$.
+
+Nonetheless, CSD analysis seems to provide relatively accurate results in practice \cite{Bedard2011}.
