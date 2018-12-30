@@ -115,7 +115,7 @@ Each of these active currents leads to corresponding passive currents in other p
 
 
 \section{Forward CSD model of the LFP}
-\label{forward-CSD}
+\label{sec:forward-CSD}
 
 In CSD analysis, both active and passive transmembrane currents are used to estimate the LFP, by making use of the following `trick': the existence of the inside of the neuron is ignored. An inward current for example is then modelled as a current sink $I_m < 0$ in the extracellular space, i.e. an accumulation of mobile charges. In reality, charges do not quite accumulate, but rather dissipate in the neuron. Or, equivalently, a proportional current source $I'_m = -I_m$ exists inside the neuron, at virtually the same location as $I_m$, cancelling it out. In CSD analysis however, only the current sink $I_m$ (and not the current source $I'_m$) would be used for calculating the LFP $\phi$.
 
