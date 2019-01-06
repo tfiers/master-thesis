@@ -13,6 +13,13 @@ r(\w) = \frac{\w^T \A \w}
              {\w^T \B \w}
 \end{equation}
 
+Recall that a vector $\w_i$ is a generalized eigenvector of $(\A,\B)$, with corresponding generalized eigenvalue $\lambda_i$, if
+%
+\begin{equation}
+\label{eq:generalized-eigenproblem-AB}
+\A \w_i = \lambda_i \B \w_i
+\end{equation}
+
 We must then prove the following:
 
 
@@ -51,7 +58,7 @@ or
                  {\what^T \B \what} \; \B \what  \\[1em]
 \A \what &= r(\what) \; \B \what
 \end{align*}
-This is the generalized eigenvalue/eigenvector definition (\cref{eq:generalized-eigenproblem}) for $\w_i = \what$ and $\lambda_i = r(\what)$.
+This is the generalized eigenvalue/eigenvector definition (\cref{eq:generalized-eigenproblem-AB}) for $\w_i = \what$ and $\lambda_i = r(\what)$.
 
 We have thus shown that if $\what$ is a maximum of $r(\w)$, that it is an eigenvector of $(\A,\B)$, with $r(\what)$ its corresponding eigenvalue.
 

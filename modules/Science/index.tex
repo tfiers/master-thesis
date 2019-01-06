@@ -31,11 +31,11 @@ The last two points have only been convincingly demonstrated in rats, but are li
 
 SWR's are thought to be pertinent mainly in the process of \emph{memory consolidation}, where some short-term memories are stabilized into long-term memories. Single-cell recordings in primates have hinted that short-term memories exist as positive feedback loops of firing neurons in the neocortex (``reverberations'', or persistent activity). Long-term memories on the other hand are likely to exist as strenghtened or newly built physical connections between neurons in the neocortex. \cite{Kandel2013,Bear2015,Purves2017}
 
-The case of Henry Molaison (known as ``patient H.M.'' up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for up to minutes after), and largely intact long-term memory for events that happened before the surgery. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013,Purves2017}
+The case of Henry Molaison (known as ``patient H.M.'' up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for up to minutes after), and largely intact long-term memory for events that happened before the surgery. Similar symptoms have been observed in laboratory experiments and other clinical cases. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013,Purves2017}
 
 \footnotetext{For example, the doctors working with Molaison had to re-introduce themselves on every occasion they saw him \cite{Bear2015}.}
 
-Memory consolidation is thought to take place mostly during sleep. In this so called \emph{two-stage model} of memory consolidation, new information is first input to the hippocampus during the awake state. In the second stage, during subsequent sleep, this information is consolidated `offline' to the neocortex by the hippocampus. As mentioned in \cref{sec:physiology}, SWR's also occur mostly during sleep.
+This memory consolidation is thought to take place mostly during sleep. In this so called \emph{two-stage model} of memory consolidation, new information is first input to the hippocampus during the awake state. In the second stage, during subsequent sleep, this information is consolidated `offline' to the neocortex, by the hippocampus. As mentioned in \cref{sec:physiology}, SWR's occur mostly during sleep.
 
 
 
@@ -68,7 +68,7 @@ Around the turn of the millenium, a memory-related discovery was made in the hip
 
 When a rat is placed in a maze, there is a good chance that a given hippocampal neuron is a so called \emph{place cell}, meaning that it only fires around a certain location in the maze.\footnotemark{}. When the rat walks around the maze, a set of place cells will therefore fire in sequence, reflecting the path that the rat traversed.
 
-\footnotetext{The area where it fires is called the neuron's \emph{place field}. To be precise, the neuron can fire anywhere in the maze, but has an increased firing \emph{rate} in its place field. Finding the rat's position based on neuron firing rates is called \emph{neural population decoding}, and is typically performed using a Bayesian framework to invert the empirical place field encodings \cite{Kloosterman2012}.}
+\footnotetext{The area where it fires is called the neuron's \emph{place field}. To be precise, the neuron can fire anywhere in the maze, but has an increased firing \emph{rate} in its place field. Finding the rat's position based on neuron firing rates is called \emph{neural population decoding}, and is typically performed using a Bayesian framework to invert the empirical place field encodings $p(\text{fire} \given \text{position})$\cite{Kloosterman2012}.}
 
 When the rat later rests, these place cell firing sequences occur again, even though the rat stays in the same place. These sequence reactivations are called \emph{replay}. They are compressed in time versus the original sequences, and, importantly, occur mostly during sharp wave-ripples. This time-scale means that reactivated neurons (and their downstream projections) are likely to become more tightly connected, as is explained in \cref{sec:synaptic-plasticity}.
 
@@ -88,12 +88,26 @@ Long-term potentiation (LTP) is any biomolecular process that strengthens  synap
 
 Spike-timing dependent plasticity (STDP) is a phenomenon where synapses are strengthened or weakened based on both pre- and postsynaptic firing activity. When the postsynaptic neuron fires shortly after the presynaptic neuron, the synapse is strengthened. When it fired shortly before the presynaptic neuron however, the synapse is weakened. STDP is a translation of Hebb's `rule' that ``neurons that fire together, wire together'' (extended with Hebb's intuitions about temporal precedence) \cite{Caporale2008}.
 
-As mentioned earlier, many neurons in area CA1 of the hippocampus (1) fire at high frequency during SWR's (100--200 Hz), and (2) have projections (i.e. axons) to the neocortex. This is ideal to induce LTP in downstream neocortical neurons. Additionally, the temporal firing sequences replayed at ripple-speed in the hippocampus (see \cref{sec:replay}) are ideal to connect neurons through STDP, both within the hippocampus and within the neocortex.
+As mentioned earlier, many neurons in area CA1 of the hippocampus 1) fire at high frequency during SWR's (100--200 Hz), and 2) have projections (i.e. axons) to the neocortex. This is ideal to induce LTP in downstream neocortical neurons. Additionally, the temporal firing sequences replayed at ripple-speed in the hippocampus (see \cref{sec:replay}) are ideal to connect neurons through STDP, both within the hippocampus and within the neocortex.
 
 
 
 
 
 \section{Ripple disruption}
+\label{sec:disruption}
 
-Even more recently, direct evidence of the importance of SWR's for learning \& memory was found \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}. Since 2009, scientists have 
+Even more recently, direct evidence of the importance of SWR's for learning \& memory was found. In 2009, two very similar studies were published, that for the first time applied real-time ripple detection and disruption \cite{Ego-Stengel2009,Girardeau2009}.
+
+Such disruption is accomplished by inserting an electrode in the ventral hippocampal commisure (VHC), which is a tight bundle of axons between hippocampal neurons from both hemispheres. Stimulating this axon bundle (by sending a current pulse through the electrode) activates many hippocampal neurons, including inhibitory interneurons. These interneurons silence the hippocampus, such that none or very few spikes occur for $\pm$ 50 ms after stimulation. This means that, when the stimulation is applied during an SWR-event, the ripple oscillation disappears after the stimulation.
+
+In both studies, rats had to navigate a simple maze for a chocolate reward. After each trial through the maze, the rats were allowed to sleep for one hour in a separate box. During this sleep, hippocampal ripples were detected in real time and disrupted through VHC stimulation. After sleep, the rats had to navigate the same maze. This was repeated for several days. The two studies used different controls: in \citefull*{Ego-Stengel2009} \citefull{Ego-Stengel2009}
+
+\citefull*{Girardeau2009}
+
+\citefull{Girardeau2009}
+
+
+
+
+% \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}

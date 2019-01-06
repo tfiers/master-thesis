@@ -26,7 +26,7 @@ The threshold $T$ is generally set by the user of the online SWR detection algor
 
 
 
-\section{Quantifying detector accuracy}
+\section{Quantifying accuracy}
 
 In the following, we denote reference SWR segments as the closed intervals $s_r = [ t\start_r,\ t\eend_r ]$ (with $r = 0, 1, \tdots$). The set of all reference segments is denoted by $S = \{ s_r \}$.
 
@@ -41,14 +41,14 @@ S\undetected &= S \setminus S\detected,
 %
 i.e. correct online detections are contained within a reference segment, and detected reference segments contain at least one online detection. \Panelref{fig:LSM-comp}{A} shows some example correct and incorrect detections (green and red triangles, respectively).
 
-Next, the number of detected reference segments is counted, and compared to the total number of reference segments. This fraction is the recall $R$ of the SWR detector (also known as sensitivity, hit rate, or true positive rate):
+Next, the number of detected reference segments is counted, and compared to the total number of reference segments. This fraction is the \textbf{recall $R$} of the SWR detector (also known as sensitivity, hit rate, or true positive rate):
 \begin{equation}
 R = \frac{\abs{S\detected}}{\abs{S}}
   = \frac{\text{\# of detected reference segments}}
          {\text{total \# of reference segments}}
 \end{equation}
 
-Similarly, the number of correct detections is counted, and compared to the total number of detections. This fraction is the precision $P$ of the SWR detector (also known as the positive predictive value):
+Similarly, the number of correct detections is counted, and compared to the total number of detections. This fraction is the \textbf{precision $P$} of the SWR detector (also known as the positive predictive value):
 \begin{equation}
 P = \frac{\abs{D\correct}}{\abs{D}}
   = \frac{\text{\# of correct detections}}
@@ -91,7 +91,7 @@ Note that there are two types of ``true positives'': correct detections $\in D\c
 
 
 
-\section{Quantifying detector latency}
+\section{Quantifying latency}
 
 Besides counting how many SWR segments were detected, we are also interested in how early they were detected. For each detected reference segment $s_r = [ t\start_r,\ t\eend_r ]$, we note the first online detection $t_d$ contained within it (reference segments may contain multiple online detections).
 
