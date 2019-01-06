@@ -62,9 +62,9 @@ Finally, during alert wakefulness, the hippocampus contains higher levels of neu
 \section{Replay}
 \label{sec:replay}
 
-Around the turn of the millenium, a memory-related discovery was made in the hippocampus at a quite detailed and mechanistic level, yielding new evidence for the importance of sharp wave-ripples. This phenomenon, called \emph{replay}, was discovered through simultaneous recordings of the spiking activity of multiple individual neurons in the hippocampus.\footnotemark{} See \cref{fig:replay} for a schematic example of the phenomenon.
+Around the turn of the millenium, a memory-related discovery was made in the hippocampus at a quite detailed and mechanistic level, yielding new evidence for the importance of sharp wave-ripples. This phenomenon, called \emph{replay}, was discovered through simultaneous recordings of the spiking activity of multiple individual neurons in the hippocampus.\footnotemark{} See \cref{fig:replay} for a schematic example of replay.
 
-\footnotetext{Such recordings are classically made with tetrodes -- four tightly wound electrodes. More recently, multi-electrode neural probes are also being used. Each electrode picks up the spikes from multiple nearby neurons; and each neuron's spikes are visible on multiple tetrodes. The process of grouping recorded spikes by their generating neuron is called \emph{spike sorting}.}
+\footnotetext{Such recordings are classically made with tetrodes -- four tightly wound electrodes. More recently, multi-electrode neural probes are also being used. Each electrode picks up the spikes from multiple nearby neurons; and each neuron's spikes are visible on multiple tetrodes. Each neuron's spikes leave a distinct signature on the multi-electrode recordings. The process of finding these signatures and using it to group recorded spikes by their generating neuron is called \emph{spike sorting}.}
 
 When a rat is placed in a maze, there is a good chance that a given hippocampal neuron is a so called \emph{place cell}, meaning that it only fires around a certain location in the maze.\footnotemark{}. When the rat walks around the maze, a set of place cells will therefore fire in sequence, reflecting the path that the rat traversed.
 
@@ -73,6 +73,7 @@ When a rat is placed in a maze, there is a good chance that a given hippocampal 
 When the rat later rests, these place cell firing sequences occur again, even though the rat stays in the same place. These sequence reactivations are called \emph{replay}. They are compressed in time versus the original sequences, and, importantly, occur mostly during sharp wave-ripples. This time-scale means that reactivated neurons (and their downstream projections) are likely to become more tightly connected, as is explained in \cref{sec:synaptic-plasticity}.
 
 It has been hypothesized that not only spatial trajectories are replayed during SWR's, but in general any type of episodic memory -- especially in primates \cite{Girardeau2011}.
+
 
 
 
@@ -97,17 +98,22 @@ As mentioned earlier, many neurons in area CA1 of the hippocampus 1) fire at hig
 \section{Ripple disruption}
 \label{sec:disruption}
 
-Even more recently, direct evidence of the importance of SWR's for learning \& memory was found. In 2009, two very similar studies were published, that for the first time applied real-time ripple detection and disruption \cite{Ego-Stengel2009,Girardeau2009}.
+The above evidence for the importance of SWR's is correlational / associational. Recently however, more direct evidence is being provided by studies applying real-time SWR detection and disruption \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}.
 
-Such disruption is accomplished by inserting an electrode in the ventral hippocampal commisure (VHC), which is a tight bundle of axons between hippocampal neurons from both hemispheres. Stimulating this axon bundle (by sending a current pulse through the electrode) activates many hippocampal neurons, including inhibitory interneurons. These interneurons silence the hippocampus, such that none or very few spikes occur for $\pm$ 50 ms after stimulation. This means that, when the stimulation is applied during an SWR-event, the ripple oscillation disappears after the stimulation.
+Such disruption is typically accomplished by inserting an electrode in the ventral hippocampal commisure (VHC), which is a tight bundle of axons between hippocampal neurons from both hemispheres. Stimulating this axon bundle (by sending a current pulse through the electrode) activates many hippocampal neurons, including inhibitory interneurons. These interneurons silence the hippocampus, such that none or very few spikes occur for $\pm$ 50 ms after stimulation. This means that, when the stimulation is applied during an SWR-event, the ripple oscillation disappears after the stimulation.
 
-In both studies, rats had to navigate a simple maze for a chocolate reward. After each trial through the maze, the rats were allowed to sleep for one hour in a separate box. During this sleep, hippocampal ripples were detected in real time and disrupted through VHC stimulation. After sleep, the rats had to navigate the same maze. This was repeated for several days. The two studies used different controls: in \citefull*{Ego-Stengel2009} \citefull{Ego-Stengel2009}
+In 2009, two very similar studies were published that for the first time applied real-time ripple detection and disruption \cite{Ego-Stengel2009,Girardeau2009}. In both studies, rats had to learn to navigate a simple maze for a chocolate reward. After each trial through the maze, the rats were allowed to sleep for one hour in a separate box. During this sleep, hippocampal ripples were detected in real time and disrupted through VHC stimulation. After sleep, the rats had to navigate the same maze. This was repeated for several days.
 
-\citefull*{Girardeau2009}
+In both studies, ripple disruption deteriorated performance when compared with the controls:\footnotemark{} more wrong turns were taken, navigating the maze took longer, and less sucessful runs were completed. Learning the maze over the course of days progressed more slowly. These results thus quite directly show the importance of SWR's for learning \& memory.
 
-\citefull{Girardeau2009}
-
-
+\footnotetext{The two studies used different controls: in \citefull*{Ego-Stengel2009}, trials on the maze where ripples were disrupted during subsequent sleep were alternated with trials on a second maze, where ripples where not disrupted during subsequent sleep. In \citefull{Girardeau2009}, only one type of maze was used, but the rats were grouped in three types: rats without implanted electrodes, rats with ripple disruption, and rats where the VHC was stimulated, but only after $\pm$ 100 ms had passed after online detection of a ripple, meaning the detected ripple is not disrupted. This controls for non-ripple-associated effects of VHC stimulation. The rats with delayed VHC stimulation performed equally well as the unimplaneted rats.}
 
 
-% \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}
+
+
+\section{Awake replay and SWR's}
+\label{sec:awake}
+
+As an addendum, we mention a possible complementary role for SWR's and replay besides learning \& memory, namely planning, imagination, and decision making. As mentioned in \cref{sec:physiology}, SWR's also occur in the awake state, mostly during quiet immobility. Analyzing place cell activitions during awake SWR's revealed sped-up firing sequences, similar to sleep replay.
+
+Interestingly, 
