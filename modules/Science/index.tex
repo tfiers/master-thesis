@@ -3,9 +3,9 @@
 
 Sharp wave-ripples play an important role in learning and memory.\footnotemark{} The evidence for this has been accumulating over the years, and has mostly been associative / correlational. The kind of closed-loop experiments discussed in this thesis however have recently been providing more direct evidence.
 
-\footnotetext{In this section, when we refer to ``SWR's'', we mean ``SWR's, or the mechanism that generates them''. -- The SWR pattern in the LFP may not be more than an epiphenomenon. Additionally, when we refer to ``memory'', we more specifically mean so called \emph{declarative} memory. This excludes conditioned and ``instinctive'' emotional responses, ``muscle memory'' (habits and motor skills), and habituation or sensitization of the senses.}
+\footnotetext{In this section, when we refer to ``SWR's'', we mean ``SWR's, or the mechanism that generates them''. -- The SWR pattern in the LFP could be regarded as an epiphenomenon. Additionally, when we refer to ``memory'', we more specifically mean so called \emph{declarative} memory. This excludes conditioned and instinctive emotional responses, ``muscle memory'' (habits and motor skills), and habituation or sensitization of the senses.}
 
-Most of this chapter is based on the review of \citeauthor{Girardeau2011} \cite{Girardeau2011}, and to a lesser extent on \cite{Buzsaki2015} and \cite{Olafsdottir2018}.
+Most of this chapter is based on the review of \citeauthor{Girardeau2011} \cite{Girardeau2011}, and to a lesser extent on \cite{Buzsaki1986,Buzsaki2015,Olafsdottir2018,Purves2017}.
 
 
 
@@ -17,8 +17,8 @@ We first summarize what is known about the importance of sharp wave-ripples. In 
 \begin{enumerate}
 \item The hippocampus -- where SWR's are recorded from -- is necessary for consolidating memories.
 \item Memory consolidation happens mostly during sleep. SWR's also occur mostly during sleep.
-\item The ideal firing frequency for strengthening synapses is the same as the ripple frequency.
-\item Awake neural firing patterns are later replayed, in both the hippocampus and the neocortex. This replay occurs mostly during SWR's.
+\item The high firing frequency of neurons during SWR's is ideal for strengthening synapses.
+\item Awake neural firing patterns are later replayed, in both the hippocampus and the neocortex. These replays occur mostly during SWR's.
 \item Forcibly silencing the hippocampus during SWR's after a new task is learned deteriorates subsequent performance on the task. Silencing the hippocampus outside SWR's has no such effect.
 \end{enumerate}
 
@@ -29,39 +29,40 @@ The last two points have only been convincingly demonstrated in rats, but are li
 
 \section{Memory consolidation}
 
-SWR's are thought to be pertinent mainly in the process of \emph{memory consolidation}, where certain short-term memories are stabilized into long-term memories. Single-cell recordings in primates have hinted that short-term memories exist as positive feedback loops of firing neurons in the neocortex (``reverberations'', or persistent activity). Long-term memories on the other hand are likely to exist as strenghtened or newly built physical connections between neurons in the neocortex. \cite{Kandel2013,Bear2015}
+SWR's are thought to be pertinent mainly in the process of \emph{memory consolidation}, where some short-term memories are stabilized into long-term memories. Single-cell recordings in primates have hinted that short-term memories exist as positive feedback loops of firing neurons in the neocortex (``reverberations'', or persistent activity). Long-term memories on the other hand are likely to exist as strenghtened or newly built physical connections between neurons in the neocortex. \cite{Kandel2013,Bear2015,Purves2017}
 
-The case of Henry Molaison (known as patient H.M. up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices (see next section) were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for seconds up to minutes after), and largely intact long-term memory for events that happened before the surgery. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013}
+The case of Henry Molaison (known as ``patient H.M.'' up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for up to minutes after), and largely intact long-term memory for events that happened before the surgery. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013,Purves2017}
 
 \footnotetext{For example, the doctors working with Molaison had to re-introduce themselves on every occasion they saw him \cite{Bear2015}.}
 
-Memory consolidation is thought to take place mostly during sleep. In this so called \emph{two-stage model} of memory consolidation, new information is first input to the hippocampus during the awake state. In the second stage, which is during subsequent sleep, this information is consolidated `offline' to the neocortex by the hippocampus. As mentioned in \cref{sec:physiology}, SWR's also occur mostly during sleep.
+Memory consolidation is thought to take place mostly during sleep. In this so called \emph{two-stage model} of memory consolidation, new information is first input to the hippocampus during the awake state. In the second stage, during subsequent sleep, this information is consolidated `offline' to the neocortex by the hippocampus. As mentioned in \cref{sec:physiology}, SWR's also occur mostly during sleep.
 
 
 
 
 
 \section{Hippocampo-cortical connections}
+\label{sec:HC-neocortex}
 
-At a more detailed anatomic and physiological level, there is indeed quite some evidence for this model of memory consolidation. The main input to the hippocampus is the entorhinal cortex, which relays deeply processed sensory information from the rest of the neocortex. In turn, the hippocampus has many output projections to the neocortex (mostly to the prefrontal and the anterior cingulate cortices, where long-term and working memories are thought to mainly reside).
+At a more detailed anatomic and physiological level, there is indeed quite some evidence for this model of memory consolidation. The main input to the hippocampus is the entorhinal cortex, which relays deeply processed sensory information from the rest of the neocortex. In turn, the hippocampus has many output projections to the neocortex (mostly to the prefrontal and the anterior cingulate cortices, where both short- and long-term memories are thought to mostly reside).
 
-It has been discovered in rats that during SWR's, neocortical neurons indeed fire shortly after hippocampal neurons \cite{Wierzynski2009}. Additionally, awake firing patterns in the neocortex have been found to be \emph{replayed} later, specifically during SWR's \cite{Peyrache2009}. (This is similar to replay in the hippocampus itself, see \cref{sec:replay}. Hippocampal replay is a bit more established than neocortical replay).
+It has been discovered in rats that during SWR's, neocortical neurons indeed tend to fire shortly after hippocampal neurons \cite{Wierzynski2009}. Additionally, awake firing patterns in the neocortex have been found to be \emph{replayed} later, specifically during SWR's \cite{Peyrache2009}. (More about replay in \cref{sec:replay}. That section discusses replay in the hippocampus itself. Hippocampal replay is a bit more established than neocortical replay).
 
-
-
-
-\section{Long-term potentiation}
+Finally, during alert wakefulness, the hippocampus contains higher levels of neuromodulators that enhance the influence of external inputs relative to internal activity. During sleep on the other hand, there is less sensory input, and the hippocampus contains lower concentrations of such neuromodulators. This favors endogenous activity; the highly recurrent connectivity of the hippocampus is then thought to spontaneously generate SWR's.
 
 
 
 
-
+\begin{figure}
+\img[1.2]{replay}
+\captionn{Replay}{\emph{Adapted from \citeauthor{Girardeau2011} \cite{Girardeau2011}.} See text for details.}
+\label{fig:replay}
+\end{figure}
 
 \section{Replay}
 \label{sec:replay}
 
-
-Quite recently, a discovery about memories was made in the hippocampus at a quite detailed and mechanistic level, yielding new evidence for the importance of sharp wave-ripples. This phenomenon, called \emph{replay}, was discovered through simultaneous recordings of the spiking activity of multiple individual neurons in the hippocampus.\footnotemark{}
+Around the turn of the millenium, a memory-related discovery was made in the hippocampus at a quite detailed and mechanistic level, yielding new evidence for the importance of sharp wave-ripples. This phenomenon, called \emph{replay}, was discovered through simultaneous recordings of the spiking activity of multiple individual neurons in the hippocampus.\footnotemark{} See \cref{fig:replay} for a schematic example of the phenomenon.
 
 \footnotetext{Such recordings are classically made with tetrodes -- four tightly wound electrodes. More recently, multi-electrode neural probes are also being used. Each electrode picks up the spikes from multiple nearby neurons; and each neuron's spikes are visible on multiple tetrodes. The process of grouping recorded spikes by their generating neuron is called \emph{spike sorting}.}
 
@@ -69,12 +70,25 @@ When a rat is placed in a maze, there is a good chance that a given hippocampal 
 
 \footnotetext{The area where it fires is called the neuron's \emph{place field}. To be precise, the neuron can fire anywhere in the maze, but has an increased firing \emph{rate} in its place field. Finding the rat's position based on neuron firing rates is called \emph{neural population decoding}, and is typically performed using a Bayesian framework to invert the empirical place field encodings \cite{Kloosterman2012}.}
 
-When the rat later rests, these place cell firing sequences occur again, even though the rat stays in the same place. These sequence reactivations are called \emph{replay}. They are compressed in time versus the original sequences, and, importantly, occur mostly during sharp wave-ripples. This time-scale means that reactivated neurons (and their downstream projections) are likely to be connected together through synaptic plasticity (see the following section).
+When the rat later rests, these place cell firing sequences occur again, even though the rat stays in the same place. These sequence reactivations are called \emph{replay}. They are compressed in time versus the original sequences, and, importantly, occur mostly during sharp wave-ripples. This time-scale means that reactivated neurons (and their downstream projections) are likely to become more tightly connected, as is explained in \cref{sec:synaptic-plasticity}.
 
-Replay is thus a quite blatant indicator of the importance of the hippocampus and of SWR's for creating memories.
+It has been hypothesized that not only spatial trajectories are replayed during SWR's, but in general any type of episodic memory -- especially in primates \cite{Girardeau2011}.
 
 
 
+\section{Synaptic plasticity}
+\label{sec:synaptic-plasticity}
+
+Long-term memories are formed by changing the strength of synapses between neurons, which is known as \emph{synaptic plasticity}.\footnotemark{}
+
+\footnotetext{This strengthening is measured as an increased postsynaptic current or potential-difference, for an identical presynaptic spike; i.e. the `weight' or the gain of the connection has persistently increased.}
+
+Long-term potentiation (LTP) is any biomolecular process that strengthens  synapses based on recent presynaptic spiking activity. It is often induced after the presynaptic neuron has fired at a relatively high frequency (a so called \emph{tetanus} or burst of spikes).
+% Conversely, long-term depression (LTD) weakens synapses after prolonged low-frequency presynaptic spiking.
+
+Spike-timing dependent plasticity (STDP) is a phenomenon where synapses are strengthened or weakened based on both pre- and postsynaptic firing activity. When the postsynaptic neuron fires shortly after the presynaptic neuron, the synapse is strengthened. When it fired shortly before the presynaptic neuron however, the synapse is weakened. STDP is a translation of Hebb's `rule' that ``neurons that fire together, wire together'' (extended with Hebb's intuitions about temporal precedence) \cite{Caporale2008}.
+
+As mentioned earlier, many neurons in area CA1 of the hippocampus (1) fire at high frequency during SWR's (100--200 Hz), and (2) have projections (i.e. axons) to the neocortex. This is ideal to induce LTP in downstream neocortical neurons. Additionally, the temporal firing sequences replayed at ripple-speed in the hippocampus (see \cref{sec:replay}) are ideal to connect neurons through STDP, both within the hippocampus and within the neocortex.
 
 
 
@@ -82,6 +96,4 @@ Replay is thus a quite blatant indicator of the importance of the hippocampus an
 
 \section{Ripple disruption}
 
-Even more recently, ...
-
-% \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}
+Even more recently, direct evidence of the importance of SWR's for learning \& memory was found \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}. Since 2009, scientists have 
