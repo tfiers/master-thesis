@@ -1,8 +1,8 @@
-\chapterp{2p}{Introduction}
+\chapter{Introduction}
 
 
 
-\sectionp{1p}{Closed-loop neuroscience}
+\section{Closed-loop neuroscience}
 \label{sec:BCI}
 
 This thesis discusses signal-processing software for a brain-computer interface (BCI).\footnotemark{} Most BCI research is focused on restoring or partially replacing a damaged nervous system after a stroke or a traumatic injury \cite{Krucoff2016}. The BCI discussed in this thesis however is used for fundamental brain research into memory \& learning, using laboratory animals such as rats or macaques.
@@ -10,17 +10,33 @@ This thesis discusses signal-processing software for a brain-computer interface 
 
 \footnotetext{A BCI is a device that reads out brain activity, which is used to control some automated action. The brain receives feedback about the performed action, either through normal sensory input, or through direct neural stimulation, thereby forming a closed loop.}
 
-On a high level, the discussed BCI works as follows: an electrode is surgically implanted into the animal's brain, where it records the electric field potential. During an experiment, the BCI continuously tests whether it can detect a particular pattern in the recording. (This pattern, called the \emph{sharp wave-ripple}, is discussed in \cref{ch:SWR}). Each detection of the pattern triggers a feedback action. This is often a current injection that temporarily disables the specific brain area where the pattern is recorded from.
+On a high level, the discussed BCI works as follows (see also \cref{fig:closed-loop}): an electrode is surgically implanted into the animal's brain, where it records the electric field potential. (\Cref{ch:LFP} discusses the origin of this signal). During an experiment, the BCI continuously tests whether it can detect a particular pattern in the recording. (This pattern, called the \emph{sharp wave-ripple}, is discussed in \cref{ch:SWR}). Each detection of the pattern triggers a feedback action. This is often a current injection that temporarily disables the specific brain area where the pattern is recorded from.
 
-This experimental technique enables scientists to test their hypotheses about sharp wave-ripples, the affected brain area, and in general, about learning \& memory. (This is discussed further in \cref{ch:science}).
-
-
+This experimental technique enables scientists to test their hypotheses about sharp wave-ripples (SWR's), the affected brain area, and in general, about brain mechanisms such as learning \& memory. (This is discussed further in \cref{ch:science}).
 
 
-\sectionp{1p}{Problem statement}
+\begin{figure}
+\img[0.7]{closed-loop}
+\captionn{A closed-loop BCI in neuroscience}{Arrows show the direction of data flow. ALU: arithmetic logic unit.}
+\label{fig:closed-loop}
+\end{figure}
+
+
+
+\section{Problem statement}
 \label{sec:problem}
 
+This thesis investigates whether the current sharp wave-ripple detection algorithm can be improved upon. That is: can we find an online algorithm that detects SWR's with less latency than the current online algorithm, while being at least equally sensitive and precise?
+
+(In \cref{ch:offline,ch:eval}, we discuss these performance criteria in more detail).
 
 
 
-\sectionp{1p}{Thesis overview}
+\section{Motivation}
+\label{sec:motivation}
+
+This question is motivated by two factors. First, current online detection algorithms add a considerable latency: the SWR event is often detected after a third of the event has already passed (see \cref{fig:BPF-outputs,fig:BPF-performance} from \cref{ch:BPF}, where existing online SWR detection algorithms are evaluated). This detection latency might compromise experimental power.
+
+Second, most current detection algorithms make use of only a single voltage signal. Recently however, more and more recordings are being made with \emph{neural probes}, which simultaneously record the voltage at multiple spatially distributed points \cite{Michon2016,Jun2017}. We investigate whether we can use these spatially distributed multichannel recordings to improve online SWR detection.
+
+In \cref{ch:GEVec,ch:RNN}, two existing signal detection techniques are adapted to create new online SWR detection algorithms. These algorithms are analyzed, their parameters are explored, and their performance in online SWR detection is compared with the state-of-the-art. \Cref{ch:conclusions} summarizes the findings, gives recommendations, and discusses limitations of this thesis, as well as directions for further work.

@@ -13,15 +13,15 @@ Most of this chapter is based on the review of \citeauthor{Girardeau2011} \cite{
 \section{Overview of evidence}
 
 We first summarize what is known about the importance of sharp wave-ripples. In the following sections, we expand on each of these points.
-
+%
 \begin{enumerate}
 \item The hippocampus -- where SWR's are recorded from -- is necessary for consolidating memories.
 \item Memory consolidation happens mostly during sleep. SWR's also occur mostly during sleep.
 \item The high firing frequency of neurons during SWR's is ideal for strengthening synapses.
 \item Awake neural firing patterns are later replayed, in both the hippocampus and the neocortex. These replays occur mostly during SWR's.
-\item Forcibly silencing the hippocampus during SWR's after a new task is learned deteriorates subsequent performance on the task. Silencing the hippocampus outside SWR's has no such effect.
+\item Forcibly silencing the hippocampus during SWR's deteriorates performance on a newly learned task. Silencing the hippocampus outside SWR's has no such effect.
 \end{enumerate}
-
+%
 The last two points have only been convincingly demonstrated in rats, but are likely true for other mammals as well.
 
 
@@ -31,7 +31,7 @@ The last two points have only been convincingly demonstrated in rats, but are li
 
 SWR's are thought to be pertinent mainly in the process of \emph{memory consolidation}, where some short-term memories are stabilized into long-term memories. Single-cell recordings in primates have hinted that short-term memories exist as positive feedback loops of firing neurons in the neocortex (``reverberations'', or persistent activity). Long-term memories on the other hand are likely to exist as strenghtened or newly built physical connections between neurons in the neocortex. \cite{Kandel2013,Bear2015,Purves2017}
 
-The case of Henry Molaison (known as ``patient H.M.'' up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for up to minutes after), and largely intact long-term memory for events that happened before the surgery. Similar symptoms have been observed in other clinical cases and in lesioned experimental animals. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored in and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013,Purves2017}
+The case of Henry Molaison (known as ``patient H.M.'' up until his death in 2008) illustrates the importance of memory consolidation, and of the role of the hippocampus in this process. In an attempt to cure his epilepsy, most of Molaison's hippocampi and the adjacent entorhinal cortices were surgically removed, leaving the rest of the neocortex intact. Before the surgery, Molaison had no memory problems. After the surgery however -- although his epileptic seizures decreased -- he could not form new long-term memories.\footnotemark{} Curiously though, Molaison still had both intact short-term memory (remembering new information for up to minutes after), and largely intact long-term memory for events that happened before the surgery. Similar symptoms have been observed in other clinical cases and in lesioned animal experiments. These symptoms are consistent with a model of memory consolidation where both short-term and long-term memories are stored in and retrieved by the neocortex, but where the hippocampus is needed to convert short-term into new long-term memories. \cite{Kandel2013,Purves2017}
 
 \footnotetext{For example, the doctors working with Molaison had to re-introduce themselves on every occasion they saw him \cite{Bear2015}.}
 
@@ -44,11 +44,11 @@ This memory consolidation is thought to take place mostly during sleep. In this 
 \section{Hippocampo-cortical connections}
 \label{sec:HC-neocortex}
 
-At a more detailed anatomic and physiological level, there is indeed quite some evidence for this model of memory consolidation. The main input to the hippocampus is the entorhinal cortex, which relays deeply processed sensory information from the rest of the neocortex. In turn, the hippocampus has many output projections to the neocortex (mostly to the prefrontal and the anterior cingulate cortices, where both short- and long-term memories are thought to mostly reside).
+At a more detailed anatomic and physiological level, there is indeed quite some evidence for this model of memory consolidation. The main input to the hippocampus is the entorhinal cortex, which relays deeply processed sensory information from the rest of the neocortex. In turn, the hippocampus has many output projections to the neocortex (in large part to the prefrontal and the anterior cingulate cortices, where both short- and long-term memories are thought to mostly reside).
 
-It has been discovered in rats that during SWR's, neocortical neurons indeed tend to fire shortly after hippocampal neurons \cite{Wierzynski2009}. Additionally, awake firing patterns in the neocortex have been found to be \emph{replayed} later, specifically during SWR's \cite{Peyrache2009}. (More about replay in \cref{sec:replay}. That section discusses replay in the hippocampus itself. Hippocampal replay is a bit more established than neocortical replay).
+It has been discovered in rats that during SWR's, neocortical neurons indeed tend to fire shortly after hippocampal neurons \cite{Wierzynski2009}. Additionally, awake firing patterns in the neocortex have been found to be \emph{replayed} later, specifically during SWR's \cite{Peyrache2009}. (More about replay in \cref{sec:replay}. That section discusses replay in the hippocampus itself. Hippocampal replay is more established in the literature than neocortical replay).
 
-Finally, during alert wakefulness, the hippocampus contains higher levels of neuromodulators that enhance the influence of external inputs relative to internal activity. During sleep on the other hand, there is less sensory input, and the hippocampus contains lower concentrations of such neuromodulators. This favors endogenous activity; the highly recurrent connectivity of the hippocampus is then thought to spontaneously generate SWR's.
+Finally, during alert wakefulness, the hippocampus contains higher levels of neuromodulators that enhance the influence of external inputs relative to internal activity. During sleep on the other hand, the hippocampus contains lower concentrations of such neuromodulators, and there is simply less sensory input. This favors endogenous activity; the highly recurrent connectivity of the hippocampus is then thought to spontaneously generate SWR's.
 
 
 
@@ -64,7 +64,7 @@ Finally, during alert wakefulness, the hippocampus contains higher levels of neu
 
 Around the turn of the millenium, a memory-related discovery was made in the hippocampus at a quite detailed and mechanistic level, yielding new evidence for the importance of sharp wave-ripples. This phenomenon, called \emph{replay}, was discovered through simultaneous recordings of the spiking activity of multiple individual neurons in the hippocampus.\footnotemark{} See \cref{fig:replay} for a schematic example of replay.
 
-\footnotetext{Such recordings are classically made with tetrodes -- four tightly wound electrodes. More recently, multi-electrode neural probes are also being used. Each electrode picks up the spikes from multiple nearby neurons; and each neuron's spikes are visible on multiple tetrodes. Each neuron's spikes leave a distinct signature on the multi-electrode recordings. The process of finding these signatures and using it to group recorded spikes by their generating neuron is called \emph{spike sorting}.}
+\footnotetext{Such recordings are classically made with tetrodes -- four tightly wound electrodes. More recently, multi-electrode neural probes are also being used. Each electrode picks up the spikes from multiple nearby neurons; and each neuron's spikes are visible on multiple electrodes. Each neuron's spikes leave a distinct signature on the multi-electrode recordings. The process of finding these signatures and using them to group recorded spikes by their generating neuron is called \emph{spike sorting}.}
 
 When a rat is placed in a maze, there is a good chance that a given hippocampal neuron is a so called \emph{place cell}, meaning that it only fires around a certain location in the maze.\footnotemark{}. When the rat walks around the maze, a set of place cells will therefore fire in sequence, reflecting the path that the rat traversed.
 
@@ -97,9 +97,9 @@ As mentioned earlier, many neurons in area CA1 of the hippocampus 1) fire at hig
 \section{Planning \& decision-making}
 \label{sec:planning}
 
-We briefly mention a possible complementary role for SWR's and replay, besides learning \& memory; namely planning, imagination, and decision making. Analyzing place cell spiking during awake SWR's revealed sped-up mental trajectories through the maze, similar to sleep replay.
+We briefly mention a possible complementary role for SWR's and replay, besides learning \& memory.
 
-These awake place cell sequences are generally more varied than sleep replay sequences: the replay can be in reverse (i.e. the place cells activate in reverse order than the navigated path), especially when the rat is consuming its reward. Or the place cell sequence can seemingly trace out a path not navigated before (this has been termed ``preplay''). Additionally, while traversing a maze, place cell sequences have been observed that trace out paths ahead of the rat -- especially when the animal stops at a fork in the maze.
+Analyzing place cell spiking during awake SWR's revealed sped-up mental trajectories through the maze, similar to sleep replay. These awake place cell sequences are generally more varied than sleep replay sequences: the replay can be in reverse (i.e. the place cells activate in reverse order than the navigated path), especially when the rat is consuming its reward. Or the place cell sequence can seemingly trace out a path not navigated before (this has been termed ``preplay''). Additionally, while traversing a maze, place cell sequences have been observed to trace out paths ahead of the rat -- especially when the animal stops at a fork in the maze.
 
 Such observations are less well established than sleep replay, but -- together with corroborating evidence from cognitive neuroscience\footnotemark{} -- point at a planning, imagination, and decision making-role for awake hippocampal replay and sharp wave-ripples.
 
@@ -111,9 +111,9 @@ Such observations are less well established than sleep replay, but -- together w
 \section{Ripple disruption}
 \label{sec:disruption}
 
-The above evidence for the importance of SWR's is correlational / associational. Recently however, more direct evidence is being provided by studies applying real-time SWR detection and disruption \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Talakoub2016}.
+The above evidence for the importance of SWR's is correlational / associational. Recently however, more direct evidence is being provided by studies that perform real-time SWR detection and disruption \cite{Ego-Stengel2009,Girardeau2009,Jadhav2012,Girardeau2014,Kovacs2016,Talakoub2016}.
 
-Such disruption is typically accomplished by inserting an electrode in the ventral hippocampal commisure (VHC), which is a tight bundle of axons between hippocampal neurons from both hemispheres. Stimulating this axon bundle by sending a current pulse through the electrode activates many hippocampal neurons, including inhibitory interneurons. These interneurons silence the hippocampus, such that none or very few spikes occur for $\pm$ 50 ms after stimulation. This means that, when the stimulation is applied during an SWR-event, the ripple oscillation disappears after the stimulation.
+Such disruption is typically accomplished by inserting an electrode in the ventral hippocampal commisure (VHC), which is a tight bundle of axons connecting hippocampal neurons from both hemispheres. Stimulating this axon bundle by sending a current pulse through the electrode activates many hippocampal neurons, including inhibitory interneurons. These interneurons silence the hippocampus, such that none or very few spikes occur for $\pm$ 50 ms after stimulation. This means that, when the stimulation is applied during an SWR-event, the ripple oscillation disappears after the stimulation.
 
 In 2009, two very similar studies were published that for the first time applied real-time ripple detection and disruption \cite{Ego-Stengel2009,Girardeau2009}. In both studies, rats had to learn to navigate a simple maze for a chocolate reward. After each trial through the maze, the rats were allowed to sleep for one hour in a separate box. During this sleep, hippocampal ripples were detected in real time and disrupted through VHC stimulation. After sleep, the rats had to navigate the same maze. This was repeated for several days.
 
