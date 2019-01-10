@@ -1,0 +1,36 @@
+\section{Update equations}
+\label{sec:GRU_eqs}
+
+The RNN type that we use for SWR detection is the so called \emph{gated recurrent units} RNN, or \emph{GRU} \cite{Cho2014}. It is closely related to the popular ``long short-term memory'' (LSTM) RNN \cite{Hochreiter1997,Greff2017}. The update equations for the GRU are simpler than those of the LSTM however, while achieving comparable performance \cite{Chung2014}.
+
+The state-update function $f$ and the readout function $g$ are defined as follows for a GRU RNN:
+%
+\begin{align}
+f:\ \h_t     &= \update \had \h\prev 
+                + (1-\update) \had \hcand, \label{eq:hnew}\\
+g:\ n_t  &= \sigma( \vb{w}_{hn}\trans \h_t + b_n )      \label{eq:out}
+\end{align}
+with
+\begin{align}
+\hcand  &= \tanh( \reset \had \W_{hh} \h\prev 
+                   + \W_{zh} \z_t + \bias_h ),  \label{eq:hcand}\\
+\update &= \sigma( \W_{hu} \h\prev 
+                   + \W_{zu} \z_t + \bias_u),   \label{eq:update}\\
+\reset  &= \sigma( \W_{hr} \h\prev 
+                   + \W_{zr} \z_t + \bias_r ).  \label{eq:reset}
+\end{align}
+$\tanh$ is the hyperbolic tangent, and $\sigma$ is the logistic sigmoid, defined as $\sigma(x) = 1 / (1 + \exp(-x))$. They are applied point-wise, i.e. separately to each element of their argument vector. Similarly, ``$\had$'' denotes point-wise multiplication.  $\sigma$ compresses the real number line to $(0, 1)$, while $\tanh(x) = 2\ \sigma(x) - 1$ maps it to $(-1, 1)$. Therefore, for this RNN, $\h_t \in (-1, 1)^M$ and the output $n_t \in (0, 1)$.
+
+The coefficients in the matrices $\W_\_$ and in the vectors $\bias_\_$ are called the \emph{weights} and \emph{biases}, respectively.\footnotemark{} They are parameters of the algorithm, determined a priori (i.e. before online SWR detection), through an optimisation procedure described in \cref{sec:RNN-optim}.
+
+\footnotetext{Often collectively referred to simply as the weights. The vector $\vb{w}_{hn}$ and the scalar $b_n$ are also part of the weights and biases. They may be regarded as a one-row matrix and a one-dimensional vector, respectively.}
+
+From \cref{eq:hnew}, each element of the hidden state $\h_t$ is thus a weighted average of its existing value in $\h\prev$, and a candidate new value in $\hcand$. The weighting, in $\update$, depends on both the current input $\z_t$, and the full previous hidden state $\h\prev$ (\cref{eq:update}).
+
+Similarly, each element of the candidate new hidden state $\hcand$ is a function of both the current input $\z_t$, and all elements of the previous hidden state $\h\prev$ (\cref{eq:hcand}). A so called ``reset'' multiplier, in $\reset$ (\cref{eq:reset}), determines how much the existing memory values in $\h\prev$ influence the candidate new memory value, compared to the influence of the current input $\z_t$. (When an element of $\reset$ is $0$, the corresponding hidden unit in $\hcand$ is only a function of the current input, and is thus decoupled from its past. The hidden unit in $\h_t$ can therefore be `reset').
+
+Finally, the output signal $n_t$ is a linear projection of the hidden state, translated and squashed to be in $(0, 1)$ (\cref{eq:out}).
+
+The above equations \labelcref{eq:hnew} to \labelcref{eq:reset} for the GRU RNN define a so called one-layer network.\footnotemark{} An RNN with $L$ layers has $L$ corresponding hidden unit vectors $\h^{(1)}, \h^{(2)}, \tdots, \h^{(L)}$, that may each have a different dimension. The update functions for these hidden unit vectors can be formulated as follows. If $f^{(1)}(\h^{(1)}\prev, \z_t)$ is the function defined by \cref{eq:update,eq:hcand,eq:reset,eq:hnew}, we can define similar functions $f^{(2)}(\h^{(2)}\prev, \h^{(1)}_t), \  f^{(3)}(\h^{(3)}\prev, \h^{(2)}_t)$, and so forth. These functions all have the same form, but do not share weights and biases (i.e. each layer has separately learnable weights and biases). The output is then: $n_t = \sigma( \vb{w}_{hn}\trans \h^{(L)}_t + b_n )$; i.e. a readout of the last layer.
+
+\footnotetext{That is, one layer per timestep. A recurrent neural network can also be regarded as a very deep feedforward neural network in which all the layers share the same weights.}

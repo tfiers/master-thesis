@@ -1,0 +1,27 @@
+\section{Recurrent neural networks}
+\label{sec:RNNs}
+
+The nonlinear filtering algorithm that we choose to explore is the recurrent neural network (RNN). RNN's have advanced the state-of-the-art in many sequence and time-series processing tasks \cite{Greff2017}. (Examples include speech and language modelling \cite{LeCun2015,Goodfellow2016}; protein structure prediction \cite{Sonderby2014}; and diagnosis prediction from intensive care unit time series \cite{Lipton2015}).\footnotemark{} Relevant for SWR detection, RNN's can process multi-channel time-series, and calculating a new output sample has a relatively low cost\footnote{In contrast with very deep fully connected or convolutional neural networks.}, which is beneficial for real-time operation.
+
+\footnotetext{For the reader with an interest in neuroscience: RNNs have recently been used in various computational studies. Examples include \cite{Cueva2018} and \cite{Banino2018}, where an RNN was trained on a navigational task, after which the entries of the internal state vector of the RNN exhibited grid-cell-like activation patterns; \cite{Song2017}, who combined reinforcement learning theory with RNNs to model reward seeking and value-based computations; \cite{Li2017}, where RNNs were used to quantify and classify behaviour of the \emph{C. Elegans} model organism; and \cite{Guclu2017}, who modelled the fMRI hemodynamic response using an RNN. For an overview of artifical neural networks in general as models in neuroscience, see \cite{Kriegeskorte2015}.}
+
+
+A recurrent neural network is a nonlinear dynamical system, driven by an input signal $\z_t \in \reals^C$. In the case of SWR detection, $\z_t$ is the multichannel LFP recording, with $C$ the number of channels. The RNN maintains an internal state vector $\h_t \in \reals^M$, which is updated at each discrete time step $t$ as:
+%
+\begin{equation}
+\label{eq:RNN_f}
+\h_t = f(\h\prev, \z_t).
+\end{equation}
+%
+$f$ is a nonlinear function, parametrised by the coefficients of several affine transformations\footnote{Linear transformations (rotate, shear, scale), plus translations.} (see \cref{sec:GRU_eqs} for the complete update equations). The state vector $\h_t$ allows the RNN to maintain an efficient and task-relevant memory of past input samples \cite{LeCun2015}.\footnotemark{} We can read out the state vector of the RNN to obtain an output time series $n_t \in \reals$, with
+%
+\begin{equation}
+\label{eq:RNN_g}
+n_t = g(\h_t),
+\end{equation}
+%
+where $g$ is again a parametrised nonlinear function.
+
+\footnotetext{The vector $\h_t$ is also called the `hidden state', and its $M$ entries are sometimes called `hidden units', `neurons', or `memory cells'.}
+
+By tuning the coefficients of the affine transformations in $f$ and $g$ in an offline training phase, we can change the behaviour of the RNN so that its output $n_t$ for a given input signal $\z_t$ approaches a desired output $y_t$. RNN's are thus also a data-driven algorithm. (See \cref{sec:RNN-optim} for a description of this training phase, which involves the so called 'backpropagation through time' method). In the case of SWR detection, we can design a training signal $y_t$ that is for examples $1$ during SWR events in $\z_t$, and $0$ otherwise (see \cref{sec:data-driven-algorithms}). If we avoid overfitting to the training data, we can use the trained RNN to detect SWR's in unseen signals $\z_t$. This is, in short, the proposed method of SWR detection in this chapter.
