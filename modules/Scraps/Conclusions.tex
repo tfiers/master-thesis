@@ -1,16 +1,31 @@
 
-\chapter{Discussion \& conclusions}
+\chapter{Conclusions \& discussion}
 
 \section{Summary of findings}
+
+% Main result:
+% - We can only marginally improve sota
+%   (2 ms d median; ~6% percentage points; while high-recall PR performance is slightly worse).
+
+% Minor:
+% - Real (first?) quantification and comparison of band-pass filters
+% - We cannot improve using multiple signals from spatially distributed electrodes: multi-channel performs as well as classical single-channel
+
+% Minor minor:
+% - Take care with BPF: possible to introduce unnecessary (group) delay.
+
+\begin{figure}
+\img{PR-and-latency--0_7}
+\captionn{Performance comparison of the best detectors}{Legend as in \cref{fig:BPF-performance}.}
+\label{fig:PR-and-latency-conclusion}
+\end{figure}
 
 % Using more than one electrode for detection (such as a stratum radiatum electrode in addition to the stratum pyramidale electrode, or multiple stratum pyramidale electrodes) does not significantly improve accuracy nor latency.
 
 % Around 10 delays (~10 ms) is best for GEVec (both single and multichannel)
 
-% continue: create figure with best online-BPF and best GEVec
-% for best GEVec: just choose one, they're equal I guess.
-% Either: all electrodes, 10 delays.
-% Or: one electrode, 10 delays. 
+
+
 
 \section{Limitations of this work}
 
