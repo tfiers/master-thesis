@@ -5,12 +5,12 @@
 \section{Closed-loop neuroscience}
 \label{sec:BCI}
 
-This thesis discusses signal-processing software for a brain-computer interface (BCI).\footnotemark{} Most BCI research is focused on restoring or partially replacing a damaged nervous system after a stroke or a traumatic injury \cite{Krucoff2016}. The BCI discussed in this thesis however is used for fundamental brain research into memory \& learning, using laboratory animals such as rats or macaques.
+This thesis discusses signal-processing software for a brain-computer interface (BCI). A BCI is a device that reads out brain activity, which is used to control some automated action. The brain receives feedback about the performed action, either through normal sensory input, or through direct neural stimulation, thereby forming a closed loop.
+
+Most BCI research is focused on restoring or partially replacing a damaged nervous system after a stroke or a traumatic injury \cite{Krucoff2016}. The BCI discussed in this thesis however is used for fundamental brain research into memory \& learning, using laboratory animals such as rats or macaques.
 % Many of the techniques applied in this thesis are more generally applicable however.
 
-\footnotetext{A BCI is a device that reads out brain activity, which is used to control some automated action. The brain receives feedback about the performed action, either through normal sensory input, or through direct neural stimulation, thereby forming a closed loop.}
-
-On a high level, the discussed BCI works as follows (see also \cref{fig:closed-loop}): an electrode is surgically implanted into the animal's brain, where it records the electric field potential. (\Cref{ch:LFP} discusses the origin of this signal). During an experiment, the BCI continuously tests whether it can detect a particular pattern in the recording. (This pattern, called the \emph{sharp wave-ripple}, is discussed in \cref{ch:SWR}). Each detection of the pattern triggers a feedback action. This is often a current injection that temporarily disables the specific brain area where the pattern is recorded from.
+On a high level, the discussed BCI works as follows (see also \cref{fig:closed-loop}): an electrode is surgically implanted into the animal's brain, where it records the electric field potential. (\Cref{ch:LFP} discusses the origin of this signal). During an experiment, the BCI continuously tests whether it can detect a particular pattern in the recording. (This pattern, called the \emph{sharp wave-ripple}, is discussed in \cref{ch:SWR}). Each detection of the pattern triggers a feedback action. This is often a current injection that temporarily disables the specific brain area where the pattern is recorded from. This prevents the pattern from exercising its function elsewhere in the brain.
 
 This experimental technique enables scientists to test their hypotheses about sharp wave-ripples (SWR's), the affected brain area, and in general, about brain mechanisms such as learning \& memory. (This is discussed further in \cref{ch:science}).
 
@@ -35,7 +35,7 @@ This thesis investigates whether the current sharp wave-ripple detection algorit
 \section{Motivation}
 \label{sec:motivation}
 
-This question is motivated by two factors. First, current online detection algorithms add a considerable latency: the SWR event is often detected after a third of the event has already passed (see \cref{fig:BPF-outputs,fig:BPF-performance} from \cref{ch:BPF}, where existing online SWR detection algorithms are evaluated). This detection latency might compromise experimental power.
+This question is motivated by two factors. First, current online detection algorithms add a considerable latency: the SWR event is often detected after a third of the event has already passed (see \cref{fig:BPF-outputs,fig:BPF-performance} from \cref{ch:BPF}, where existing online SWR detection algorithms are evaluated). This detection latency might compromise experimental power, as the SWR event may have already exercised its function.
 
 Second, most current detection algorithms make use of only a single voltage signal. Recently however, more and more recordings are being made with \emph{neural probes}, which simultaneously record the voltage at multiple spatially distributed points \cite{Michon2016,Jun2017}. We investigate whether we can use these spatially distributed multichannel recordings to improve online SWR detection.
 
