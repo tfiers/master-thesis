@@ -1,0 +1,20 @@
+\section{Summary of findings}
+
+
+\begin{figure}
+\img{PR-and-latency--0_7}
+\captionn{Performance comparison of the best SWR detectors}{Legend as in \cref{fig:BPF-performance}. ``Proposed online BPF'' is the best representative of the current generation of SWR detectors (band-pass filters on a pyramidal cell layer channel; see \cref{ch:BPF}). ``GEVec'' and ``Recurrent neural network'' are the newly investigated, data-driven algorithms. Using the GEVec algorithm with about ten delay samples (corresponding to 10 ms at $f_s = 1000$ Hz) yielded optimal performance (see \cref{ch:GEVec}). Both a version of the GEVec algorithm using multiple, spatially distributed input channels (``all ch.''), and a version using the same, single input channel as the band-pass filter (``pyr ch.'') are presented here.\newline
+The GEVec-based detectors and the band-pass filter have very similar performance. The GEVec-based detectors have very slightly lower latency (Difference in medians of relative latency is $\pm$ 6 percentage-points. Difference in medians of absolute latency is 2 milliseconds). In the high recall regime (at $R > 93\%$), the band-pass filter is slightly more precise (less false positive detections). The single-channel and the multichannel GEVec-based detectors show near identical performance.}
+\label{fig:PR-and-latency-conclusion}
+\end{figure}
+
+
+
+For the new SWR detection algorithm that we investigated, the answer to both questions seems to be negative; see \cref{fig:PR-and-latency-conclusion}. We applied for the first time a data-driven, multichannel algorithm to SWR detection. This algorithm, based on the generalized eigenvector decomposition, achieves performance roughly on par with the best state-of-the-art algorithm; but not surpassing it. Using the new algorithm with multiple spatially distributed input channels yields similar performance as when it is used with only a single channel.
+
+% - We can only marginally improve sota
+%   (2 ms d median; ~6% percentage points; while high-recall PR performance is slightly worse).
+% - Real (first?) quantification and comparison of band-pass filters                               
+% - 10 delays / ms best for gevec
+% - Take care with BPF: possible to introduce unnecessary (group) delay.
+% - Using more than one electrode for detection (such as a stratum radiatum electrode in addition to the stratum pyramidale electrode, or multiple stratum pyramidale electrodes) does not significantly improve accuracy nor latency.
