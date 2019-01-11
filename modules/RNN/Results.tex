@@ -6,7 +6,7 @@ The first GRU network that we analyzed used all 16 input LFP channels, had 2 lay
 \begin{figure}
 \img[0.6]{575_4--576_0}
 \img[0.6]{589_8--590_4}
-\captionn{RNN output envelopes}{See \cref{fig:BPF-outputs} for legend.}
+\captionn{RNN output envelopes}{Output of a trained GRU-RNN that uses all input channels and that has two hidden layers of 40 hidden units each. See \cref{fig:BPF-outputs} for legend.}
 \label{fig:RNN-envelopes}
 \end{figure}
 
@@ -21,7 +21,7 @@ This phenomenon, where the RNN seemingly uses the low frequency spatiotemporal p
 \begin{figure}
 \img[0.9]{PR_full_fullrect}\\[2.5em]
 \img[0.9]{PR_fullrect}
-\captionn{Online SWR detection performance of an RNN}{See \cref{fig:BPF-performance} for legend. \Top: Full PR-curve. \Bottom: zoom-in on high-recall/high-precision region.}
+\captionn{Online SWR detection performance of an RNN}{See \cref{fig:BPF-performance} for legend. \Top: Full PR-curve. \Bottom: zoom-in on high-recall/high-precision region. Same net as \cref{fig:RNN-envelopes}.}
 \label{fig:RNN-PR}
 \end{figure}
 
@@ -29,6 +29,6 @@ The detection thresholds in \cref{fig:RNN-envelopes} are chosen at the maximal $
 
 To investigate the influence of input channels, we trained a GRU-RNN that only used a single input channel (namely the pyramidal cell layer channel that is also used as input for the band-pass filters). The resulting RNN behaves very much like the band-pass filter (\cref{fig:RNN-pyr-envelopes}). It does not show the non-ripple false positive detections of the all-channel RNN. Its detection performance approaches, but is not as good as the baseline online band-pass filter (\cref{fig:RNN-PR-pyr}).
 
-A second net was trained on this single channel, this time with only one hidden layer, of 25 hidden units. Its performance was slightly worse than the two-layer, 40 hidden units per layer RNN (\cref{fig:RNN-PR-pyr}).
+A second net was trained on this single channel input, this time with only one hidden layer, of 25 hidden units. Its performance was slightly worse than the two-layer, 40 hidden units per layer RNN (\cref{fig:RNN-PR-pyr}).
 
 Finally, we experimented with a different target function; Namely a $y_t$ that is $1$ only around the start of reference SWR segments. This did not result in good performance for all-channel, two-layer, 40 hidden unit RNN's (\cref{fig:RNN-PR-startblocks}).
