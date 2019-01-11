@@ -1,0 +1,14 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6500 64-bit) (preloaded format=pdftex 2018.5.21)  11 JAN 2019 13:47
+entering extended mode
+**./titlepageAndCopyright.tex
+(titlepageAndCopyright.tex
+! I can't find file `{master_thesis_metadata.tex}'.
+l.1 \input{master_thesis_metadata.tex}
+                                      
+Please type another input file name: 
+! Emergency stop.
+l.1 \input{master_thesis_metadata.tex}
+                                      
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!
