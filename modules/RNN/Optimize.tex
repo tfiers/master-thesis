@@ -10,26 +10,32 @@ Given a target signal $y_t$, and the actual RNN output $n_t$, we can compare the
 \ell(n_t, y_t) = - y_t \log(n_t) - (1 - y_t) \log(1 - n_t)
 \end{equation}
 %
-The loss $\ell_t$ is lower whenever the RNN output is more similar to the target signal. The mean loss $\expval{\ell_t}$ over some dataset can thus be used as a proxy for how well the RNN output $n_t$ can be used for SWR detection. Just as in \cref{ch:GEVec}, we want to find the weights $w_i$ (the elements of the matrices $\W_\_$ and the vectors $\bias_\_$ from \cref{eq:out,eq:hnew}) that minimize this expected loss $\expval{\ell_t}$. Unlike in \cref{ch:GEVec}, there is no known way to find the global minimum of this function.
+The loss $\ell_t$ is lower whenever the RNN output is more similar to the target signal. The mean loss $\expval{\ell_t}$ over some dataset can thus be used as a proxy for how useful the RNN output $n_t$ is for SWR detection. Just as in \cref{ch:GEVec}, we want to find the weights $w_i$ (the elements of the matrices $\W_\_$ and the vectors $\bias_\_$ from \cref{eq:out,eq:hnew}) that minimize this expected loss $\expval{\ell_t}$. Unlike in \cref{ch:GEVec}, there is no known way to find the global minimum of this function.
 
 Instead, a form of gradient descent is used to iteratively and stochastically approach a local minimum of $\expval{\ell_t}$. We divided the training data into 300 ms long chunks. For each such chunk, the total loss $L = \sum_{300 \text{ms}} \ell_t$ is calculated. Then, the partial derivatives $\pdv*{L}{w_{i,t}}$ of this loss are calculated, for each parameter $w_i$ in the RNN, and for each timestep $t$ in the chunk. This calculation of the gradient of $L$ is done through the so called \emph{backpropagation} algorithm \cite{Rumelhart1986}, which is an application of the chain rule from calculus. In this case we apply so called ``backpropagation through time'' (BPTT) -- a common way to train RNN's \cite{Goodfellow2016}. Such derivative calculations are often done through an automatic differentiation program. In our case, we used the \texttt{PyTorch} library \cite{Paszke2017}.
 
-For each parameter $w_i$ in the RNN, the BPTT algorithm yields a set of partial derivatives $\{ \pdv*{L}{w_{i,t_1}}, \pdv*{L}{w_{i,t_2}}, \tdots \}$ that each tell how much and in which direction the chunk loss $L$ changes when the parameter $w_i$ is increased at timestep $t$. Taking the mean of this set of partial derivatives over all timesteps in the chunk yields a value $\pdv*{L}{w_i}$ that can be used to tell how the parameter $w_i$ should be adapated to decrease the loss $L$:
+For each parameter $w_i$ in the RNN, the BPTT algorithm yields a set of partial derivatives $\{ \pdv*{L}{w_{i,t_1}}, \pdv*{L}{w_{i,t_2}}, \tdots \}$ that each tell how much and in which direction the chunk loss $L$ changes when the parameter $w_i$ is increased at timestep $t$. Taking the mean of this set of partial derivatives over all timesteps in the chunk yields a value $\pdv*{L}{w_i}$ that can be used to tell how the parameter $w_i$ should be adapted to decrease the loss $L$:
 %
 \begin{equation}
 \label{eq:SGD}
 w_i \leftarrow w_i - \eta \pdv{L}{w_i}
 \end{equation}
 %
-(i.e. if $\pdv*{L}{w_i} > 0$ then the loss would increase by increasing $w_i$; so decrease $w_i$). Doing this for all parameters $w_i$ of the RNN results in a so called gradient step. $\eta$ determines the step size, and is called the \emph{learning rate}. Having a separate and adaptive learning rate $\eta_{i,t}$ for each parameter has been shown to greatly increase convergence speed of (stochastic) gradient descent. We used the AdaMax optimization algorithm \cite{Kingma2014} to update our RNN parameters with such adaptive learning rates.
+(i.e. if $\pdv*{L}{w_i} > 0$ then the loss would increase by increasing $w_i$; so decrease $w_i$). Doing this for all parameters $w_i$ of the RNN results in a complete so called gradient step. $\eta$ determines the step size, and is called the \emph{learning rate}. Having a separate and adaptive learning rate $\eta_{i,t}$ for each parameter has been shown to greatly increase convergence speed of stochastic gradient descent. We used the AdaMax optimization algorithm \cite{Kingma2014} to update our RNN parameters with such adaptive learning rates.
 
 
 
 \section{Regularization}
-\label{sec:regularize}
+\label{sec:RNN-regularization}
 
-Repeating this procedure for all chunks, and for multiple passes over the training data, yields a trained RNN. The danger then exists that the network is \emph{overfit} to the training data; i.e. it achieves low loss results on the training data, but it performs badly on unseen data. We avoided this with so called \emph{early stopping}.
+Repeating this procedure for all chunks, and for multiple passes over the training data, yields a trained RNN. The danger then exists that the network is \emph{overfit} to the training data; i.e. it achieves a low loss on the training data, but it performs badly on unseen data. We avoided this with so called \emph{early stopping} on a validation set.
 
-As described in \cref{sec:recording}, the first 20 minutes of the 34 minute long recording were used as training data for data-driven online algorithms. For the RNN, these 20 minutes were further split into a part for training proper (the first 15.6 minutes), and a part for validation (the final 4.4).
+As described in \cref{sec:recording}, the first 20 minutes of the 34 minutes-long recording were used as training data for data-driven online algorithms. For the RNN, these 20 minutes were further split into a part for training proper (the first 15.6 minutes), and a part for validation (the final 4.4 minutes). The RNN was trained for 50 passes over the proper training part. After each training pass (or \emph{epoch}), the loss on the validation set was calculated, as an estimate of how the RNN would perform on unseen data. The RNN where the validation loss was lowest was then chosen for the final evaluation of online SWR detection performance on the held-out test data. See \cref{fig:validloss} for an example validation loss curve over training time.
 
+\begin{figure}
+\img[0.62]{validloss_fullrect}
+\captionn{Regularization by early stopping}{Evolution of total loss on the validation data during training of an RNN.}
+\label{fig:validloss}
+\end{figure}
 
+% todo: dropout 

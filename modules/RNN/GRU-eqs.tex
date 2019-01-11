@@ -1,7 +1,7 @@
 \section{Update equations}
 \label{sec:GRU_eqs}
 
-The RNN type that we use for SWR detection is the so called \emph{gated recurrent units} RNN, or \emph{GRU} \cite{Cho2014}. It is closely related to the popular ``long short-term memory'' (LSTM) RNN \cite{Hochreiter1997,Greff2017}. The update equations for the GRU are simpler than those of the LSTM however, while achieving comparable performance \cite{Chung2014}.
+The RNN type that we choose for SWR detection is the so called \emph{gated recurrent units} RNN, or \emph{GRU} \cite{Cho2014}. It is closely related to the popular ``long short-term memory'' (LSTM) RNN \cite{Hochreiter1997,Greff2017}. The update equations for the GRU are simpler than those of the LSTM however, while achieving comparable performance \cite{Chung2014}.
 
 The state-update function $f$ and the readout function $g$ are defined as follows for a GRU RNN:
 %
@@ -21,7 +21,7 @@ with
 \end{align}
 $\tanh$ is the hyperbolic tangent, and $\sigma$ is the logistic sigmoid, defined as $\sigma(x) = 1 / (1 + \exp(-x))$. They are applied point-wise, i.e. separately to each element of their argument vector. Similarly, ``$\had$'' denotes point-wise multiplication.  $\sigma$ compresses the real number line to $(0, 1)$, while $\tanh(x) = 2\ \sigma(x) - 1$ maps it to $(-1, 1)$. Therefore, for this RNN, $\h_t \in (-1, 1)^M$ and the output $n_t \in (0, 1)$.
 
-The coefficients in the matrices $\W_\_$ and in the vectors $\bias_\_$ are called the \emph{weights} and \emph{biases}, respectively.\footnotemark{} They are parameters of the algorithm, determined a priori (i.e. before online SWR detection), through an optimisation procedure described in \cref{sec:RNN-optim}.
+The coefficients in the matrices $\W_\_$ and in the vectors $\bias_\_$ are called the \emph{weights} and \emph{biases} of the RNN, respectively.\footnotemark{} They are parameters of the algorithm, determined a priori (i.e. before online SWR detection), through an optimisation procedure described in \cref{sec:RNN-optim}.
 
 \footnotetext{Often collectively referred to simply as the weights. The vector $\vb{w}_{hn}$ and the scalar $b_n$ are also part of the weights and biases. They may be regarded as a one-row matrix and a one-dimensional vector, respectively.}
 

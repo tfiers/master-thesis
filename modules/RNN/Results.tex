@@ -1,0 +1,31 @@
+\section{Results for SWR detection}
+\label{sec:RNN-results}
+
+The first GRU network that we analyzed used all 16 input LFP channels, had 2 layers of 40 hidden units each, and was trained on a target function $y_t$ that is $1$ during the entire duration of each reference SWR segment, and $0$ elsewhere. \Cref{fig:validloss} shows the evolution of the validation loss while training this RNN. \Cref{fig:RNN-envelopes} shows example output envelopes $n_t$.
+
+\begin{figure}
+\img[0.6]{575_4--576_0}
+\img[0.6]{589_8--590_4}
+\captionn{RNN output envelopes}{See \cref{fig:BPF-outputs} for legend.}
+\label{fig:RNN-envelopes}
+\end{figure}
+
+We notice that the RNN output matches the target block-shaped function $y_t$ relatively well. Together with the validation loss curve, it seems that the target function was relatively well learnable.
+
+Secondly, the RNN clearly uses more information than the ripple oscillation only to generate its output. In the right panel of \cref{fig:RNN-envelopes}, the RNN outputs a positive with high confidence. The low frequency LFP over all channels indeed has the profile of an SWR; but the ripple is almost non-existent, as can be seen in the band-pass and GEVec filter outputs. This detection of the RNN is thus classified as a false positive. Additional examples of this phenomenon are shown in \cref{fig:RNN-profile}.
+
+% The fact that the trained RNN seemingly uses the low frequency spatiotemporal pattern of SWR's leads to a correct and early detection in the left panel of \cref{fig:RNN-envelopes}, but a correct and relatively late detection in the right panel; this might be because the negative sharp wave only starts after the ripple oscillation has already begun.
+
+This phenomenon, where the RNN seemingly uses the low frequency spatiotemporal pattern of SWR's but does not require clear ripples, leads to a low precision for the RNN detector, under our evaluation scheme. \Cref{fig:RNN-PR} compares the precision-recall curve of this RNN detector with those of previous online SWR detectors, as well as comparing their detection latencies.
+
+\begin{figure}
+\img[0.9]{PR_full_fullrect}\\[2.5em]
+\img[0.9]{PR_fullrect}
+\captionn{Online SWR detection performance of an RNN}{See \cref{fig:BPF-performance} for legend. \Top: Full PR-curve. \Bottom: zoom-in on high-recall/high-precision region.}
+\label{fig:RNN-PR}
+\end{figure}
+
+The detection thresholds in \cref{fig:RNN-envelopes} are chosen at the maximal $F_1$ point for each output envelope. Because of the relatively low precision (high false-positive rate) of the RNN, this threshold is set high for the RNN envelope. This leads often to relatively late detections; see e.g. the rightmost detection in \cref{fig:RNN-envelopes}.
+
+
+
