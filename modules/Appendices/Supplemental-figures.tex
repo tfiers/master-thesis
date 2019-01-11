@@ -45,13 +45,22 @@ adapted from \cite{Knott2008}}. Scanning electron micrograph of a slice of mouse
 \begin{figure}
 \img[0.62]{PR/laterstart}
 \img[0.62]{PR/supalate}
-\captionn{Start-block RNN's}{Online SWR detection performance of GRU-RNN's using only a pyramidal cell layer LFP channel as input. \Left: two-layer RNN. \Right: one-layer RNN. See \cref{fig:BPF-performance} for legend.}
+\captionn{Start-block RNN's}{Online SWR detection performance of GRU-RNN's using block functions at the start of reference SWR segments as target function. \Left: Target is $1$ for 35 ms before to 55 ms after reference SWR start. \Right: Target is $1$ for 15 ms before to 50 ms after reference SWR start. See \cref{fig:BPF-performance} for legend.}
 \label{fig:RNN-PR-startblocks}
 \end{figure}
 
 \begin{figure}
 \img[0.62]{PR/pyr}
 \img[0.62]{PR/shallowpyr}
-\captionn{Single-input-channel RNN's}{Online SWR detection performance of GRU-RNN's using only a pyramidal cell layer LFP channel as input. \Left: two-layer RNN. \Right: one-layer RNN. See \cref{fig:BPF-performance} for legend.}
+\captionn{Single-input-channel RNN's}{Online SWR detection performance of GRU-RNN's using only a pyramidal cell layer LFP channel as input. \Left: two-layer RNN, with 40 hidden units per layer. \Right: one-layer RNN, with 25 hidden units. See \cref{fig:BPF-performance} for legend.}
 \label{fig:RNN-PR-pyr}
+\end{figure}
+
+\begin{figure}
+\img[0.5]{pyr/74_4--75_0}
+\img[0.5]{pyr/145_8--146_4}\\[1em]
+\img[0.5]{pyr/166_8--167_4}
+\img[0.5]{pyr/156_6--157_2}
+\captionn{Single-input-channel RNN envelopes}{}
+\label{fig:RNN-pyr-envelopes}
 \end{figure}

@@ -27,5 +27,8 @@ This phenomenon, where the RNN seemingly uses the low frequency spatiotemporal p
 
 The detection thresholds in \cref{fig:RNN-envelopes} are chosen at the maximal $F_1$ point for each output envelope. Because of the relatively low precision (high false-positive rate) of the RNN, this threshold is set high for the RNN envelope. This leads often to relatively late detections; see e.g. the rightmost detection in \cref{fig:RNN-envelopes}.
 
+To investigate the influence of input channels, we trained a GRU-RNN that only used a single input channel (namely the pyramidal cell layer channel that is also used as input for the band-pass filters). The resulting RNN behaves very much like the band-pass filter (\cref{fig:RNN-pyr-envelopes}). It does not show the non-ripple false positive detections of the all-channel RNN. Its detection performance approaches, but is not as good as the baseline online band-pass filter (\cref{fig:RNN-PR-pyr}).
 
+A second net was trained on this single channel, this time with only one hidden layer, of 25 hidden units. Its performance was slightly worse than the two-layer, 40 hidden units per layer RNN (\cref{fig:RNN-PR-pyr}).
 
+Finally, we experimented with a different target function; Namely a $y_t$ that is $1$ only around the start of reference SWR segments. This did not result in good performance for all-channel, two-layer, 40 hidden unit RNN's (\cref{fig:RNN-PR-startblocks}).

@@ -21,7 +21,7 @@ For each parameter $w_i$ in the RNN, the BPTT algorithm yields a set of partial 
 w_i \leftarrow w_i - \eta \pdv{L}{w_i}
 \end{equation}
 %
-(i.e. if $\pdv*{L}{w_i} > 0$ then the loss would increase by increasing $w_i$; so decrease $w_i$). Doing this for all parameters $w_i$ of the RNN results in a complete so called gradient step. $\eta$ determines the step size, and is called the \emph{learning rate}. Having a separate and adaptive learning rate $\eta_{i,t}$ for each parameter has been shown to greatly increase convergence speed of stochastic gradient descent. We used the AdaMax optimization algorithm \cite{Kingma2014} to update our RNN parameters with such adaptive learning rates.
+(i.e. if $\pdv*{L}{w_i} > 0$ then the loss would increase by increasing $w_i$; so decrease $w_i$). Doing this for all parameters $w_i$ of the RNN results in a complete so called gradient step. $\eta$ determines the step size, and is called the \emph{learning rate}. Having a separate and adaptive learning rate $\eta_{i,t}$ for each parameter has been shown to greatly increase convergence speed of stochastic gradient descent. We used the AdaMax optimization algorithm \cite{Kingma2014} to update our RNN parameters with such adaptive learning rates, using the default hyperparameters as suggested in the paper.
 
 
 
